@@ -2,6 +2,15 @@
 
 A professional nail salon website with admin dashboard and hybrid API system.
 
+## 🔗 Live Demo
+
+**👉 [View Live Site](https://hola62.github.io/karens-nail-art/)**
+
+Try the admin panel: [Admin Login](https://hola62.github.io/karens-nail-art/admin/login.html)
+
+- Username: `karen`
+- Password: `admin123`
+
 ## 🌟 Features
 
 ### Public Pages
