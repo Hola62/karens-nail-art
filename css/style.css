@@ -98,6 +98,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .hero-left h1 {
@@ -143,6 +145,7 @@ body {
     align-items: center;
     flex-wrap: wrap;
     margin-top: 25px;
+    justify-content: center;
 }
 
 /* Secondary button (outlined) */
@@ -1039,7 +1042,8 @@ body {
         background: #3e1f0e !important;
         flex-direction: column !important;
         padding: 60px 0 40px !important;
-        min-height: auto !important;
+        /* allow content to define height on mobile */
+        min-height: 0 !important;
     }
 
     .hero-left,
