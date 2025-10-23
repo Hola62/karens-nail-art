@@ -31,8 +31,11 @@
             <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
                 Dashboard
             </a>
+            <a href="#gallery" class="nav-item" onclick="showSection('gallery')">
+                Gallery
+            </a>
             <a href="#images" class="nav-item" onclick="showSection('images')">
-                Manage Images
+                Upload Images
             </a>
             <a href="#services" class="nav-item" onclick="showSection('services')">
                 Manage Services
@@ -109,6 +112,36 @@
                         <button class="action-btn" onclick="showSection('settings')">Update Info</button>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section - View All Uploaded Images -->
+        <section id="section-gallery" class="admin-section">
+            <h2>Gallery - All Uploaded Images</h2>
+            <p class="subtitle">View and manage all images uploaded by you and your team</p>
+            
+            <div class="gallery-filters">
+                <select id="galleryFilter" onchange="filterGalleryImages(this.value)">
+                    <option value="all">All Images</option>
+                    <option value="my-uploads">My Uploads Only</option>
+                    <option value="gel-polish">Gel Polish</option>
+                    <option value="acrylic-nails">Acrylic Nails</option>
+                    <option value="nail-art">Nail Art</option>
+                    <option value="home">Home Gallery</option>
+                </select>
+            </div>
+
+            <div class="gallery-stats">
+                <div class="stat-badge">
+                    <span id="totalImagesCount">0</span> Total Images
+                </div>
+                <div class="stat-badge">
+                    <span id="myImagesCount">0</span> My Uploads
+                </div>
+            </div>
+
+            <div class="gallery-grid" id="adminGalleryGrid">
+                <p class="empty-state">No images uploaded yet. Go to "Upload Images" to add some!</p>
             </div>
         </section>
 

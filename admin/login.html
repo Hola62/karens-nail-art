@@ -107,6 +107,37 @@
         .back-link a:hover {
             text-decoration: underline;
         }
+
+        .debug-tools {
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .show-users-btn {
+            background: #fff;
+            color: #3e1f0e;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .show-users-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .stored-users-display {
+            text-align: left;
+            margin-top: 10px;
+            max-height: 160px;
+            overflow: auto;
+            background: #f7f7f7;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.75rem;
+        }
     </style>
 </head>
 
@@ -134,9 +165,9 @@
                 <button type="submit" class="login-btn">Login</button>
             </form>
 
-            <div style="margin-top:12px; text-align:center;">
-                <button id="showStoredUsersBtn" style="background:#fff; color:#3e1f0e; padding:8px 12px; border-radius:6px; border:1px solid #ddd; cursor:pointer;">Show stored users</button>
-                <pre id="storedUsersDisplay" style="text-align:left; margin-top:10px; max-height:160px; overflow:auto; background:#f7f7f7; padding:10px; border-radius:6px; display:none;"></pre>
+            <div class="debug-tools">
+                <button id="showStoredUsersBtn" class="show-users-btn">Show stored users</button>
+                <pre id="storedUsersDisplay" class="stored-users-display"></pre>
             </div>
 
             <div class="back-link">

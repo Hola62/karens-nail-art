@@ -4,6 +4,7 @@ window.addEventListener('DOMContentLoaded', function () {
     loadDashboardData();
     loadProfilePicture();
     loadTeamList();
+    loadAdminGallery();
 });
 
 // Check if user is authenticated
@@ -635,3 +636,154 @@ document.addEventListener('keypress', function (e) {
 });
 
 console.log('Admin dashboard loaded successfully!');
+
+// ===== GALLERY MANAGEMENT =====
+
+// Load all uploaded images into gallery
+function loadAdminGallery() {
+    const galleryGrid = document.getElementById('adminGalleryGrid');
+    if (!galleryGrid) return;
+
+    const adminUsername = sessionStorage.getItem('adminUsername') || 'karen';
+    const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+    const allUsers = ['karen', ...teamMembers.map(m => m.username)];
+    
+    const allImages = [];
+    
+    // Collect all uploads from all users
+    allUsers.forEach(username => {
+        const uploadsKey = `userUploads_${username}`;
+        const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+        userUploads.forEach(upload => {
+            allImages.push({
+                ...upload,
+                uploader: username,
+                isMyUpload: username === adminUsername
+            });
+        });
+    });
+
+    // Update stats
+    document.getElementById('totalImagesCount').textContent = allImages.length;
+    document.getElementById('myImagesCount').textContent = allImages.filter(img => img.isMyUpload).length;
+
+    if (allImages.length === 0) {
+        galleryGrid.innerHTML = '<p class="empty-state">No images uploaded yet. Go to "Upload Images" to add some!</p>';
+        return;
+    }
+
+    // Sort by upload date (newest first)
+    allImages.sort((a, b) => new Date(b.uploaded_at) - new Date(a.uploaded_at));
+
+    // Render gallery
+    let html = '';
+    allImages.forEach((img, index) => {
+        const uploadDate = new Date(img.uploaded_at).toLocaleDateString();
+        const canDelete = img.isMyUpload || sessionStorage.getItem('adminRole') === 'Super Admin';
+        
+        html += `
+            <div class="gallery-image-card" data-uploader="${img.uploader}" data-gallery="${img.gallery || 'home'}">
+                <img src="${img.data}" alt="${img.name}">
+                <div class="gallery-image-info">
+                    <p><strong>Name:</strong> ${img.name}</p>
+                    <p><strong>Uploaded by:</strong> ${img.uploader}</p>
+                    <p><strong>Gallery:</strong> ${img.gallery || 'home'}</p>
+                    <p><strong>Date:</strong> ${uploadDate}</p>
+                </div>
+                <div class="gallery-image-actions">
+                    <button class="btn-view" onclick="viewImageFullscreen('${img.data}', '${img.name}')">View</button>
+                    ${canDelete ? `<button class="btn-delete-gallery" onclick="deleteGalleryImage('${img.uploader}', '${img.name}')">Delete</button>` : ''}
+                </div>
+            </div>
+        `;
+    });
+
+    galleryGrid.innerHTML = html;
+}
+
+// Filter gallery images
+function filterGalleryImages(filter) {
+    const cards = document.querySelectorAll('.gallery-image-card');
+    const adminUsername = sessionStorage.getItem('adminUsername') || 'karen';
+    
+    cards.forEach(card => {
+        const uploader = card.dataset.uploader;
+        const gallery = card.dataset.gallery;
+        
+        let show = false;
+        
+        if (filter === 'all') {
+            show = true;
+        } else if (filter === 'my-uploads') {
+            show = uploader === adminUsername;
+        } else {
+            show = gallery === filter;
+        }
+        
+        card.style.display = show ? 'block' : 'none';
+    });
+}
+
+// View image in fullscreen
+function viewImageFullscreen(imageData, imageName) {
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;';
+    
+    const content = document.createElement('div');
+    content.style.cssText = 'max-width:90%;max-height:90%;text-align:center;';
+    
+    const img = document.createElement('img');
+    img.src = imageData;
+    img.alt = imageName;
+    img.style.cssText = 'max-width:100%;max-height:80vh;border-radius:10px;';
+    
+    const title = document.createElement('h3');
+    title.textContent = imageName;
+    title.style.cssText = 'color:white;margin-top:15px;';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'Close';
+    closeBtn.style.cssText = 'margin-top:15px;padding:10px 30px;background:#f0b27a;color:#3e1f0e;border:none;border-radius:5px;font-size:1rem;cursor:pointer;';
+    closeBtn.onclick = () => document.body.removeChild(modal);
+    
+    content.appendChild(img);
+    content.appendChild(title);
+    content.appendChild(closeBtn);
+    modal.appendChild(content);
+    
+    modal.onclick = (e) => {
+        if (e.target === modal) document.body.removeChild(modal);
+    };
+    
+    document.body.appendChild(modal);
+}
+
+// Delete image from gallery
+async function deleteGalleryImage(uploader, imageName) {
+    const adminUsername = sessionStorage.getItem('adminUsername') || 'karen';
+    const adminRole = sessionStorage.getItem('adminRole');
+    
+    // Check permissions
+    if (uploader !== adminUsername && adminRole !== 'Super Admin') {
+        alert('You can only delete your own images. Only Super Admin can delete any image.');
+        return;
+    }
+    
+    if (!confirm(`Are you sure you want to delete "${imageName}"?\n\nThis action cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const uploadsKey = `userUploads_${uploader}`;
+        const uploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+        const filtered = uploads.filter(img => img.name !== imageName);
+        
+        localStorage.setItem(uploadsKey, JSON.stringify(filtered));
+        
+        alert('Image deleted successfully!');
+        loadAdminGallery();
+    } catch (error) {
+        console.error('Error deleting image:', error);
+        alert('Error deleting image. Please try again.');
+    }
+}
