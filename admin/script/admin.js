@@ -615,36 +615,35 @@ async function sendReplyEmail() {
     const originalText = sendBtn ? sendBtn.textContent : '';
     if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending…'; }
 
-    // EmailJS template variables - trying multiple common field names
+    // CRITICAL: EmailJS template params - your template MUST have {{to_email}} in the "To Email" field
     const templateParams = {
-        // Common recipient field names (EmailJS will use the one that matches your template)
-        to_email: toEmail,
-        user_email: toEmail,
-        recipient_email: toEmail,
-        email: toEmail,
-        to_name: toEmail.split('@')[0], // extract name from email
-
-        // Subject and message
-        subject: subject,
-        message: message,
-
-        // Sender info
-        from_email: fromEmail,
-        from_name: fromName,
-        reply_to: fromEmail
+        to_email: toEmail,        // THIS must match your EmailJS template's "To Email" setting
+        reply_to: fromEmail,      // Reply-to address
+        from_name: fromName,      // Your business name
+        subject: subject,         // Email subject
+        message: message,         // Email body
+        // Add any other fields your template uses
     };
 
-    console.log('Template params:', templateParams); // Debug log
+    console.log('Template params being sent:', templateParams);
+    console.log('Service ID:', serviceId, 'Template ID:', templateId);
 
     try {
         const res = await emailjs.send(serviceId, templateId, templateParams);
-        console.log('EmailJS response:', res);
+        console.log('✅ EmailJS SUCCESS:', res);
         alert('Reply sent successfully!');
         closeReplyModal();
     } catch (err) {
-        console.error('EmailJS send error:', err);
-        const detail = err && (err.text || err.message || JSON.stringify(err));
-        alert('Failed to send reply. ' + (detail ? ('Details: ' + detail) : 'Please check your EmailJS configuration and try again.'));
+        console.error('❌ EmailJS ERROR:', err);
+        
+        // Show detailed error
+        let errorMsg = 'Failed to send reply.\n\n';
+        if (err.text) errorMsg += 'Error: ' + err.text + '\n';
+        if (err.status) errorMsg += 'Status: ' + err.status + '\n';
+        errorMsg += '\nIMPORTANT: Check your EmailJS template settings!\n';
+        errorMsg += 'The "To Email" field in your template MUST be set to: {{to_email}}';
+        
+        alert(errorMsg);
     } finally {
         if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = originalText || 'Send Reply'; }
     }
