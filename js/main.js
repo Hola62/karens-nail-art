@@ -1,16 +1,29 @@
-// Fade-in animation for service cards on scroll
-window.addEventListener('scroll', () => {
-    const cards = document.querySelectorAll('.service-card');
-    const triggerBottom = window.innerHeight * 0.9;
+// Show service cards immediately on mobile, use scroll animation on desktop
+const isMobile = window.innerWidth <= 768;
 
-    cards.forEach(card => {
-        const cardTop = card.getBoundingClientRect().top;
-
-        if (cardTop < triggerBottom) {
+if (isMobile) {
+    // On mobile, show all cards immediately
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.service-card');
+        cards.forEach(card => {
             card.classList.add('show');
-        }
+        });
     });
-});
+} else {
+    // On desktop, use fade-in animation on scroll
+    window.addEventListener('scroll', () => {
+        const cards = document.querySelectorAll('.service-card');
+        const triggerBottom = window.innerHeight * 0.9;
+
+        cards.forEach(card => {
+            const cardTop = card.getBoundingClientRect().top;
+
+            if (cardTop < triggerBottom) {
+                card.classList.add('show');
+            }
+        });
+    });
+}
 
 // Toggle love button with tracking
 function toggleLove(button) {
