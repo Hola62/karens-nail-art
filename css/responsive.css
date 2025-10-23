@@ -513,3 +513,58 @@
         color: black;
     }
 }
+
+/* ========== PUBLIC GALLERY PAGE RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .public-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+
+    .gallery-filters-public {
+        gap: 10px;
+    }
+
+    .filter-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .public-gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .page-hero {
+        padding: 80px 15px 40px;
+    }
+
+    .page-hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .gallery-filters-public {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .filter-btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+
+    .cta-section {
+        padding: 30px 20px;
+    }
+
+    .cta-section h2 {
+        font-size: 1.5rem;
+    }
+}
