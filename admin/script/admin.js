@@ -595,57 +595,93 @@ function closeReplyModal() {
 }
 
 async function sendReplyEmail() {
-    const toEmail = document.getElementById('replyToEmail')?.value || '';
-    const subject = document.getElementById('replySubject')?.value || '';
-    const message = document.getElementById('replyMessage')?.value || '';
+    const toEmail = document.getElementById('replyToEmail')?.value?.trim();
+    const subject = document.getElementById('replySubject')?.value?.trim();
+    const message = document.getElementById('replyMessage')?.value?.trim();
 
-    console.log('Sending email to:', toEmail); // Debug log
+    // Validation
+    if (!toEmail) {
+        alert('Please enter recipient email address');
+        return;
+    }
+    if (!subject) {
+        alert('Please enter email subject');
+        return;
+    }
+    if (!message) {
+        alert('Please enter your message');
+        return;
+    }
 
-    if (!toEmail || !toEmail.trim()) return alert('Recipient email is missing from the form');
-    if (!subject.trim()) return alert('Please enter a subject');
-    if (!message.trim()) return alert('Please enter a message');
-    if (!window.EMAIL_SETTINGS) return alert('Email settings not configured');
-    if (!window.emailjs) return alert('EmailJS library not loaded');
+    // Check EmailJS is loaded
+    if (typeof emailjs === 'undefined') {
+        alert('EmailJS is not loaded. Please refresh the page and try again.');
+        return;
+    }
 
-    const { serviceId, templateId, fromEmail, fromName } = window.EMAIL_SETTINGS;
-    if (!serviceId || !templateId) return alert('EmailJS IDs are not set');
+    // Check config exists
+    if (!window.EMAIL_SETTINGS || !window.EMAIL_SETTINGS.serviceId || !window.EMAIL_SETTINGS.templateId) {
+        alert('Email configuration is missing. Please check email-config.js file.');
+        return;
+    }
 
-    // Disable button while sending
     const sendBtn = document.querySelector('#replyModal .actions .btn:last-child');
-    const originalText = sendBtn ? sendBtn.textContent : '';
-    if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending…'; }
-
-    // CRITICAL: EmailJS template params - your template MUST have {{to_email}} in the "To Email" field
-    const templateParams = {
-        to_email: toEmail,        // THIS must match your EmailJS template's "To Email" setting
-        reply_to: fromEmail,      // Reply-to address
-        from_name: fromName,      // Your business name
-        subject: subject,         // Email subject
-        message: message,         // Email body
-        // Add any other fields your template uses
-    };
-
-    console.log('Template params being sent:', templateParams);
-    console.log('Service ID:', serviceId, 'Template ID:', templateId);
+    if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Sending...';
+    }
 
     try {
-        const res = await emailjs.send(serviceId, templateId, templateParams);
-        console.log('✅ EmailJS SUCCESS:', res);
-        alert('Reply sent successfully!');
-        closeReplyModal();
-    } catch (err) {
-        console.error('❌ EmailJS ERROR:', err);
+        // Simple template params - matches most EmailJS templates
+        const templateParams = {
+            to_email: toEmail,
+            to_name: toEmail.split('@')[0],
+            from_name: window.EMAIL_SETTINGS.fromName || "Karen's Nail Art",
+            reply_to: window.EMAIL_SETTINGS.fromEmail || 'holuwahola3@gmail.com',
+            subject: subject,
+            message: message
+        };
+
+        const response = await emailjs.send(
+            window.EMAIL_SETTINGS.serviceId,
+            window.EMAIL_SETTINGS.templateId,
+            templateParams
+        );
+
+        if (response.status === 200) {
+            alert('✅ Reply sent successfully!');
+            closeReplyModal();
+        } else {
+            throw new Error('Unexpected response status: ' + response.status);
+        }
+
+    } catch (error) {
+        console.error('Email send error:', error);
         
-        // Show detailed error
-        let errorMsg = 'Failed to send reply.\n\n';
-        if (err.text) errorMsg += 'Error: ' + err.text + '\n';
-        if (err.status) errorMsg += 'Status: ' + err.status + '\n';
-        errorMsg += '\nIMPORTANT: Check your EmailJS template settings!\n';
-        errorMsg += 'The "To Email" field in your template MUST be set to: {{to_email}}';
+        let errorMessage = '❌ Failed to send email.\n\n';
         
-        alert(errorMsg);
+        if (error.text) {
+            errorMessage += 'Error: ' + error.text + '\n\n';
+        }
+        
+        if (error.text && error.text.includes('recipients')) {
+            errorMessage += '⚠️ SOLUTION: Go to EmailJS Dashboard:\n';
+            errorMessage += '1. Open your template: template_d3ydngy\n';
+            errorMessage += '2. In "To Email" field, enter: {{to_email}}\n';
+            errorMessage += '3. Save the template and try again';
+        } else {
+            errorMessage += 'Please check:\n';
+            errorMessage += '• Your EmailJS template is configured correctly\n';
+            errorMessage += '• Service ID and Template ID are correct\n';
+            errorMessage += '• You have EmailJS credits available';
+        }
+        
+        alert(errorMessage);
     } finally {
-        if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = originalText || 'Send Reply'; }
+        if (sendBtn) {
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Send Reply';
+        }
     }
 }
 
