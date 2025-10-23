@@ -94,3 +94,53 @@ function copyToClipboard(text) {
         alert('Link copied to clipboard!');
     }
 }
+
+// Load admin uploaded images to home page gallery
+function loadAdminUploadsToGallery() {
+    const galleryContainer = document.querySelector('.gallery-container');
+    if (!galleryContainer) return;
+
+    // Get all admin uploads from localStorage
+    const allUploads = [];
+    
+    // Get uploads from all users (karen and team members)
+    const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+    const allUsers = ['karen', ...teamMembers.map(m => m.username)];
+    
+    allUsers.forEach(username => {
+        const uploadsKey = `userUploads_${username}`;
+        const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+        allUploads.push(...userUploads);
+    });
+
+    // If there are admin uploads, add them to the gallery
+    if (allUploads.length > 0) {
+        // Get the most recent uploads (limit to 6)
+        const recentUploads = allUploads.slice(-6).reverse();
+        
+        recentUploads.forEach(upload => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            galleryItem.innerHTML = `
+                <div class="gallery-image-wrapper">
+                    <img src="${upload.data}" alt="${upload.name}">
+                    <div class="image-actions">
+                        <button class="love-btn" onclick="toggleLove(this)">
+                            <span class="heart">♡</span>
+                        </button>
+                        <button class="share-btn" onclick="shareImage(this)">
+                            <span>⤴</span>
+                        </button>
+                    </div>
+                </div>
+                <p>${upload.name}</p>
+            `;
+            galleryContainer.appendChild(galleryItem);
+        });
+    }
+}
+
+// Load admin uploads when page loads
+if (document.querySelector('.gallery-container')) {
+    window.addEventListener('DOMContentLoaded', loadAdminUploadsToGallery);
+}

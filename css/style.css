@@ -83,33 +83,39 @@ body {
 /* ---------- HERO SECTION ---------- */
 .hero {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: space-between;
-    height: 100vh;
+    min-height: 85vh;
     background: linear-gradient(90deg, #3e1f0e 50%, #f9f5f1 50%);
     overflow: hidden;
+    padding: 20px 0;
 }
 
 .hero-left {
-    width: 45%;
-    padding: 60px 50px;
+    width: 48%;
+    padding: 40px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .hero-left h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
+    line-height: 1.2;
 }
 
 .hero-left span {
     font-family: "Dancing Script", cursive;
     color: #f0b27a;
-    font-size: 3.5rem;
+    font-size: 3rem;
 }
 
 .hero-left p {
-    margin-top: 20px;
-    line-height: 1.8;
+    margin-top: 15px;
+    line-height: 1.6;
     font-weight: 300;
+    font-size: 1rem;
 }
 
 .btn {
@@ -131,16 +137,20 @@ body {
 
 /* ---------- HERO IMAGE ---------- */
 .hero-right {
-    width: 50%;
-    height: 100%;
+    width: 48%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
 .hero-right img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0;
-    box-shadow: none;
+    max-width: 500px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     display: block;
 }
 

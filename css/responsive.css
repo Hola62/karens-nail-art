@@ -23,15 +23,32 @@
     /* Hero Section */
     .hero {
         padding: 60px 20px 40px;
-        min-height: 60vh;
+        min-height: 50vh;
+        flex-direction: column;
+        background: #3e1f0e;
     }
 
-    .hero h1 {
-        font-size: 2rem;
+    .hero-left,
+    .hero-right {
+        width: 100%;
+        padding: 20px;
     }
 
-    .hero p {
-        font-size: 1rem;
+    .hero-left {
+        text-align: center;
+    }
+
+    .hero-left h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-left span {
+        font-size: 2.2rem;
+    }
+
+    .hero-right img {
+        max-width: 100%;
+        margin: 20px auto 0;
     }
 
     /* Services Grid */
