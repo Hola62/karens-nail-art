@@ -5,8 +5,8 @@
 window.EMAIL_SETTINGS = {
   // Set from your message: service_1k6kdmg
   serviceId: 'service_1k6kdmg',
-  // e.g., 'template_yyyyyy'
-  templateId: 'REPLACE_WITH_YOUR_TEMPLATE_ID',
+  // Provided template ID
+  templateId: 'template_d3ydngy',
   // e.g., 'a1b2C3D4E5F6G7H8I'
   publicKey: 'GiDmg3fRq3ZWzWGAu',
   // Optional: shown as sender in the email template if you set it up
