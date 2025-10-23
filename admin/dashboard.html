@@ -347,8 +347,25 @@
     <script>
         // Initialize EmailJS if config is present
         document.addEventListener('DOMContentLoaded', function () {
+            console.log('EmailJS Init Check:');
+            console.log('- EMAIL_SETTINGS exists:', !!window.EMAIL_SETTINGS);
+            console.log('- emailjs exists:', !!window.emailjs);
+            
+            if (window.EMAIL_SETTINGS) {
+                console.log('- Service ID:', window.EMAIL_SETTINGS.serviceId);
+                console.log('- Template ID:', window.EMAIL_SETTINGS.templateId);
+                console.log('- Public Key:', window.EMAIL_SETTINGS.publicKey ? 'Set' : 'Missing');
+            }
+            
             if (window.EMAIL_SETTINGS && window.EMAIL_SETTINGS.publicKey && window.emailjs) {
-                try { emailjs.init(EMAIL_SETTINGS.publicKey); } catch (e) { console.warn('EmailJS init failed', e); }
+                try { 
+                    emailjs.init(window.EMAIL_SETTINGS.publicKey);
+                    console.log('✅ EmailJS initialized successfully');
+                } catch (e) { 
+                    console.error('❌ EmailJS init failed:', e);
+                }
+            } else {
+                console.warn('⚠️ EmailJS not initialized - missing config or library');
             }
         });
     </script>
