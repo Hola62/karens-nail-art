@@ -313,14 +313,17 @@ body {
 
 .gallery-container {
     display: flex;
-    justify-content: center;
-    gap: 40px;
+    justify-content: space-between;
+    gap: 60px;
     flex-wrap: wrap;
-    margin: 30px 0;
+    margin: 30px auto;
+    max-width: 900px;
+    padding: 0 20px;
 }
 
 .gallery-section .gallery-item {
-    width: 40%;
+    width: 35%;
+    max-width: 300px;
 }
 
 .gallery-item {
