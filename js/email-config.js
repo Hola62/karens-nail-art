@@ -8,7 +8,7 @@ window.EMAIL_SETTINGS = {
   // e.g., 'template_yyyyyy'
   templateId: 'REPLACE_WITH_YOUR_TEMPLATE_ID',
   // e.g., 'a1b2C3D4E5F6G7H8I'
-  publicKey: 'REPLACE_WITH_YOUR_PUBLIC_KEY',
+  publicKey: 'GiDmg3fRq3ZWzWGAu',
   // Optional: shown as sender in the email template if you set it up
   fromEmail: 'info@karensnailart.com',
   fromName: "Karen's Nail Art"
