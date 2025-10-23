@@ -599,7 +599,9 @@ async function sendReplyEmail() {
     const subject = document.getElementById('replySubject')?.value || '';
     const message = document.getElementById('replyMessage')?.value || '';
 
-    if (!toEmail) return alert('Recipient email is missing');
+    console.log('Sending email to:', toEmail); // Debug log
+
+    if (!toEmail || !toEmail.trim()) return alert('Recipient email is missing from the form');
     if (!subject.trim()) return alert('Please enter a subject');
     if (!message.trim()) return alert('Please enter a message');
     if (!window.EMAIL_SETTINGS) return alert('Email settings not configured');
@@ -613,15 +615,26 @@ async function sendReplyEmail() {
     const originalText = sendBtn ? sendBtn.textContent : '';
     if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending…'; }
 
-    // Variables must match your EmailJS template fields
+    // EmailJS template variables - trying multiple common field names
     const templateParams = {
+        // Common recipient field names (EmailJS will use the one that matches your template)
         to_email: toEmail,
+        user_email: toEmail,
+        recipient_email: toEmail,
+        email: toEmail,
+        to_name: toEmail.split('@')[0], // extract name from email
+
+        // Subject and message
         subject: subject,
         message: message,
+
+        // Sender info
         from_email: fromEmail,
         from_name: fromName,
-        reply_to: fromEmail // improves reply-to behavior across providers
+        reply_to: fromEmail
     };
+
+    console.log('Template params:', templateParams); // Debug log
 
     try {
         const res = await emailjs.send(serviceId, templateId, templateParams);
