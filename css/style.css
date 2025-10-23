@@ -84,15 +84,16 @@ body {
 .hero {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     min-height: 85vh;
-    background: linear-gradient(90deg, #3e1f0e 50%, #f9f5f1 50%);
+    background: #3e1f0e;
     overflow: hidden;
     padding: 20px 0;
 }
 
 .hero-left {
-    width: 48%;
+    width: 100%;
+    max-width: 1000px;
     padding: 40px 50px;
     display: flex;
     flex-direction: column;
@@ -135,13 +136,30 @@ body {
     background: #fff;
 }
 
+/* Buttons row in hero */
+.btn-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+/* Secondary button (outlined) */
+.btn.btn-secondary {
+    background: transparent;
+    color: #f0b27a;
+    border: 2px solid #f0b27a;
+}
+
+.btn.btn-secondary:hover {
+    background: #fff;
+    color: #3e1f0e;
+}
+
 /* ---------- HERO IMAGE ---------- */
 .hero-right {
-    width: 48%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    display: none;
 }
 
 .hero-right img {
