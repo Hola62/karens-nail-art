@@ -559,10 +559,71 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Handle inquiry reply
+// ====== EMAIL REPLY (via EmailJS) ======
+// Open the reply modal and prefill recipient
 function replyToInquiry(inquiryId) {
-    // In a real application, this would open a modal or redirect to a reply page
-    alert('Reply functionality will be implemented with backend integration.');
+    try {
+        const data = localStorage.getItem('karensNailArtAnalytics');
+        if (!data) return alert('No inquiries data found');
+        const analytics = JSON.parse(data);
+        const inquiry = (analytics.inquiries || []).find(i => i.id == inquiryId);
+        if (!inquiry) return alert('Inquiry not found');
+
+        const modal = document.getElementById('replyModal');
+        if (!modal) return alert('Reply modal not available');
+        document.getElementById('replyToEmail').value = inquiry.email || '';
+        document.getElementById('replySubject').value = `Re: Your inquiry to Karen's Nail Art`;
+        const greeting = inquiry.name ? `Hi ${inquiry.name},\n\n` : 'Hi there,\n\n';
+        document.getElementById('replyMessage').value = `${greeting}Thanks for reaching out.\n\n` +
+            `Regarding your message: \n"${inquiry.message}"\n\n` +
+            `— Karen's Nail Art`;
+        modal.style.display = 'block';
+        // Store current inquiry id on modal for sending
+        modal.setAttribute('data-inquiry-id', inquiryId);
+    } catch (e) {
+        console.error(e);
+        alert('Unable to open reply dialog.');
+    }
+}
+
+function closeReplyModal() {
+    const modal = document.getElementById('replyModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.removeAttribute('data-inquiry-id');
+    }
+}
+
+async function sendReplyEmail() {
+    const toEmail = document.getElementById('replyToEmail')?.value || '';
+    const subject = document.getElementById('replySubject')?.value || '';
+    const message = document.getElementById('replyMessage')?.value || '';
+
+    if (!toEmail) return alert('Recipient email is missing');
+    if (!window.EMAIL_SETTINGS) return alert('Email settings not configured');
+    if (!window.emailjs) return alert('EmailJS library not loaded');
+
+    const { serviceId, templateId, fromEmail, fromName } = window.EMAIL_SETTINGS;
+    if (!serviceId || !templateId) return alert('EmailJS IDs are not set');
+
+    // Variables must match your EmailJS template fields
+    const templateParams = {
+        to_email: toEmail,
+        subject: subject,
+        message: message,
+        from_email: fromEmail,
+        from_name: fromName,
+    };
+
+    try {
+        const res = await emailjs.send(serviceId, templateId, templateParams);
+        console.log('EmailJS response:', res);
+        alert('Reply sent successfully!');
+        closeReplyModal();
+    } catch (err) {
+        console.error('EmailJS send error:', err);
+        alert('Failed to send reply. Please check your EmailJS configuration and try again.');
+    }
 }
 
 // Handle inquiry deletion

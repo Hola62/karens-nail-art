@@ -334,9 +334,44 @@
 
     </div>
 
+    <!-- EmailJS SDK for sending emails from the browser -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <!-- Site email configuration (fill in your EmailJS IDs) -->
+    <script src="../js/email-config.js"></script>
     <script src="../js/api-handler.js"></script>
     <script src="../js/analytics.js"></script>
+    <script>
+        // Initialize EmailJS if config is present
+        document.addEventListener('DOMContentLoaded', function(){
+            if (window.EMAIL_SETTINGS && window.EMAIL_SETTINGS.publicKey && window.emailjs) {
+                try { emailjs.init(EMAIL_SETTINGS.publicKey); } catch (e) { console.warn('EmailJS init failed', e); }
+            }
+        });
+    </script>
     <script src="script/admin.js"></script>
+
+    <!-- Reply Modal -->
+    <div id="replyModal" class="modal">
+        <div class="modal-content">
+            <h3>Reply to Inquiry</h3>
+            <div class="form-row">
+                <label for="replyToEmail">To</label>
+                <input id="replyToEmail" type="email" readonly placeholder="recipient@example.com" />
+            </div>
+            <div class="form-row">
+                <label for="replySubject">Subject</label>
+                <input id="replySubject" type="text" placeholder="Subject" />
+            </div>
+            <div class="form-row">
+                <label for="replyMessage">Message</label>
+                <textarea id="replyMessage" rows="6" placeholder="Write your reply..."></textarea>
+            </div>
+            <div class="actions">
+                <button onclick="closeReplyModal()" class="btn btn-cancel">Cancel</button>
+                <button onclick="sendReplyEmail()" class="btn">Send Reply</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
