@@ -5,6 +5,11 @@
 
 /* Tablets and below (768px) */
 @media screen and (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
     /* Header & Navigation */
     header {
         padding: 15px 5%;
@@ -23,9 +28,9 @@
     /* Hero Section */
     .hero {
         padding: 60px 20px 40px;
-        min-height: 50vh;
+        min-height: auto;
         flex-direction: column;
-        background: #3e1f0e;
+        background: #3e1f0e !important;
     }
 
     .hero-left,
@@ -46,9 +51,15 @@
         font-size: 2.2rem;
     }
 
+    .hero-right {
+        padding: 20px;
+        width: 100%;
+    }
+
     .hero-right img {
         max-width: 100%;
-        margin: 20px auto 0;
+        width: 100%;
+        margin: 0 auto;
     }
 
     /* Services Grid */
@@ -194,7 +205,16 @@
     /* Hero Section */
     .hero {
         padding: 50px 15px 30px;
-        min-height: 50vh;
+        min-height: 60vh;
+        background: #3e1f0e !important;
+    }
+
+    .hero-left {
+        padding: 15px;
+    }
+
+    .hero-right {
+        padding: 15px;
     }
 
     .hero h1 {
