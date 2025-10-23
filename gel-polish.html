@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gel Polish - Karen's Nail Art</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body class="service-detail-page">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Karen's Nail Art</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin/login.html" class="admin-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="service-detail">
+        <div class="back-btn-container">
+            <a href="index.html" class="btn">← Back to Home</a>
+        </div>
+
+        <h1>Gel Polish</h1>
+        <p>Our gel polish gives your nails a long-lasting shine and vibrant finish. Perfect for any occasion!</p>
+
+        <div class="gallery-container">
+            <div class="gallery-image-wrapper">
+                <img src="assets/images/gel1.jpg" alt="Gel polish design 1">
+                <div class="image-actions">
+                    <button class="love-btn" onclick="toggleLove(this)">
+                        <span class="heart">♡</span>
+                    </button>
+                    <button class="share-btn" onclick="shareImage(this)">
+                        <span>⤴</span>
+                    </button>
+                </div>
+            </div>
+            <div class="gallery-image-wrapper">
+                <img src="assets/images/gel2.jpg" alt="Gel polish design 2">
+                <div class="image-actions">
+                    <button class="love-btn" onclick="toggleLove(this)">
+                        <span class="heart">♡</span>
+                    </button>
+                    <button class="share-btn" onclick="shareImage(this)">
+                        <span>⤴</span>
+                    </button>
+                </div>
+            </div>
+            <div class="gallery-image-wrapper">
+                <img src="assets/images/gel3.jpg" alt="Gel polish design 3">
+                <div class="image-actions">
+                    <button class="love-btn" onclick="toggleLove(this)">
+                        <span class="heart">♡</span>
+                    </button>
+                    <button class="share-btn" onclick="shareImage(this)">
+                        <span>⤴</span>
+                    </button>
+                </div>
+            </div>
+            <div class="gallery-image-wrapper">
+                <img src="assets/images/gel4.jpg" alt="Gel polish design 4">
+                <div class="image-actions">
+                    <button class="love-btn" onclick="toggleLove(this)">
+                        <span class="heart">♡</span>
+                    </button>
+                    <button class="share-btn" onclick="shareImage(this)">
+                        <span>⤴</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <p class="nail-quote">"Shine bright with every touch — our gel polish keeps your nails glowing."</p>
+
+        <div class="service-info">
+            <h2>Why Choose Our Gel Polish?</h2>
+            <ul>
+                <li>Long-lasting shine for up to 2-3 weeks</li>
+                <li>Vibrant colors that don't chip easily</li>
+                <li>Professional application for perfect results</li>
+                <li>Gentle on natural nails</li>
+            </ul>
+        </div>
+
+        <div class="other-services">
+            <h2>Explore Other Services</h2>
+            <div class="other-services-container">
+                <a href="acrylic-nails.html" class="other-service-card">
+                    <img src="assets/images/acrylic1.jpg" alt="Acrylic Nails">
+                    <h3>Acrylic Nails</h3>
+                </a>
+                <a href="nail-art.html" class="other-service-card">
+                    <img src="assets/images/nailart1.jpg" alt="Nail Art">
+                    <h3>Nail Art</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function toggleLove(button) {
+            button.classList.toggle('loved');
+            const heart = button.querySelector('.heart');
+            if (button.classList.contains('loved')) {
+                heart.textContent = '♥';
+            } else {
+                heart.textContent = '♡';
+            }
+        }
+
+        function shareImage(button) {
+            const wrapper = button.closest('.gallery-image-wrapper');
+            const img = wrapper.querySelector('img');
+            const imgSrc = img.src;
+            const imgAlt = img.alt;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: imgAlt,
+                    text: 'Check out this nail design from Karen\'s Nail Art!',
+                    url: window.location.href
+                }).catch((error) => console.log('Error sharing:', error));
+            } else {
+                // Fallback: copy link to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('Link copied to clipboard!');
+                }).catch(() => {
+                    alert('Unable to share. Please copy the link manually.');
+                });
+            }
+        }
+    </script>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Karen's Nail Art</h3>
+                <p>Your nails are more than beauty — they're confidence at your fingertips.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Phone: +234 XXX XXX XXXX</p>
+                <p>Email: info@karensnailart.com</p>
+                <p>Location: Abuja, Nigeria</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://tiktok.com/@eniola" target="_blank" rel="noopener" class="social-icon">
+                        <img src="assets/icons/tiktok.png" alt="TikTok">
+                    </a>
+                    <a href="https://instagram.com/karen_wealth" target="_blank" rel="noopener" class="social-icon">
+                        <img src="assets/icons/instagram.png" alt="Instagram">
+                    </a>
+                    <a href="https://wa.me/234XXXXXXXXXX" target="_blank" rel="noopener" class="social-icon">
+                        <img src="assets/icons/whatsapp.png" alt="WhatsApp">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Karen's Nail Art. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/analytics.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

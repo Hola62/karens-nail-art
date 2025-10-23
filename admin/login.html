@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Karen's Nail Art</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #3e1f0e 0%, #2d1508 100%);
+            padding: 20px;
+        }
+
+        .login-box {
+            background: #fff;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-box h1 {
+            color: #3e1f0e;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .login-box .subtitle {
+            text-align: center;
+            color: #b8774b;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #3e1f0e;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #f0b27a;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #f0b27a;
+            color: #3e1f0e;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #3e1f0e;
+            color: #fff;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #b8774b;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Admin Login</h1>
+            <p class="subtitle">Karen's Nail Art Management</p>
+
+            <div class="error-message" id="errorMessage">
+                Invalid username or password
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+
+            <div style="margin-top:12px; text-align:center;">
+                <button id="showStoredUsersBtn" style="background:#fff; color:#3e1f0e; padding:8px 12px; border-radius:6px; border:1px solid #ddd; cursor:pointer;">Show stored users</button>
+                <pre id="storedUsersDisplay" style="text-align:left; margin-top:10px; max-height:160px; overflow:auto; background:#f7f7f7; padding:10px; border-radius:6px; display:none;"></pre>
+            </div>
+
+            <div class="back-link">
+                <a href="../index.html">← Back to Website</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show available usernames in console on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+            console.log('=== AVAILABLE LOGINS ===');
+            console.log('Karen (Super Admin) - karen / admin123');
+            if (teamMembers.length > 0) {
+                teamMembers.forEach(member => {
+                    console.log(`${member.full_name} (${member.role}) - ${member.username} / ${member.password}`);
+                });
+            } else {
+                console.log('No team members found. Only Karen can login.');
+            }
+            console.log('========================');
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            console.log('=== LOGIN ATTEMPT ===');
+            console.log('Username entered:', username);
+            console.log('Password entered:', password);
+
+            let loginSuccess = false;
+            let userName = '';
+            let userRole = '';
+
+            // Check default admin credentials
+            if (username === 'karen' && password === 'admin123') {
+                loginSuccess = true;
+                userName = 'Karen';
+                userRole = 'Super Admin';
+                console.log('✅ Karen login successful');
+            } else {
+                // Check team members in localStorage
+                try {
+                    const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+                    console.log('Team members in storage:', teamMembers.length);
+                    console.log('All usernames:', teamMembers.map(m => m.username).join(', '));
+                    
+                    // Do a case-insensitive username match so users don't get tripped up by capitalization
+                    const member = teamMembers.find(m => m.username && m.username.toLowerCase() === username.toLowerCase());
+
+                    if (member) {
+                        console.log('✅ Username found!');
+                        console.log('Member details:', member);
+                        console.log('Password comparison - Entered:', password, '| Stored:', member.password);
+
+                        if (member.password === password) {
+                            // Login successful
+                            loginSuccess = true;
+                            userName = member.full_name;
+                            userRole = member.role.charAt(0).toUpperCase() + member.role.slice(1);
+                            // Save the exact stored username (preserve case) for later display
+                            sessionStorage.setItem('adminUsername', member.username);
+                            console.log('✅ Password match! Login successful');
+                        } else {
+                            console.log('❌ Password mismatch');
+                        }
+                    } else {
+                        console.log('❌ Username not found');
+                        console.log('Available usernames:', teamMembers.map(m => m.username));
+                    }
+                } catch (error) {
+                    console.error('❌ Error checking team members:', error);
+                }
+            }
+
+            console.log('Final login result:', loginSuccess ? 'SUCCESS' : 'FAILED');
+            console.log('===================');
+
+            if (loginSuccess) {
+                // Store login session
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                sessionStorage.setItem('adminName', userName);
+                sessionStorage.setItem('adminRole', userRole);
+
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            } else {
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
+
+            // Show stored users when button clicked
+            const showBtn = document.getElementById('showStoredUsersBtn');
+            const displayPre = document.getElementById('storedUsersDisplay');
+            if (showBtn) {
+                showBtn.addEventListener('click', function() {
+                    const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+                    if (teamMembers.length === 0) {
+                        displayPre.textContent = 'No team members found in localStorage.';
+                    } else {
+                        displayPre.style.display = 'block';
+                        displayPre.textContent = JSON.stringify(teamMembers, null, 2);
+                    }
+                    console.log('Stored team members displayed in-page.');
+                });
+            }
+    </script>
+</body>
+
+</html>

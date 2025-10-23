@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Karen's Nail Art</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Karen's Nail Art</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+                <li><a href="admin/login.html" class="admin-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="contact-section">
+        <h1>Get In Touch</h1>
+        <p>Ready to glam up your nails? Reach out to us!</p>
+
+        <div class="contact-content">
+            <div class="contact-info">
+                <h2>Contact Information</h2>
+                <div class="info-item">
+                    <h3>Phone</h3>
+                    <p>+234 XXX XXX XXXX</p>
+                </div>
+                <div class="info-item">
+                    <h3>Email</h3>
+                    <p>info@karensnailart.com</p>
+                </div>
+                <div class="info-item">
+                    <h3>Location</h3>
+                    <p>Abuja, Nigeria</p>
+                </div>
+                <div class="info-item">
+                    <h3>Hours</h3>
+                    <p>Mon - Sat: 9:00 AM - 7:00 PM</p>
+                    <p>Sunday: Closed</p>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h2>Send Us a Message</h2>
+                <form id="contactForm" onsubmit="return handleContactSubmit(event)">
+                    <input type="text" id="contactName" placeholder="Your Name" required>
+                    <input type="email" id="contactEmail" placeholder="Your Email" required>
+                    <input type="tel" id="contactPhone" placeholder="Your Phone">
+                    <textarea id="contactMessage" placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+                <p id="contactFormMessage"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Karen's Nail Art</h3>
+                <p>Your nails are more than beauty — they're confidence at your fingertips.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Phone: +234 XXX XXX XXXX</p>
+                <p>Email: info@karensnailart.com</p>
+                <p>Location: Abuja, Nigeria</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://tiktok.com/@eniola" target="_blank" rel="noopener" class="social-icon">
+                        <img src="assets/icons/tiktok.png" alt="TikTok">
+                    </a>
+                    <a href="https://instagram.com/karen_wealth" target="_blank" rel="noopener" class="social-icon">
+                        <img src="assets/icons/instagram.png" alt="Instagram">
+                    </a>
+                    <a href="https://wa.me/234XXXXXXXXXX" target="_blank" rel="noopener" class="social-icon">
+                        <img src="assets/icons/whatsapp.png" alt="WhatsApp">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Karen's Nail Art. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/analytics.js"></script>
+    <script src="js/api-handler.js"></script>
+    <script>
+        async function handleContactSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const phone = document.getElementById('contactPhone').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            // Track the inquiry using API handler
+            const result = await trackInquiry({
+                name: name,
+                email: email,
+                phone: phone,
+                message: message
+            });
+            
+            // Show success message
+            const messageEl = document.getElementById('contactFormMessage');
+            messageEl.textContent = result.message || 'Thank you! Your message has been received. We will get back to you soon.';
+            messageEl.style.display = 'block';
+            
+            // Reset form
+            document.getElementById('contactForm').reset();
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 5000);
+            
+            return false;
+        }
+    </script>
+</body>
+
+</html>

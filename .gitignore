@@ -1,0 +1,47 @@
+# Node modules (if you add npm later)
+node_modules/
+npm-debug.log*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Environment files (if you add any)
+.env
+.env.local
+
+# PHP specific
+vendor/
+composer.lock
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# Uploaded files (don't commit user uploads)
+admin/uploads/*
+assets/uploads/*
+!admin/uploads/.gitkeep
+!assets/uploads/.gitkeep
+
+# Database backups
+*.sql
+*.sqlite
+*.db
+
+# Test files
+test-storage.html
+STATUS.txt

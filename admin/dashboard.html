@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Karen's Nail Art</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/admin-style.css">
+</head>
+
+<body class="admin-body">
+
+    <!-- Admin Sidebar -->
+    <div class="admin-sidebar">
+        <div class="admin-logo">
+            <h2>Karen's Nail Art</h2>
+            <p>Admin Panel</p>
+        </div>
+
+        <div class="admin-profile">
+            <div class="profile-pic-container">
+                <img src="uploads/karen-profile.jpg" alt="Karen" id="adminProfilePic">
+                <button class="edit-profile-pic" onclick="changeProfilePic()">Edit</button>
+            </div>
+            <h3 id="adminName">Karen</h3>
+            <p id="adminRole">Super Admin</p>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
+                Dashboard
+            </a>
+            <a href="#images" class="nav-item" onclick="showSection('images')">
+                Manage Images
+            </a>
+            <a href="#services" class="nav-item" onclick="showSection('services')">
+                Manage Services
+            </a>
+            <a href="#inquiries" class="nav-item" onclick="showSection('inquiries')">
+                Customer Inquiries
+            </a>
+            <a href="#team" class="nav-item" onclick="showSection('team')">
+                Team Management
+            </a>
+            <a href="#settings" class="nav-item" onclick="showSection('settings')">
+                Settings
+            </a>
+            <a href="#" class="nav-item logout" onclick="logout()">
+                Logout
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="admin-content">
+        <div class="admin-header">
+            <h1>Welcome Back, <span id="welcomeName">Karen</span>!</h1>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="window.open('../index.html', '_blank')">View Website</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <section id="section-dashboard" class="admin-section active">
+            <h2>Dashboard Overview</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Total Visits</h3>
+                        <p class="stat-number">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Total Likes</h3>
+                        <p class="stat-number">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Total Shares</h3>
+                        <p class="stat-number">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>New Inquiries</h3>
+                        <p class="stat-number">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Recent Activity</h3>
+                    <ul class="activity-list" id="recentActivityList">
+                        <li>No recent activity yet</li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="showSection('images')">Upload Image</button>
+                        <button class="action-btn" onclick="showSection('services')">Edit Service</button>
+                        <button class="action-btn" onclick="showSection('team')">Add Team Member</button>
+                        <button class="action-btn" onclick="showSection('settings')">Update Info</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Images Section -->
+        <section id="section-images" class="admin-section">
+            <h2>Manage Images</h2>
+            
+            <div class="upload-section">
+                <h3>Upload New Images</h3>
+                <div class="upload-box">
+                    <input type="file" id="imageUpload" accept="image/*" multiple>
+                    <label for="imageUpload" class="upload-label">
+                        <p>Click to upload or drag and drop</p>
+                        <small>Supports: JPG, PNG (Max 5MB)</small>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="gallerySelect">Select Gallery:</label>
+                    <select id="gallerySelect">
+                        <option value="gel-polish">Gel Polish</option>
+                        <option value="acrylic-nails">Acrylic Nails</option>
+                        <option value="nail-art">Nail Art</option>
+                        <option value="home">Home Gallery</option>
+                    </select>
+                </div>
+                <button class="btn-primary" onclick="uploadImages()">Upload Images</button>
+            </div>
+
+            <div class="gallery-management">
+                <h3>Current Images</h3>
+                <div class="image-grid" id="imageGrid">
+                    <!-- Images will be loaded here dynamically -->
+                    <div class="image-item">
+                        <img src="../assets/images/gel1.jpg" alt="Gel Polish">
+                        <div class="image-actions">
+                            <button class="btn-delete" onclick="deleteImage('gel1.jpg')">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="section-services" class="admin-section">
+            <h2>Manage Services</h2>
+            
+            <div class="services-list">
+                <div class="service-item">
+                    <h3>Gel Polish</h3>
+                    <p>Status: Active | Images: 4</p>
+                    <div class="service-actions">
+                        <button class="btn-edit">Edit Content</button>
+                        <button class="btn-edit">Manage Images</button>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <h3>Acrylic Nails</h3>
+                    <p>Status: Active | Images: 5</p>
+                    <div class="service-actions">
+                        <button class="btn-edit">Edit Content</button>
+                        <button class="btn-edit">Manage Images</button>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <h3>Nail Art</h3>
+                    <p>Status: Active | Images: 5</p>
+                    <div class="service-actions">
+                        <button class="btn-edit">Edit Content</button>
+                        <button class="btn-edit">Manage Images</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary add-new-service-btn">+ Add New Service</button>
+        </section>
+
+        <!-- Inquiries Section -->
+        <section id="section-inquiries" class="admin-section">
+            <h2>Customer Inquiries</h2>
+            
+            <div class="inquiries-list">
+                <p class="empty-state">No inquiries yet. Customer messages will appear here.</p>
+            </div>
+        </section>
+
+        <!-- Team Management Section -->
+        <section id="section-team" class="admin-section">
+            <h2>Team Management</h2>
+            
+            <div class="team-list">
+                <div class="team-member">
+                    <div class="member-info">
+                        <h3>Karen</h3>
+                        <p>Super Admin</p>
+                        <span class="member-status">Active</span>
+                    </div>
+                    <div class="member-actions">
+                        <button class="btn-edit" disabled>You</button>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Team Members List</h3>
+            <div id="teamList" class="team-members-list">
+                <p>Loading team members...</p>
+            </div>
+
+            <div class="add-team-form">
+                <h3>Add New Team Member</h3>
+                <div class="info-box">
+                    <strong>Note:</strong> In localStorage mode, credentials are stored in the browser. For production use, set up the backend for secure password hashing.
+                </div>
+                <div class="form-group">
+                    <label for="teamName">Name:</label>
+                    <input type="text" id="teamName" placeholder="Enter full name">
+                </div>
+                <div class="form-group">
+                    <label for="teamUsername">Username:</label>
+                    <input type="text" id="teamUsername" placeholder="Enter username (for login)">
+                    <small class="form-hint">This will be used to login</small>
+                </div>
+                <div class="form-group">
+                    <label for="teamEmail">Email:</label>
+                    <input type="email" id="teamEmail" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="teamRole">Role:</label>
+                    <select id="teamRole">
+                        <option value="admin">Admin</option>
+                        <option value="editor">Editor</option>
+                    </select>
+                </div>
+                <div class="info-box password-info">
+                    <strong>Default Password:</strong> All team members will use the same password as the super admin (admin123). They can login with their username and this password.
+                </div>
+                <button class="btn-primary" onclick="addTeamMember()">Add Team Member</button>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="section-settings" class="admin-section">
+            <h2>Settings</h2>
+            
+            <div class="settings-form">
+                <h3>Contact Information</h3>
+                <div class="form-group">
+                    <label for="settingsPhone">Phone Number:</label>
+                    <input type="tel" id="settingsPhone" value="+234 XXX XXX XXXX">
+                </div>
+                <div class="form-group">
+                    <label for="settingsEmail">Email:</label>
+                    <input type="email" id="settingsEmail" value="info@karensnailart.com">
+                </div>
+                <div class="form-group">
+                    <label for="settingsLocation">Location:</label>
+                    <input type="text" id="settingsLocation" value="Abuja, Nigeria">
+                </div>
+
+                <h3>Social Media Links</h3>
+                <div class="form-group">
+                    <label for="settingsTikTok">TikTok Username:</label>
+                    <input type="text" id="settingsTikTok" value="@eniola">
+                </div>
+                <div class="form-group">
+                    <label for="settingsInstagram">Instagram Username:</label>
+                    <input type="text" id="settingsInstagram" value="@karen_wealth">
+                </div>
+                <div class="form-group">
+                    <label for="settingsWhatsApp">WhatsApp Number:</label>
+                    <input type="tel" id="settingsWhatsApp" value="+234XXXXXXXXXX">
+                </div>
+
+                <h3>Change Password</h3>
+                <div class="form-group">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword">
+                </div>
+
+                <button class="btn-primary" onclick="saveSettings()">Save All Changes</button>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="../js/api-handler.js"></script>
+    <script src="../js/analytics.js"></script>
+    <script src="script/admin.js"></script>
+</body>
+
+</html>
