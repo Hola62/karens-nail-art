@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Browse our stunning nail art gallery. See the latest designs and nail transformations from Karen's Nail Art." />
+    <title>Gallery - Karen's Nail Art</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Karen's Nail Art</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin/login.html" class="admin-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- GALLERY HERO -->
+    <section class="page-hero">
+        <div class="hero-content">
+            <h1>Our <span>Gallery</span></h1>
+            <p>Discover our latest nail designs and transformations</p>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section class="gallery-page">
+        <div class="container">
+            <div class="gallery-filters-public">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="gel-polish">Gel Polish</button>
+                <button class="filter-btn" data-filter="acrylic-nails">Acrylic Nails</button>
+                <button class="filter-btn" data-filter="nail-art">Nail Art</button>
+                <button class="filter-btn" data-filter="home">Featured</button>
+            </div>
+
+            <div class="gallery-count">
+                <p><span id="galleryCount">0</span> amazing designs</p>
+            </div>
+
+            <div class="public-gallery-grid" id="publicGalleryGrid">
+                <!-- Default images shown if no admin uploads -->
+                <div class="gallery-item" data-category="gel-polish">
+                    <div class="gallery-image-wrapper">
+                        <img src="assets/images/gel1.jpg" alt="Gel Polish Design">
+                        <div class="image-actions">
+                            <button class="love-btn" onclick="toggleLove(this)">
+                                <span class="heart">♡</span>
+                            </button>
+                            <button class="share-btn" onclick="shareImage(this)">
+                                <span>⤴</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p>Gel Polish</p>
+                </div>
+
+                <div class="gallery-item" data-category="gel-polish">
+                    <div class="gallery-image-wrapper">
+                        <img src="assets/images/gel2.jpg" alt="Gel Polish Design">
+                        <div class="image-actions">
+                            <button class="love-btn" onclick="toggleLove(this)">
+                                <span class="heart">♡</span>
+                            </button>
+                            <button class="share-btn" onclick="shareImage(this)">
+                                <span>⤴</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p>Gel Polish</p>
+                </div>
+
+                <div class="gallery-item" data-category="acrylic-nails">
+                    <div class="gallery-image-wrapper">
+                        <img src="assets/images/acrylic1.jpg" alt="Acrylic Nails">
+                        <div class="image-actions">
+                            <button class="love-btn" onclick="toggleLove(this)">
+                                <span class="heart">♡</span>
+                            </button>
+                            <button class="share-btn" onclick="shareImage(this)">
+                                <span>⤴</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p>Acrylic Nails</p>
+                </div>
+
+                <div class="gallery-item" data-category="acrylic-nails">
+                    <div class="gallery-image-wrapper">
+                        <img src="assets/images/acrylic2.jpg" alt="Acrylic Nails">
+                        <div class="image-actions">
+                            <button class="love-btn" onclick="toggleLove(this)">
+                                <span class="heart">♡</span>
+                            </button>
+                            <button class="share-btn" onclick="shareImage(this)">
+                                <span>⤴</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p>Acrylic Nails</p>
+                </div>
+
+                <div class="gallery-item" data-category="nail-art">
+                    <div class="gallery-image-wrapper">
+                        <img src="assets/images/nailart1.jpg" alt="Nail Art">
+                        <div class="image-actions">
+                            <button class="love-btn" onclick="toggleLove(this)">
+                                <span class="heart">♡</span>
+                            </button>
+                            <button class="share-btn" onclick="shareImage(this)">
+                                <span>⤴</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p>Nail Art</p>
+                </div>
+
+                <div class="gallery-item" data-category="nail-art">
+                    <div class="gallery-image-wrapper">
+                        <img src="assets/images/nailart2.jpg" alt="Nail Art">
+                        <div class="image-actions">
+                            <button class="love-btn" onclick="toggleLove(this)">
+                                <span class="heart">♡</span>
+                            </button>
+                            <button class="share-btn" onclick="shareImage(this)">
+                                <span>⤴</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p>Nail Art</p>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h2>Love what you see?</h2>
+                <p>Book an appointment and get your nails done by our expert team!</p>
+                <a href="contact.html" class="btn">Book Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Karen's Nail Art</h3>
+                <p>Confidence at your fingertips</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#" target="_blank" aria-label="TikTok"><img src="assets/icons/tiktok.png" alt="TikTok"></a>
+                    <a href="#" target="_blank" aria-label="Instagram"><img src="assets/icons/instagram.png" alt="Instagram"></a>
+                    <a href="#" target="_blank" aria-label="WhatsApp"><img src="assets/icons/whatsapp.png" alt="WhatsApp"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Karen's Nail Art. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/analytics.js"></script>
+    <script src="js/api-handler.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/gallery.js"></script>
+    <script>
+        // Load admin uploads into the public gallery
+        function loadPublicGallery() {
+            const galleryGrid = document.getElementById('publicGalleryGrid');
+            if (!galleryGrid) return;
+
+            const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+            const allUsers = ['karen', ...teamMembers.map(m => m.username)];
+            
+            const allUploads = [];
+            
+            // Collect all uploads from all admins
+            allUsers.forEach(username => {
+                const uploadsKey = `userUploads_${username}`;
+                const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+                allUploads.push(...userUploads);
+            });
+
+            if (allUploads.length > 0) {
+                // Sort by upload date (newest first)
+                allUploads.sort((a, b) => new Date(b.uploaded_at) - new Date(a.uploaded_at));
+
+                // Add admin uploads to the gallery
+                allUploads.forEach(upload => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    galleryItem.setAttribute('data-category', upload.gallery || 'home');
+                    
+                    galleryItem.innerHTML = `
+                        <div class="gallery-image-wrapper">
+                            <img src="${upload.data}" alt="${upload.name}">
+                            <div class="image-actions">
+                                <button class="love-btn" onclick="toggleLove(this)">
+                                    <span class="heart">♡</span>
+                                </button>
+                                <button class="share-btn" onclick="shareImage(this)">
+                                    <span>⤴</span>
+                                </button>
+                            </div>
+                        </div>
+                        <p>${upload.name}</p>
+                    `;
+                    
+                    galleryGrid.appendChild(galleryItem);
+                });
+            }
+
+            // Update count
+            const totalImages = document.querySelectorAll('.gallery-item').length;
+            document.getElementById('galleryCount').textContent = totalImages;
+        }
+
+        // Filter gallery by category
+        function filterGallery(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Add filter button listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPublicGallery();
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterGallery(this.dataset.filter);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
