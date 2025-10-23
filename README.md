@@ -1,4 +1,4 @@
-# Karen's Nails Art 💅
+# Karen's Nails Art 
 
 A professional nail salon website with admin dashboard and hybrid API system.
 
@@ -6,10 +6,7 @@ A professional nail salon website with admin dashboard and hybrid API system.
 
 **👉 [View Live Site](https://hola62.github.io/karens-nail-art/)**
 
-Try the admin panel: [Admin Login](https://hola62.github.io/karens-nail-art/admin/login.html)
 
-- Username: `karen`
-- Password: `admin123`
 
 ## 🌟 Features
 
@@ -58,10 +55,7 @@ This website features a **unique hybrid system** that works in two modes:
 
 1. Open `index.html` in any browser
 2. Browse the site and test features
-3. Login to admin: `admin/login.html`
-   - Username: `karen`
-   - Password: `admin123`
-4. Everything works with browser storage!
+3. Everything works with browser storage!
 
 ### Option 2: Add Backend (Advanced)
 
@@ -109,12 +103,7 @@ karens-nails-art/
     └── icons/           # Icons
 ```
 
-## 🔑 Admin Credentials
 
-- **URL**: `admin/login.html`
-- **Username**: `karen`
-- **Password**: `admin123`
-- **Role**: Super Admin
 
 ## 📊 Features by Mode
 
