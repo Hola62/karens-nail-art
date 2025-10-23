@@ -28,7 +28,7 @@
     /* Hero Section */
     .hero {
         padding: 60px 20px 40px;
-        min-height: auto;
+        min-height: 0;
         flex-direction: column;
         background: #3e1f0e !important;
     }
@@ -157,6 +157,7 @@
 
 /* Mobile phones (480px and below) */
 @media screen and (max-width: 480px) {
+
     /* Ensure no white space on mobile */
     body {
         min-height: 100vh;
@@ -287,6 +288,7 @@
    ======================================== */
 
 @media screen and (max-width: 768px) {
+
     /* Admin Login */
     .login-box {
         padding: 30px 25px;
@@ -371,6 +373,7 @@
 }
 
 @media screen and (max-width: 480px) {
+
     /* Admin Login */
     .login-box {
         padding: 25px 20px;
@@ -431,6 +434,7 @@
    ======================================== */
 
 @media screen and (max-width: 768px) {
+
     /* Hamburger Menu (if you want to add later) */
     .mobile-menu-toggle {
         display: block;
@@ -470,6 +474,7 @@
    ======================================== */
 
 @media (hover: none) and (pointer: coarse) {
+
     /* Larger touch targets for mobile */
     a,
     button,
@@ -516,6 +521,7 @@
    ======================================== */
 
 @media print {
+
     header,
     footer,
     .admin-sidebar,

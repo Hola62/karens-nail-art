@@ -29,12 +29,12 @@ if (isMobile) {
 function toggleLove(button) {
     const img = button.closest('.gallery-image-wrapper').querySelector('img');
     const imageName = img.src.split('/').pop();
-    
+
     button.classList.toggle('loved');
 
     // Handle both span.heart and direct button content
     const heart = button.querySelector('.heart');
-    
+
     if (button.classList.contains('loved')) {
         if (heart) {
             heart.textContent = '♥';
@@ -102,11 +102,11 @@ function loadAdminUploadsToGallery() {
 
     // Get all admin uploads from localStorage
     const allUploads = [];
-    
+
     // Get uploads from all users (karen and team members)
     const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
     const allUsers = ['karen', ...teamMembers.map(m => m.username)];
-    
+
     allUsers.forEach(username => {
         const uploadsKey = `userUploads_${username}`;
         const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
@@ -117,7 +117,7 @@ function loadAdminUploadsToGallery() {
     if (allUploads.length > 0) {
         // Get the most recent uploads (limit to 6)
         const recentUploads = allUploads.slice(-6).reverse();
-        
+
         recentUploads.forEach(upload => {
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery-item';

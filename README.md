@@ -1,12 +1,10 @@
-# Karen's Nails Art 
+# Karen's Nails Art
 
 A professional nail salon website with admin dashboard and hybrid API system.
 
 ## 🔗 Live Demo
 
 **👉 [View Live Site](https://hola62.github.io/karens-nail-art/)**
-
-
 
 ## 🌟 Features
 
@@ -103,21 +101,19 @@ karens-nails-art/
     └── icons/           # Icons
 ```
 
-
-
 ## 📊 Features by Mode
 
-| Feature | LocalStorage | Backend |
-|---------|--------------|---------|
-| Page visits | ✅ | ✅ |
-| Like/Share buttons | ✅ | ✅ |
-| Contact form | ✅ | ✅ |
-| Admin login | ✅ | ✅ (more secure) |
-| Dashboard stats | ✅ | ✅ |
-| Profile picture | ✅ | ✅ |
-| Image uploads | ❌ | ✅ |
-| Team management | ❌ | ✅ |
-| Activity logs | ❌ | ✅ |
+| Feature            | LocalStorage | Backend          |
+| ------------------ | ------------ | ---------------- |
+| Page visits        | ✅           | ✅               |
+| Like/Share buttons | ✅           | ✅               |
+| Contact form       | ✅           | ✅               |
+| Admin login        | ✅           | ✅ (more secure) |
+| Dashboard stats    | ✅           | ✅               |
+| Profile picture    | ✅           | ✅               |
+| Image uploads      | ❌           | ✅               |
+| Team management    | ❌           | ✅               |
+| Activity logs      | ❌           | ✅               |
 
 ## 🛠️ Technologies
 
@@ -183,4 +179,3 @@ Built with ❤️ for Karen's Nails Art
 ---
 
 **Note**: This project uses a unique hybrid architecture that works perfectly without any backend setup, but can be upgraded to full backend functionality anytime!
-

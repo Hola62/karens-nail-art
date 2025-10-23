@@ -67,7 +67,7 @@
         <!-- Dashboard Section -->
         <section id="section-dashboard" class="admin-section active">
             <h2>Dashboard Overview</h2>
-            
+
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-info">
@@ -119,9 +119,10 @@
         <section id="section-gallery" class="admin-section">
             <h2>Gallery - All Uploaded Images</h2>
             <p class="subtitle">View and manage all images uploaded by you and your team</p>
-            
+
             <div class="gallery-filters">
-                <select id="galleryFilter" onchange="filterGalleryImages(this.value)">
+                <label for="galleryFilter" class="sr-only">Filter gallery images</label>
+                <select id="galleryFilter" onchange="filterGalleryImages(this.value)" aria-label="Filter gallery images">
                     <option value="all">All Images</option>
                     <option value="my-uploads">My Uploads Only</option>
                     <option value="gel-polish">Gel Polish</option>
@@ -148,7 +149,7 @@
         <!-- Images Section -->
         <section id="section-images" class="admin-section">
             <h2>Manage Images</h2>
-            
+
             <div class="upload-section">
                 <h3>Upload New Images</h3>
                 <div class="upload-box">
@@ -187,7 +188,7 @@
         <!-- Services Section -->
         <section id="section-services" class="admin-section">
             <h2>Manage Services</h2>
-            
+
             <div class="services-list">
                 <div class="service-item">
                     <h3>Gel Polish</h3>
@@ -221,7 +222,7 @@
         <!-- Inquiries Section -->
         <section id="section-inquiries" class="admin-section">
             <h2>Customer Inquiries</h2>
-            
+
             <div class="inquiries-list">
                 <p class="empty-state">No inquiries yet. Customer messages will appear here.</p>
             </div>
@@ -230,7 +231,7 @@
         <!-- Team Management Section -->
         <section id="section-team" class="admin-section">
             <h2>Team Management</h2>
-            
+
             <div class="team-list">
                 <div class="team-member">
                     <div class="member-info">
@@ -252,7 +253,8 @@
             <div class="add-team-form">
                 <h3>Add New Team Member</h3>
                 <div class="info-box">
-                    <strong>Note:</strong> In localStorage mode, credentials are stored in the browser. For production use, set up the backend for secure password hashing.
+                    <strong>Note:</strong> In localStorage mode, credentials are stored in the browser. For production
+                    use, set up the backend for secure password hashing.
                 </div>
                 <div class="form-group">
                     <label for="teamName">Name:</label>
@@ -275,7 +277,8 @@
                     </select>
                 </div>
                 <div class="info-box password-info">
-                    <strong>Default Password:</strong> All team members will use the same password as the super admin (admin123). They can login with their username and this password.
+                    <strong>Default Password:</strong> All team members will use the same password as the super admin
+                    (admin123). They can login with their username and this password.
                 </div>
                 <button class="btn-primary" onclick="addTeamMember()">Add Team Member</button>
             </div>
@@ -284,7 +287,7 @@
         <!-- Settings Section -->
         <section id="section-settings" class="admin-section">
             <h2>Settings</h2>
-            
+
             <div class="settings-form">
                 <h3>Contact Information</h3>
                 <div class="form-group">
@@ -342,7 +345,7 @@
     <script src="../js/analytics.js"></script>
     <script>
         // Initialize EmailJS if config is present
-        document.addEventListener('DOMContentLoaded', function(){
+        document.addEventListener('DOMContentLoaded', function () {
             if (window.EMAIL_SETTINGS && window.EMAIL_SETTINGS.publicKey && window.emailjs) {
                 try { emailjs.init(EMAIL_SETTINGS.publicKey); } catch (e) { console.warn('EmailJS init failed', e); }
             }

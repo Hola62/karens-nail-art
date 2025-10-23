@@ -117,12 +117,12 @@
     <script>
         async function handleContactSubmit(event) {
             event.preventDefault();
-            
+
             const name = document.getElementById('contactName').value;
             const email = document.getElementById('contactEmail').value;
             const phone = document.getElementById('contactPhone').value;
             const message = document.getElementById('contactMessage').value;
-            
+
             // Track the inquiry using API handler
             const result = await trackInquiry({
                 name: name,
@@ -130,20 +130,20 @@
                 phone: phone,
                 message: message
             });
-            
+
             // Show success message
             const messageEl = document.getElementById('contactFormMessage');
             messageEl.textContent = result.message || 'Thank you! Your message has been received. We will get back to you soon.';
             messageEl.style.display = 'block';
-            
+
             // Reset form
             document.getElementById('contactForm').reset();
-            
+
             // Hide message after 5 seconds
             setTimeout(() => {
                 messageEl.style.display = 'none';
             }, 5000);
-            
+
             return false;
         }
     </script>

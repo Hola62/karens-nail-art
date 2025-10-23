@@ -3,13 +3,13 @@
 // Create an account at https://www.emailjs.com/ and set up a service and a template
 
 window.EMAIL_SETTINGS = {
-  // Set from your message: service_1k6kdmg
-  serviceId: 'service_1k6kdmg',
-  // Provided template ID
-  templateId: 'template_d3ydngy',
-  // e.g., 'a1b2C3D4E5F6G7H8I'
-  publicKey: 'GiDmg3fRq3ZWzWGAu',
-  // Optional: shown as sender in the email template if you set it up
-  fromEmail: 'info@karensnailart.com',
-  fromName: "Karen's Nail Art"
+    // Set from your message: service_1k6kdmg
+    serviceId: 'service_1k6kdmg',
+    // Provided template ID
+    templateId: 'template_d3ydngy',
+    // e.g., 'a1b2C3D4E5F6G7H8I'
+    publicKey: 'GiDmg3fRq3ZWzWGAu',
+    // Optional: shown as sender in the email template if you set it up
+    fromEmail: 'holuwahola3@gmail.com',
+    fromName: "Karen's Nail Art"
 };

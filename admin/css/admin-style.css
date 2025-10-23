@@ -6,6 +6,19 @@
     box-sizing: border-box;
 }
 
+/* Screen reader only class for accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
 .admin-body {
     font-family: 'Poppins', sans-serif;
     display: flex;
@@ -178,7 +191,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 10000;
 }
 
@@ -189,15 +202,23 @@
     margin: 60px auto;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
 }
 
 .modal-content h3 {
     margin-bottom: 10px;
 }
 
-.modal .form-row { margin-bottom: 10px; }
-.modal label { display:block; font-weight:600; margin-bottom:6px; }
+.modal .form-row {
+    margin-bottom: 10px;
+}
+
+.modal label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
 .modal input[type="text"],
 .modal input[type="email"],
 .modal textarea {
@@ -213,7 +234,10 @@
     justify-content: flex-end;
 }
 
-.btn-cancel { background:#bbb; color:#222; }
+.btn-cancel {
+    background: #bbb;
+    color: #222;
+}
 
 .btn-primary:hover {
     background-color: #d89958;
@@ -776,7 +800,7 @@
     .admin-sidebar .admin-logo p,
     .admin-sidebar .admin-profile h3,
     .admin-sidebar .admin-profile p,
-    .admin-sidebar .nav-item span + * {
+    .admin-sidebar .nav-item span+* {
         display: none;
     }
 

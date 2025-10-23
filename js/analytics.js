@@ -2,7 +2,7 @@
 // Now uses API handler for both localStorage and backend
 
 // Initialize analytics on page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     trackPageVisit();
 });
 
@@ -49,13 +49,13 @@ function exportAnalytics() {
     const analytics = getAnalytics();
     const dataStr = JSON.stringify(analytics, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    
+
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
     link.href = url;
     link.download = 'karens-nails-analytics-' + new Date().toISOString().split('T')[0] + '.json';
     link.click();
-    
+
     URL.revokeObjectURL(url);
 }
 

@@ -23,7 +23,7 @@ function checkAuth() {
     const welcomeNameEl = document.getElementById('welcomeName');
     const adminNameEl = document.getElementById('adminName');
     const adminRoleEl = document.getElementById('adminRole');
-    
+
     if (welcomeNameEl && (adminName || adminUsername)) {
         welcomeNameEl.textContent = adminName || adminUsername;
     }
@@ -33,12 +33,12 @@ function checkAuth() {
     if (adminRoleEl && adminRole) {
         adminRoleEl.textContent = adminRole;
     }
-    
+
     // Hide add team form if not Super Admin
     const addTeamForm = document.querySelector('.add-team-form');
     if (addTeamForm && adminRole !== 'Super Admin') {
         addTeamForm.style.display = 'none';
-        
+
         // Add a message explaining why it's hidden
         const message = document.createElement('div');
         message.className = 'info-box';
@@ -103,7 +103,7 @@ function showSection(sectionName) {
 async function loadDashboardData() {
     // Get analytics data from API handler (works with both backend and localStorage)
     const analytics = await getAnalyticsForAdmin();
-    
+
     if (analytics) {
         // Update stats in the dashboard
         const statsNumbers = document.querySelectorAll('.stat-number');
@@ -113,7 +113,7 @@ async function loadDashboardData() {
             statsNumbers[2].textContent = analytics.totalShares || 0;
             statsNumbers[3].textContent = analytics.totalInquiries || 0;
         }
-        
+
         // Load recent inquiries
         loadRecentInquiries(analytics);
     }
@@ -123,23 +123,23 @@ async function loadDashboardData() {
 function loadRecentInquiries(analytics) {
     const inquiriesList = document.querySelector('.inquiries-list');
     if (!inquiriesList) return;
-    
+
     if (!analytics.inquiries || analytics.inquiries.length === 0) {
         inquiriesList.innerHTML = '<p class="empty-state">No inquiries yet. Customer messages will appear here.</p>';
         return;
     }
-    
+
     inquiriesList.innerHTML = '';
-    
+
     // Get the 5 most recent inquiries
     const recentInquiries = analytics.inquiries
         .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
         .slice(0, 5);
-    
+
     recentInquiries.forEach(inquiry => {
         const date = new Date(inquiry.timestamp);
         const timeAgo = getTimeAgo(date);
-        
+
         const inquiryHTML = `
             <div class="inquiry-item">
                 <div class="inquiry-header">
@@ -161,22 +161,22 @@ function loadRecentInquiries(analytics) {
 // Get time ago string
 function getTimeAgo(date) {
     const seconds = Math.floor((new Date() - date) / 1000);
-    
+
     let interval = seconds / 31536000;
     if (interval > 1) return Math.floor(interval) + ' years ago';
-    
+
     interval = seconds / 2592000;
     if (interval > 1) return Math.floor(interval) + ' months ago';
-    
+
     interval = seconds / 86400;
     if (interval > 1) return Math.floor(interval) + ' days ago';
-    
+
     interval = seconds / 3600;
     if (interval > 1) return Math.floor(interval) + ' hours ago';
-    
+
     interval = seconds / 60;
     if (interval > 1) return Math.floor(interval) + ' minutes ago';
-    
+
     return Math.floor(seconds) + ' seconds ago';
 }
 
@@ -194,18 +194,18 @@ function changeProfilePic() {
                 alert('Profile picture must be less than 2MB');
                 return;
             }
-            
+
             const reader = new FileReader();
             reader.onload = function (event) {
                 const imageData = event.target.result;
-                
+
                 // Update the profile picture
                 document.getElementById('adminProfilePic').src = imageData;
                 // Save to localStorage per-user so each admin has their own picture
                 const adminUsername = sessionStorage.getItem('adminUsername') || 'karen';
                 const key = `adminProfilePic_${adminUsername}`;
                 localStorage.setItem(key, imageData);
-                
+
                 alert('Profile picture updated successfully!');
             };
             reader.readAsDataURL(file);
@@ -282,7 +282,7 @@ async function uploadImages() {
 
     // Upload using API handler for backend mode
     const result = await API.uploadImages(files, gallery);
-    
+
     if (result.success) {
         alert(result.message);
         // Clear the input
@@ -360,7 +360,7 @@ async function addTeamMember() {
         alert('Please fill in all fields.');
         return;
     }
-    
+
     // Validate username (no spaces, alphanumeric + underscore only)
     const usernameRegex = /^[a-zA-Z0-9_]+$/;
     if (!usernameRegex.test(username)) {
@@ -386,16 +386,16 @@ async function addTeamMember() {
         role: role,
         password: password
     });
-    
+
     if (result.success) {
         alert(`Team member ${name} added successfully!\n\nLogin credentials:\nUsername: ${username}\nPassword: admin123`);
-        
+
         // Clear form
         document.getElementById('teamName').value = '';
         document.getElementById('teamUsername').value = '';
         document.getElementById('teamEmail').value = '';
         document.getElementById('teamRole').value = 'admin';
-        
+
         // Reload team list
         loadTeamList();
     } else {
@@ -406,18 +406,18 @@ async function addTeamMember() {
 // Load team list
 async function loadTeamList() {
     const teamListDiv = document.getElementById('teamList');
-    
+
     if (!teamListDiv) {
         return; // Team list section not on page
     }
-    
+
     // Check if current user is Super Admin (Karen)
     const adminRole = sessionStorage.getItem('adminRole');
     const isSuperAdmin = adminRole === 'Super Admin';
-    
+
     try {
         let teamMembers = [];
-        
+
         if (API.useBackend) {
             // Fetch from backend (would need an endpoint)
             // const result = await API.get('get-team-members.php');
@@ -426,7 +426,7 @@ async function loadTeamList() {
         } else {
             // Get from localStorage
             teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
-            
+
             if (teamMembers.length === 0) {
                 teamListDiv.innerHTML = '<p>No team members added yet. Add your first team member above!</p>';
             } else {
@@ -470,15 +470,15 @@ async function deleteTeamMember(memberId, memberName) {
         alert('Only Super Admin (Karen) can delete team members.');
         return;
     }
-    
+
     if (!confirm(`Are you sure you want to delete ${memberName}?\n\nThis action cannot be undone.`)) {
         return;
     }
-    
+
     try {
         // Use API handler to delete
         const result = await API.deleteTeamMember(memberId);
-        
+
         if (result.success) {
             alert(`${memberName} has been removed from the team.`);
             // Reload the team list
@@ -486,7 +486,7 @@ async function deleteTeamMember(memberId, memberName) {
         } else {
             alert('Error: ' + result.message);
         }
-        
+
     } catch (error) {
         console.error('Error deleting team member:', error);
         alert('Error deleting team member. Please try again.');
@@ -600,11 +600,18 @@ async function sendReplyEmail() {
     const message = document.getElementById('replyMessage')?.value || '';
 
     if (!toEmail) return alert('Recipient email is missing');
+    if (!subject.trim()) return alert('Please enter a subject');
+    if (!message.trim()) return alert('Please enter a message');
     if (!window.EMAIL_SETTINGS) return alert('Email settings not configured');
     if (!window.emailjs) return alert('EmailJS library not loaded');
 
     const { serviceId, templateId, fromEmail, fromName } = window.EMAIL_SETTINGS;
     if (!serviceId || !templateId) return alert('EmailJS IDs are not set');
+
+    // Disable button while sending
+    const sendBtn = document.querySelector('#replyModal .actions .btn:last-child');
+    const originalText = sendBtn ? sendBtn.textContent : '';
+    if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending…'; }
 
     // Variables must match your EmailJS template fields
     const templateParams = {
@@ -613,6 +620,7 @@ async function sendReplyEmail() {
         message: message,
         from_email: fromEmail,
         from_name: fromName,
+        reply_to: fromEmail // improves reply-to behavior across providers
     };
 
     try {
@@ -622,7 +630,10 @@ async function sendReplyEmail() {
         closeReplyModal();
     } catch (err) {
         console.error('EmailJS send error:', err);
-        alert('Failed to send reply. Please check your EmailJS configuration and try again.');
+        const detail = err && (err.text || err.message || JSON.stringify(err));
+        alert('Failed to send reply. ' + (detail ? ('Details: ' + detail) : 'Please check your EmailJS configuration and try again.'));
+    } finally {
+        if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = originalText || 'Send Reply'; }
     }
 }
 
@@ -633,19 +644,19 @@ function deleteInquiry(inquiryId) {
         const data = localStorage.getItem('karensNailArtAnalytics');
         if (data) {
             const analytics = JSON.parse(data);
-            
+
             // Find and remove the inquiry
             analytics.inquiries = analytics.inquiries.filter(inq => inq.id != inquiryId);
             if (analytics.totalInquiries > 0) {
                 analytics.totalInquiries--;
             }
-            
+
             // Save updated data
             localStorage.setItem('karensNailArtAnalytics', JSON.stringify(analytics));
-            
+
             // Reload the dashboard
             loadDashboardData();
-            
+
             alert('Inquiry deleted successfully!');
         }
     }
@@ -708,9 +719,9 @@ function loadAdminGallery() {
     const adminUsername = sessionStorage.getItem('adminUsername') || 'karen';
     const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
     const allUsers = ['karen', ...teamMembers.map(m => m.username)];
-    
+
     const allImages = [];
-    
+
     // Collect all uploads from all users
     allUsers.forEach(username => {
         const uploadsKey = `userUploads_${username}`;
@@ -741,7 +752,7 @@ function loadAdminGallery() {
     allImages.forEach((img, index) => {
         const uploadDate = new Date(img.uploaded_at).toLocaleDateString();
         const canDelete = img.isMyUpload || sessionStorage.getItem('adminRole') === 'Super Admin';
-        
+
         html += `
             <div class="gallery-image-card" data-uploader="${img.uploader}" data-gallery="${img.gallery || 'home'}">
                 <img src="${img.data}" alt="${img.name}">
@@ -766,13 +777,13 @@ function loadAdminGallery() {
 function filterGalleryImages(filter) {
     const cards = document.querySelectorAll('.gallery-image-card');
     const adminUsername = sessionStorage.getItem('adminUsername') || 'karen';
-    
+
     cards.forEach(card => {
         const uploader = card.dataset.uploader;
         const gallery = card.dataset.gallery;
-        
+
         let show = false;
-        
+
         if (filter === 'all') {
             show = true;
         } else if (filter === 'my-uploads') {
@@ -780,7 +791,7 @@ function filterGalleryImages(filter) {
         } else {
             show = gallery === filter;
         }
-        
+
         card.style.display = show ? 'block' : 'none';
     });
 }
@@ -789,33 +800,33 @@ function filterGalleryImages(filter) {
 function viewImageFullscreen(imageData, imageName) {
     const modal = document.createElement('div');
     modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;';
-    
+
     const content = document.createElement('div');
     content.style.cssText = 'max-width:90%;max-height:90%;text-align:center;';
-    
+
     const img = document.createElement('img');
     img.src = imageData;
     img.alt = imageName;
     img.style.cssText = 'max-width:100%;max-height:80vh;border-radius:10px;';
-    
+
     const title = document.createElement('h3');
     title.textContent = imageName;
     title.style.cssText = 'color:white;margin-top:15px;';
-    
+
     const closeBtn = document.createElement('button');
     closeBtn.textContent = 'Close';
     closeBtn.style.cssText = 'margin-top:15px;padding:10px 30px;background:#f0b27a;color:#3e1f0e;border:none;border-radius:5px;font-size:1rem;cursor:pointer;';
     closeBtn.onclick = () => document.body.removeChild(modal);
-    
+
     content.appendChild(img);
     content.appendChild(title);
     content.appendChild(closeBtn);
     modal.appendChild(content);
-    
+
     modal.onclick = (e) => {
         if (e.target === modal) document.body.removeChild(modal);
     };
-    
+
     document.body.appendChild(modal);
 }
 
@@ -823,24 +834,24 @@ function viewImageFullscreen(imageData, imageName) {
 async function deleteGalleryImage(uploader, imageName) {
     const adminUsername = sessionStorage.getItem('adminUsername') || 'karen';
     const adminRole = sessionStorage.getItem('adminRole');
-    
+
     // Check permissions
     if (uploader !== adminUsername && adminRole !== 'Super Admin') {
         alert('You can only delete your own images. Only Super Admin can delete any image.');
         return;
     }
-    
+
     if (!confirm(`Are you sure you want to delete "${imageName}"?\n\nThis action cannot be undone.`)) {
         return;
     }
-    
+
     try {
         const uploadsKey = `userUploads_${uploader}`;
         const uploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
         const filtered = uploads.filter(img => img.name !== imageName);
-        
+
         localStorage.setItem(uploadsKey, JSON.stringify(filtered));
-        
+
         alert('Image deleted successfully!');
         loadAdminGallery();
     } catch (error) {

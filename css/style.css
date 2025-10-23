@@ -402,10 +402,7 @@ body {
     /* allows vertical scrolling */
     max-height: 250px;
     /* height limit before scroll appears */
-    scrollbar-width: thin;
-    /* slim scrollbar for Firefox */
-    scrollbar-color: #f0b27a #3b1e0f;
-    /* gold scroll thumb */
+    /* Scrollbar styling removed for broader browser compatibility */
 }
 
 #servicesList::-webkit-scrollbar {
@@ -562,9 +559,12 @@ body {
 }
 
 @keyframes heartBeat {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.3);
     }
@@ -683,7 +683,7 @@ body {
     margin-bottom: 15px;
 }
 
-.contact-section > p {
+.contact-section>p {
     text-align: center;
     font-size: 1.1rem;
     margin-bottom: 50px;
@@ -919,6 +919,7 @@ body {
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.7);
 }
+
 /* ---------- GALLERY PAGE ---------- */
 .page-hero {
     background: linear-gradient(135deg, #3e1f0e 0%, #5a3923 100%);

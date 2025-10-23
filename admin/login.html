@@ -178,7 +178,7 @@
 
     <script>
         // Show available usernames in console on page load
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', function () {
             const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
             console.log('=== AVAILABLE LOGINS ===');
             console.log('Karen (Super Admin) - karen / admin123');
@@ -219,7 +219,7 @@
                     const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
                     console.log('Team members in storage:', teamMembers.length);
                     console.log('All usernames:', teamMembers.map(m => m.username).join(', '));
-                    
+
                     // Do a case-insensitive username match so users don't get tripped up by capitalization
                     const member = teamMembers.find(m => m.username && m.username.toLowerCase() === username.toLowerCase());
 
@@ -267,21 +267,21 @@
             }
         });
 
-            // Show stored users when button clicked
-            const showBtn = document.getElementById('showStoredUsersBtn');
-            const displayPre = document.getElementById('storedUsersDisplay');
-            if (showBtn) {
-                showBtn.addEventListener('click', function() {
-                    const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
-                    if (teamMembers.length === 0) {
-                        displayPre.textContent = 'No team members found in localStorage.';
-                    } else {
-                        displayPre.style.display = 'block';
-                        displayPre.textContent = JSON.stringify(teamMembers, null, 2);
-                    }
-                    console.log('Stored team members displayed in-page.');
-                });
-            }
+        // Show stored users when button clicked
+        const showBtn = document.getElementById('showStoredUsersBtn');
+        const displayPre = document.getElementById('storedUsersDisplay');
+        if (showBtn) {
+            showBtn.addEventListener('click', function () {
+                const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+                if (teamMembers.length === 0) {
+                    displayPre.textContent = 'No team members found in localStorage.';
+                } else {
+                    displayPre.style.display = 'block';
+                    displayPre.textContent = JSON.stringify(teamMembers, null, 2);
+                }
+                console.log('Stored team members displayed in-page.');
+            });
+        }
     </script>
 </body>
 

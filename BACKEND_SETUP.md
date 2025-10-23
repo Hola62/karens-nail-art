@@ -18,6 +18,7 @@ Before setting up the backend, you need:
 1. **Open phpMyAdmin** (or MySQL command line)
 
 2. **Run the SQL schema file:**
+
    - Go to `admin/config/schema.sql`
    - Copy all the SQL code
    - Paste and execute it in phpMyAdmin
@@ -37,7 +38,6 @@ Before setting up the backend, you need:
 
 ### Step 2: Configure Database Connection
 
-
 1. **Open** `admin/config/database.php`
 
 2. **Update the database credentials:**
@@ -51,7 +51,6 @@ Before setting up the backend, you need:
 
 3. **Save the file**
 
-
 ### Step 3: Set File Permissions
 
 Make sure the following directories are writable:
@@ -64,6 +63,7 @@ chmod 755 assets/images/
 ### Step 4: Test the Backend
 
 1. **Start your local server:**
+
    - **XAMPP/WAMP:** Place the project in `htdocs/` or `www/` folder
    - **Built-in PHP server:**
 
@@ -99,7 +99,6 @@ admin/
 ```
 
 ---
-
 
 ## 🔌 API Endpoints
 
@@ -180,7 +179,6 @@ admin/
 
 ---
 
-
 ## 🔒 Security Features
 
 ✅ **Password Hashing** - bcrypt with PHP's `password_hash()`  
@@ -188,7 +186,7 @@ admin/
 ✅ **Session Management** - Secure PHP sessions  
 ✅ **File Upload Validation** - Type and size checking  
 ✅ **Role-Based Access** - Super Admin, Admin, Editor  
-✅ **Activity Logging** - Track all admin actions  
+✅ **Activity Logging** - Track all admin actions
 
 ---
 
@@ -230,7 +228,6 @@ admin/
 
 ---
 
-
 ## 🌐 Hosting on Live Server
 
 ### For cPanel Hosting
@@ -250,7 +247,6 @@ Make sure your hosting supports:
 - File upload limit at least 5MB
 
 ---
-
 
 ## 🧪 Testing Checklist
 
@@ -314,4 +310,3 @@ Your backend is now ready. The admin panel will now:
 - Password: `admin123`
 
 Remember to **change the password** after first login!
-

@@ -22,17 +22,16 @@ When any page loads, the `api-handler.js` checks if the backend is available:
 
 ### Features by Mode
 
-
-| Feature | LocalStorage Mode | Backend Mode |
-|---------|-------------------|--------------|
-| Page visits tracking | ✅ Yes | ✅ Yes (MySQL) |
-| Like/Share buttons | ✅ Yes | ✅ Yes (MySQL) |
-| Contact form | ✅ Yes | ✅ Yes (MySQL) |
-| Admin login | ✅ Yes (basic) | ✅ Yes (secure) |
-| Dashboard stats | ✅ Yes | ✅ Yes (real data) |
-| Image uploads | ❌ No | ✅ Yes (server storage) |
-| Team management | ❌ No | ✅ Yes (MySQL) |
-| Activity logs | ❌ No | ✅ Yes (audit trail) |
+| Feature              | LocalStorage Mode | Backend Mode            |
+| -------------------- | ----------------- | ----------------------- |
+| Page visits tracking | ✅ Yes            | ✅ Yes (MySQL)          |
+| Like/Share buttons   | ✅ Yes            | ✅ Yes (MySQL)          |
+| Contact form         | ✅ Yes            | ✅ Yes (MySQL)          |
+| Admin login          | ✅ Yes (basic)    | ✅ Yes (secure)         |
+| Dashboard stats      | ✅ Yes            | ✅ Yes (real data)      |
+| Image uploads        | ❌ No             | ✅ Yes (server storage) |
+| Team management      | ❌ No             | ✅ Yes (MySQL)          |
+| Activity logs        | ❌ No             | ✅ Yes (audit trail)    |
 
 ---
 
@@ -80,7 +79,6 @@ Everything above PLUS:
 
 ---
 
-
 ## Files Structure
 
 ### Frontend Files (Always Active)
@@ -123,25 +121,24 @@ admin/
 ### User-Facing Features
 
 ```javascript
-API.trackVisit(page)         // Track page visits
-API.trackLike(itemId, page)  // Track likes
-API.trackUnlike(itemId)      // Remove likes
-API.trackShare(page)         // Track shares
-API.submitInquiry(data)      // Contact form
+API.trackVisit(page); // Track page visits
+API.trackLike(itemId, page); // Track likes
+API.trackUnlike(itemId); // Remove likes
+API.trackShare(page); // Track shares
+API.submitInquiry(data); // Contact form
 ```
 
 ### Admin Features
 
 ```javascript
-API.login(username, pass)        // Admin login
-API.logout()                     // Admin logout
-API.getAnalytics()              // Get dashboard stats
-API.uploadImages(formData)       // Upload images
-API.addTeamMember(userData)      // Add team member
+API.login(username, pass); // Admin login
+API.logout(); // Admin logout
+API.getAnalytics(); // Get dashboard stats
+API.uploadImages(formData); // Upload images
+API.addTeamMember(userData); // Add team member
 ```
 
 ---
-
 
 ## How to Switch Modes
 
@@ -173,9 +170,9 @@ All API calls use the same pattern:
 const result = await API.yourFunction(data);
 
 if (result.success) {
-    // Handle success
+  // Handle success
 } else {
-    // Handle error
+  // Handle error
 }
 ```
 
@@ -250,4 +247,3 @@ console.log(API.useBackend); // true = Backend, false = LocalStorage
 ## Summary
 
 🎉 Your website is now **future-proof**! It works perfectly today with localStorage and can be upgraded to full backend anytime you're ready. The system automatically handles everything!
-
