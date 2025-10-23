@@ -320,7 +320,7 @@ body {
 }
 
 .gallery-item {
-    width: 40%;
+    width: 100%;
 }
 
 .gallery-item .gallery-image-wrapper {
@@ -971,9 +971,21 @@ body {
 
 .public-gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     margin-bottom: 60px;
+}
+
+@media (max-width: 992px) {
+    .public-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .public-gallery-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .cta-section {
