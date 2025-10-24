@@ -122,6 +122,56 @@
     </section>
 
     <script>
+        // Load admin-uploaded images for Acrylic Nails service
+        function loadServiceImages() {
+            const galleryContainer = document.querySelector('.gallery-container');
+            if (!galleryContainer) return;
+
+            const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+            const allUsers = ['karen', ...teamMembers.map(m => m.username)];
+
+            const serviceImages = [];
+
+            // Collect all uploads for this service
+            allUsers.forEach(username => {
+                const uploadsKey = `userUploads_${username}`;
+                const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+
+                // Filter for acrylic-nails images
+                const acrylicImages = userUploads.filter(upload => {
+                    const loc = upload.displayLocation || upload.gallery || '';
+                    return loc === 'acrylic-nails';
+                });
+
+                serviceImages.push(...acrylicImages);
+            });
+
+            // Add admin-uploaded images to the gallery
+            if (serviceImages.length > 0) {
+                serviceImages.sort((a, b) => new Date(b.uploaded_at) - new Date(a.uploaded_at));
+
+                serviceImages.forEach(upload => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'gallery-image-wrapper';
+                    wrapper.innerHTML = `
+                        <img src="${upload.data}" alt="${upload.name}">
+                        <div class="image-actions">
+                            <button class="love-btn" onclick="toggleLove(this)">
+                                <span class="heart">♡</span>
+                            </button>
+                            <button class="share-btn" onclick="shareImage(this)">
+                                <span>⤴</span>
+                            </button>
+                        </div>
+                    `;
+                    galleryContainer.appendChild(wrapper);
+                });
+            }
+        }
+
+        // Load service images when page loads
+        document.addEventListener('DOMContentLoaded', loadServiceImages);
+
         function toggleLove(button) {
             button.classList.toggle('loved');
             const heart = button.querySelector('.heart');
