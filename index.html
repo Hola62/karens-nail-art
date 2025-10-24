@@ -158,30 +158,33 @@
     <section class="testimonials-section">
         <h2>What Our Clients Say</h2>
         <p class="subtitle">Real experiences from our amazing customers</p>
-        
+
         <div class="testimonials-container" id="testimonialsContainer">
             <!-- Testimonials will be loaded here dynamically from admin -->
             <div class="testimonial-card">
                 <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Karen's Nail Art is absolutely amazing! The gel polish lasted for 3 weeks without chipping. Highly recommend!"</p>
+                <p class="testimonial-text">"Karen's Nail Art is absolutely amazing! The gel polish lasted for 3 weeks
+                    without chipping. Highly recommend!"</p>
                 <div class="testimonial-author">
                     <strong>Sarah Johnson</strong>
                     <span>Gel Polish Client</span>
                 </div>
             </div>
-            
+
             <div class="testimonial-card">
                 <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Best acrylic nails I've ever gotten! The attention to detail is incredible. I always get compliments."</p>
+                <p class="testimonial-text">"Best acrylic nails I've ever gotten! The attention to detail is incredible.
+                    I always get compliments."</p>
                 <div class="testimonial-author">
                     <strong>Emily Chen</strong>
                     <span>Acrylic Nails Client</span>
                 </div>
             </div>
-            
+
             <div class="testimonial-card">
                 <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"The nail art designs are so creative and unique! Karen really listens to what you want."</p>
+                <p class="testimonial-text">"The nail art designs are so creative and unique! Karen really listens to
+                    what you want."</p>
                 <div class="testimonial-author">
                     <strong>Priya Sharma</strong>
                     <span>Nail Art Client</span>
@@ -254,15 +257,15 @@
             if (!testimonialsContainer) return;
 
             const testimonials = JSON.parse(localStorage.getItem('nailArtTestimonials') || '[]');
-            
+
             // Filter for active testimonials only
             const activeTestimonials = testimonials.filter(t => t.status === 'active');
-            
+
             if (activeTestimonials.length === 0) return; // Keep default testimonials if none added
 
             // Clear existing and add new testimonials
             testimonialsContainer.innerHTML = '';
-            
+
             // Sort by date and show up to 6 testimonials
             activeTestimonials
                 .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
