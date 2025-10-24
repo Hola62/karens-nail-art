@@ -854,26 +854,34 @@
         height: 60px;
     }
 
-    /* Make navigation horizontal on mobile */
+    /* Make navigation full-width list on mobile */
     .admin-nav {
         display: flex;
-        flex-wrap: wrap;
-        padding: 10px;
-        gap: 8px;
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
     }
 
     .admin-nav .nav-item {
-        flex: 1 1 calc(50% - 8px);
-        min-width: 140px;
-        padding: 12px 10px;
-        font-size: 14px;
-        text-align: center;
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 16px;
+        text-align: left;
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
     }
 
     .admin-nav .nav-item.active {
-        background: rgba(240, 178, 122, 0.2);
+        background: #f0b27a;
+        color: #3e1f0e;
+        font-weight: 600;
+    }
+
+    .admin-nav .nav-item:hover {
+        background: rgba(240, 178, 122, 0.3);
     }
 
     .admin-content {
@@ -919,7 +927,8 @@
     .form-group select,
     .form-group textarea {
         width: 100%;
-        font-size: 16px; /* Prevents zoom on iOS */
+        font-size: 16px;
+        /* Prevents zoom on iOS */
     }
 
     /* Gallery grid on mobile */
