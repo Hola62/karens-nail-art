@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manicure - Karen's Nail Art</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body class="service-detail-page">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Karen's Nail Art</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin/login.html" class="admin-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="service-detail">
+        <div class="back-btn-container">
+            <a href="index.html" class="btn">← Back to Home</a>
+        </div>
+
+        <h1>Manicure</h1>
+        <p>Pamper your hands with our professional manicure services. Beautiful nails, healthy cuticles!</p>
+
+        <div class="gallery-container">
+            <!-- Static images can be added here, admin uploads will be appended -->
+        </div>
+
+        <p class="nail-quote">"Beautiful hands, confident you — let your nails do the talking."</p>
+
+        <div class="service-info">
+            <h2>Why Choose Our Manicure?</h2>
+            <ul>
+                <li>Professional nail shaping and filing</li>
+                <li>Cuticle care and treatment</li>
+                <li>Hand massage and moisturizing</li>
+                <li>Perfect polish application</li>
+                <li>Strengthening treatments available</li>
+            </ul>
+        </div>
+
+        <div class="other-services">
+            <h2>Explore Other Services</h2>
+            <div class="other-services-container">
+                <a href="pedicure.html" class="other-service-card">
+                    <img src="assets/images/gel1.jpg" alt="Pedicure">
+                    <h3>Pedicure</h3>
+                </a>
+                <a href="nail-art.html" class="other-service-card">
+                    <img src="assets/images/nailart1.jpg" alt="Nail Art">
+                    <h3>Nail Art</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Load admin-uploaded images for Manicure service
+        function loadServiceImages() {
+            const galleryContainer = document.querySelector('.gallery-container');
+            if (!galleryContainer) return;
+
+            const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+            const allUsers = ['karen', ...teamMembers.map(m => m.username)];
+
+            const serviceImages = [];
+
+            // Collect all uploads for this service
+            allUsers.forEach(username => {
+                const uploadsKey = `userUploads_${username}`;
+                const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+                
+                // Filter for manicure images
+                const manicureImages = userUploads.filter(upload => {
+                    const loc = upload.displayLocation || upload.gallery || '';
+                    return loc === 'manicure';
+                });
+                
+                serviceImages.push(...manicureImages);
+            });
+
+            // Add admin-uploaded images to the gallery
+            if (serviceImages.length > 0) {
+                serviceImages.sort((a, b) => new Date(b.uploaded_at) - new Date(a.uploaded_at));
+                
+                serviceImages.forEach(upload => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'gallery-image-wrapper';
+                    wrapper.innerHTML = `
+                        <img src="${upload.data}" alt="${upload.name}">
+                        <div class="image-actions">
+                            <button class="love-btn" onclick="toggleLove(this)">
+                                <span class="heart">♡</span>
+                            </button>
+                            <button class="share-btn" onclick="shareImage(this)">
+                                <span>⤴</span>
+                            </button>
+                        </div>
+                    `;
+                    galleryContainer.appendChild(wrapper);
+                });
+            }
+        }
+
+        // Load service images when page loads
+        document.addEventListener('DOMContentLoaded', loadServiceImages);
+
+        function toggleLove(button) {
+            button.classList.toggle('loved');
+            const heart = button.querySelector('.heart');
+            if (button.classList.contains('loved')) {
+                heart.textContent = '♥';
+            } else {
+                heart.textContent = '♡';
+            }
+        }
+
+        function shareImage(button) {
+            const wrapper = button.closest('.gallery-image-wrapper');
+            const img = wrapper.querySelector('img');
+            const imgSrc = img.src;
+            const imgAlt = img.alt;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: imgAlt,
+                    text: 'Check out this nail design from Karen\'s Nail Art!',
+                    url: window.location.href
+                }).catch((error) => console.log('Error sharing:', error));
+            } else {
+                // Fallback: copy link to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('Link copied to clipboard!');
+                }).catch(() => {
+                    alert('Unable to share. Please copy the link manually.');
+                });
+            }
+        }
+    </script>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Karen's Nail Art</h3>
+                <p>Your nails are more than beauty — they're confidence at your fingertips.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Phone: +234 XXX XXX XXXX</p>
+                <p>Email: info@karensnailart.com</p>
+                <p>Location: Abuja, Nigeria</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://tiktok.com/@eniola" target="_blank" rel="noopener" class="social-icon">
+                        <img src="assets/icons/tiktok.png" alt="TikTok">
+                    </a>
+                    <a href="https://instagram.com/karen_wealth" target="_blank" rel="noopener" class="social-icon">
+                        <img src="assets/icons/instagram.png" alt="Instagram">
+                    </a>
+                    <a href="https://wa.me/234XXXXXXXXXX" target="_blank" rel="noopener" class="social-icon">
+                        <img src="assets/icons/whatsapp.png" alt="WhatsApp">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Karen's Nail Art. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/analytics.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
