@@ -718,22 +718,281 @@ function deleteInquiry(inquiryId) {
 }
 
 // Edit service content
-function editService(serviceName) {
-    // In a real application, this would open a modal or redirect to an edit page
-    alert(`Edit ${serviceName} functionality will be implemented with backend integration.`);
+function editService(serviceSlug) {
+    const services = JSON.parse(localStorage.getItem('nailArtServices') || '[]');
+    const service = services.find(s => s.slug === serviceSlug);
+    
+    if (!service) {
+        alert('Service not found');
+        return;
+    }
+    
+    // Populate modal with service data
+    document.getElementById('serviceModalTitle').textContent = 'Edit Service';
+    document.getElementById('serviceName').value = service.name;
+    document.getElementById('serviceSlug').value = service.slug;
+    document.getElementById('serviceDescription').value = service.description || '';
+    document.getElementById('serviceQuote').value = service.quote || '';
+    document.getElementById('serviceBenefits').value = (service.benefits || []).join('\n');
+    document.getElementById('serviceStatus').value = service.status || 'active';
+    
+    // Store editing slug
+    document.getElementById('serviceModal').dataset.editingSlug = serviceSlug;
+    
+    // Show modal
+    document.getElementById('serviceModal').style.display = 'flex';
 }
 
 // Manage service images
-function manageServiceImages(serviceName) {
-    // In a real application, this would show the image management interface
+function manageServiceImages(serviceSlug) {
+    const services = JSON.parse(localStorage.getItem('nailArtServices') || '[]');
+    const service = services.find(s => s.slug === serviceSlug);
+    
+    if (!service) {
+        alert('Service not found');
+        return;
+    }
+    
+    // Set modal title
+    document.getElementById('serviceImagesTitle').textContent = `Manage Images - ${service.name}`;
+    document.getElementById('serviceImagesSubtitle').textContent = 
+        `Upload and manage images for ${service.name} service. These images will appear on the ${service.name} page.`;
+    
+    // Store service slug for upload
+    document.getElementById('serviceImagesModal').dataset.serviceSlug = serviceSlug;
+    
+    // Load images for this service
+    loadServiceImagesForManagement(serviceSlug);
+    
+    // Show modal
+    document.getElementById('serviceImagesModal').style.display = 'flex';
+}
+
+// Load images for service management
+function loadServiceImagesForManagement(serviceSlug) {
+    const grid = document.getElementById('serviceImagesGrid');
+    const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+    const allUsers = ['karen', ...teamMembers.map(m => m.username)];
+    
+    const serviceImages = [];
+    
+    // Collect all uploads for this service
+    allUsers.forEach(username => {
+        const uploadsKey = `userUploads_${username}`;
+        const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+        
+        const filtered = userUploads.filter(upload => {
+            const loc = upload.displayLocation || upload.gallery || '';
+            return loc === serviceSlug;
+        });
+        
+        serviceImages.push(...filtered.map(img => ({ ...img, uploadedBy: username })));
+    });
+    
+    if (serviceImages.length === 0) {
+        grid.innerHTML = '<p class="empty-state">No images uploaded for this service yet.</p>';
+        return;
+    }
+    
+    // Sort by date
+    serviceImages.sort((a, b) => new Date(b.uploaded_at) - new Date(a.uploaded_at));
+    
+    // Display images
+    grid.innerHTML = serviceImages.map(img => `
+        <div class="service-image-item">
+            <img src="${img.data}" alt="${img.name}">
+            <div class="image-info">
+                <p class="image-name">${img.name}</p>
+                <small>By ${img.uploadedBy}</small>
+            </div>
+            <button class="btn-delete-small" onclick="deleteServiceImage('${img.uploadedBy}', '${img.name}', '${serviceSlug}')">
+                Delete
+            </button>
+        </div>
+    `).join('');
+}
+
+// Delete service image
+function deleteServiceImage(username, imageName, serviceSlug) {
+    if (!confirm(`Delete ${imageName}?`)) return;
+    
+    const uploadsKey = `userUploads_${username}`;
+    const uploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+    const filtered = uploads.filter(u => u.name !== imageName);
+    localStorage.setItem(uploadsKey, JSON.stringify(filtered));
+    
+    alert('Image deleted successfully!');
+    loadServiceImagesForManagement(serviceSlug);
+}
+
+// Open upload section for specific service
+function openUploadForService() {
+    const serviceSlug = document.getElementById('serviceImagesModal').dataset.serviceSlug;
+    closeServiceImagesModal();
     showSection('images');
+    
+    // Set the display location dropdown to this service
+    const dropdown = document.getElementById('displayLocation');
+    if (dropdown) {
+        dropdown.value = serviceSlug;
+    }
 }
 
 // Add new service
-function addNewService() {
-    // In a real application, this would open a modal or redirect to a creation page
-    alert('Add new service functionality will be implemented with backend integration.');
+function openAddServiceModal() {
+    // Reset form
+    document.getElementById('serviceForm').reset();
+    document.getElementById('serviceModalTitle').textContent = 'Add New Service';
+    document.getElementById('serviceSlug').readOnly = false;
+    delete document.getElementById('serviceModal').dataset.editingSlug;
+    
+    // Show modal
+    document.getElementById('serviceModal').style.display = 'flex';
 }
+
+// Save service (add or edit)
+function saveService(event) {
+    event.preventDefault();
+    
+    const modal = document.getElementById('serviceModal');
+    const editingSlug = modal.dataset.editingSlug;
+    
+    const serviceData = {
+        name: document.getElementById('serviceName').value.trim(),
+        slug: document.getElementById('serviceSlug').value.trim().toLowerCase().replace(/\s+/g, '-'),
+        description: document.getElementById('serviceDescription').value.trim(),
+        quote: document.getElementById('serviceQuote').value.trim(),
+        benefits: document.getElementById('serviceBenefits').value.split('\n').filter(b => b.trim()),
+        status: document.getElementById('serviceStatus').value,
+        createdAt: editingSlug ? undefined : new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+    };
+    
+    // Get existing services
+    const services = JSON.parse(localStorage.getItem('nailArtServices') || '[]');
+    
+    if (editingSlug) {
+        // Update existing service
+        const index = services.findIndex(s => s.slug === editingSlug);
+        if (index !== -1) {
+            services[index] = { ...services[index], ...serviceData };
+            alert('Service updated successfully!');
+        }
+    } else {
+        // Check if slug already exists
+        if (services.some(s => s.slug === serviceData.slug)) {
+            alert('A service with this URL slug already exists. Please use a different slug.');
+            return;
+        }
+        
+        // Add new service
+        services.push(serviceData);
+        alert('Service added successfully!');
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('nailArtServices', JSON.stringify(services));
+    
+    // Close modal and reload list
+    closeServiceModal();
+    loadServicesList();
+}
+
+// Close service modal
+function closeServiceModal() {
+    document.getElementById('serviceModal').style.display = 'none';
+    delete document.getElementById('serviceModal').dataset.editingSlug;
+}
+
+// Close service images modal
+function closeServiceImagesModal() {
+    document.getElementById('serviceImagesModal').style.display = 'none';
+}
+
+// Delete service
+function deleteService(serviceSlug) {
+    const services = JSON.parse(localStorage.getItem('nailArtServices') || '[]');
+    const service = services.find(s => s.slug === serviceSlug);
+    
+    if (!service) return;
+    
+    if (!confirm(`Delete "${service.name}" service? This cannot be undone.`)) return;
+    
+    const filtered = services.filter(s => s.slug !== serviceSlug);
+    localStorage.setItem('nailArtServices', JSON.stringify(filtered));
+    
+    alert('Service deleted successfully!');
+    loadServicesList();
+}
+
+// Load services list
+function loadServicesList() {
+    const container = document.getElementById('servicesList');
+    if (!container) return;
+    
+    // Initialize with default services if none exist
+    let services = JSON.parse(localStorage.getItem('nailArtServices') || '[]');
+    
+    if (services.length === 0) {
+        services = [
+            {
+                name: 'Gel Polish',
+                slug: 'gel-polish',
+                description: 'Long-lasting shine and vibrant finish',
+                status: 'active',
+                createdAt: new Date().toISOString()
+            },
+            {
+                name: 'Acrylic Nails',
+                slug: 'acrylic-nails',
+                description: 'Perfectly sculpted extensions',
+                status: 'active',
+                createdAt: new Date().toISOString()
+            },
+            {
+                name: 'Nail Art',
+                slug: 'nail-art',
+                description: 'Creative designs that express you',
+                status: 'active',
+                createdAt: new Date().toISOString()
+            }
+        ];
+        localStorage.setItem('nailArtServices', JSON.stringify(services));
+    }
+    
+    // Count images for each service
+    const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+    const allUsers = ['karen', ...teamMembers.map(m => m.username)];
+    
+    const imageCounts = {};
+    allUsers.forEach(username => {
+        const uploadsKey = `userUploads_${username}`;
+        const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+        
+        userUploads.forEach(upload => {
+            const loc = upload.displayLocation || upload.gallery || '';
+            imageCounts[loc] = (imageCounts[loc] || 0) + 1;
+        });
+    });
+    
+    // Display services
+    container.innerHTML = services.map(service => `
+        <div class="service-item">
+            <h3>${service.name}</h3>
+            <p>Status: <span class="status-badge ${service.status}">${service.status}</span> | Images: ${imageCounts[service.slug] || 0}</p>
+            <div class="service-actions">
+                <button class="btn-edit" onclick="editService('${service.slug}')">Edit Content</button>
+                <button class="btn-edit" onclick="manageServiceImages('${service.slug}')">Manage Images</button>
+                <button class="btn-delete" onclick="deleteService('${service.slug}')">Delete</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Initialize services list on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadServicesList();
+});
 
 // Initialize statistics (would be loaded from backend in production)
 function updateStatistics() {

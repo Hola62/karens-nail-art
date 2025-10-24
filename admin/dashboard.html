@@ -197,34 +197,11 @@
         <section id="section-services" class="admin-section">
             <h2>Manage Services</h2>
 
-            <div class="services-list">
-                <div class="service-item">
-                    <h3>Gel Polish</h3>
-                    <p>Status: Active | Images: 4</p>
-                    <div class="service-actions">
-                        <button class="btn-edit">Edit Content</button>
-                        <button class="btn-edit">Manage Images</button>
-                    </div>
-                </div>
-                <div class="service-item">
-                    <h3>Acrylic Nails</h3>
-                    <p>Status: Active | Images: 5</p>
-                    <div class="service-actions">
-                        <button class="btn-edit">Edit Content</button>
-                        <button class="btn-edit">Manage Images</button>
-                    </div>
-                </div>
-                <div class="service-item">
-                    <h3>Nail Art</h3>
-                    <p>Status: Active | Images: 5</p>
-                    <div class="service-actions">
-                        <button class="btn-edit">Edit Content</button>
-                        <button class="btn-edit">Manage Images</button>
-                    </div>
-                </div>
+            <div class="services-list" id="servicesList">
+                <!-- Services will be loaded dynamically -->
             </div>
 
-            <button class="btn-primary add-new-service-btn">+ Add New Service</button>
+            <button class="btn-primary add-new-service-btn" onclick="openAddServiceModal()">+ Add New Service</button>
         </section>
 
         <!-- Inquiries Section -->
@@ -415,6 +392,65 @@
             </div>
         </div>
     </div>
+
+    <!-- Add/Edit Service Modal -->
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <h3 id="serviceModalTitle">Add New Service</h3>
+            <form id="serviceForm" onsubmit="saveService(event)">
+                <div class="form-row">
+                    <label for="serviceName">Service Name *</label>
+                    <input id="serviceName" type="text" placeholder="e.g., Pedicure" required />
+                </div>
+                <div class="form-row">
+                    <label for="serviceSlug">URL Slug *</label>
+                    <input id="serviceSlug" type="text" placeholder="e.g., pedicure" required />
+                    <small>Used in the URL (lowercase, no spaces)</small>
+                </div>
+                <div class="form-row">
+                    <label for="serviceDescription">Short Description *</label>
+                    <textarea id="serviceDescription" rows="3" placeholder="Brief description for service card" required></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="serviceQuote">Quote/Tagline</label>
+                    <input id="serviceQuote" type="text" placeholder="e.g., Relax and rejuvenate your feet" />
+                </div>
+                <div class="form-row">
+                    <label for="serviceBenefits">Benefits (one per line)</label>
+                    <textarea id="serviceBenefits" rows="5" placeholder="List benefits, one per line"></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="serviceStatus">Status</label>
+                    <select id="serviceStatus">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button type="button" onclick="closeServiceModal()" class="btn btn-cancel">Cancel</button>
+                    <button type="submit" class="btn">Save Service</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Manage Service Images Modal -->
+    <div id="serviceImagesModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <h3 id="serviceImagesTitle">Manage Images</h3>
+            <p id="serviceImagesSubtitle" style="margin-bottom: 20px; color: #666;"></p>
+            
+            <div class="service-images-grid" id="serviceImagesGrid">
+                <!-- Images will be loaded here -->
+            </div>
+            
+            <div class="actions" style="margin-top: 20px;">
+                <button onclick="closeServiceImagesModal()" class="btn btn-cancel">Close</button>
+                <button onclick="openUploadForService()" class="btn">Upload New Images</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>
