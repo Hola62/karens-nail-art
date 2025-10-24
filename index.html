@@ -159,17 +159,22 @@
         <h2>What Our Clients Say</h2>
         <p class="subtitle">Real experiences from our amazing customers</p>
 
-        <div class="testimonials-container" id="testimonialsContainer">
-            <!-- Testimonials will be loaded here dynamically from admin -->
-            <div class="testimonial-card">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Karen's Nail Art is absolutely amazing! The gel polish lasted for 3 weeks
-                    without chipping. Highly recommend!"</p>
-                <div class="testimonial-author">
-                    <strong>Sarah Johnson</strong>
-                    <span>Gel Polish Client</span>
+        <div class="testimonials-wrapper">
+            <button class="testimonial-arrow left" onclick="scrollTestimonials('left')" id="leftArrow">‹</button>
+            <div class="testimonials-container" id="testimonialsContainer">
+                <!-- Testimonials will be loaded here dynamically from admin -->
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Karen's Nail Art is absolutely amazing! The gel polish lasted for 3
+                        weeks
+                        without chipping. Highly recommend!"</p>
+                    <div class="testimonial-author">
+                        <strong>Sarah Johnson</strong>
+                        <span>Gel Polish Client</span>
+                    </div>
                 </div>
             </div>
+            <button class="testimonial-arrow right" onclick="scrollTestimonials('right')" id="rightArrow">›</button>
         </div>
     </section>
 
@@ -246,10 +251,9 @@
             // Clear existing and add new testimonials
             testimonialsContainer.innerHTML = '';
 
-            // Sort by date and show up to 6 testimonials
+            // Sort by date and show ALL active testimonials
             activeTestimonials
                 .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
-                .slice(0, 6)
                 .forEach(testimonial => {
                     const stars = '⭐'.repeat(testimonial.rating);
                     const card = document.createElement('div');
@@ -264,7 +268,60 @@
                     `;
                     testimonialsContainer.appendChild(card);
                 });
+
+            // Update arrow visibility
+            updateArrowVisibility();
         }
+
+        // Scroll testimonials left or right
+        function scrollTestimonials(direction) {
+            const container = document.getElementById('testimonialsContainer');
+            const scrollAmount = 350; // Width of one card + gap
+
+            if (direction === 'left') {
+                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else {
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+
+            // Update arrow visibility after scroll
+            setTimeout(updateArrowVisibility, 300);
+        }
+
+        // Update arrow visibility based on scroll position
+        function updateArrowVisibility() {
+            const container = document.getElementById('testimonialsContainer');
+            const leftArrow = document.getElementById('leftArrow');
+            const rightArrow = document.getElementById('rightArrow');
+
+            if (!container || !leftArrow || !rightArrow) return;
+
+            // Hide left arrow if at start
+            if (container.scrollLeft <= 0) {
+                leftArrow.style.opacity = '0';
+                leftArrow.style.pointerEvents = 'none';
+            } else {
+                leftArrow.style.opacity = '1';
+                leftArrow.style.pointerEvents = 'auto';
+            }
+
+            // Hide right arrow if at end
+            if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 5) {
+                rightArrow.style.opacity = '0';
+                rightArrow.style.pointerEvents = 'none';
+            } else {
+                rightArrow.style.opacity = '1';
+                rightArrow.style.pointerEvents = 'auto';
+            }
+        }
+
+        // Listen for scroll events to update arrows
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('testimonialsContainer');
+            if (container) {
+                container.addEventListener('scroll', updateArrowVisibility);
+            }
+        });
 
         // Load testimonials when page loads
         document.addEventListener('DOMContentLoaded', loadTestimonials);
