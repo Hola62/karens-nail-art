@@ -43,6 +43,9 @@
             <a href="#inquiries" class="nav-item" onclick="showSection('inquiries')">
                 Customer Inquiries
             </a>
+            <a href="#testimonials" class="nav-item" onclick="showSection('testimonials')">
+                Testimonials
+            </a>
             <a href="#team" class="nav-item" onclick="showSection('team')">
                 Team Management
             </a>
@@ -210,6 +213,18 @@
 
             <div class="inquiries-list">
                 <p class="empty-state">No inquiries yet. Customer messages will appear here.</p>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="section-testimonials" class="admin-section">
+            <h2>Manage Testimonials</h2>
+            <p class="subtitle">Add and manage customer testimonials displayed on your website</p>
+
+            <button class="btn-primary" onclick="openAddTestimonialModal()" style="margin-bottom: 20px;">+ Add New Testimonial</button>
+
+            <div class="testimonials-list" id="testimonialsList">
+                <!-- Testimonials will be loaded here -->
             </div>
         </section>
 
@@ -449,6 +464,48 @@
                 <button onclick="closeServiceImagesModal()" class="btn btn-cancel">Close</button>
                 <button onclick="openUploadForService()" class="btn">Upload New Images</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Testimonial Modal -->
+    <div id="testimonialModal" class="modal">
+        <div class="modal-content">
+            <h3 id="testimonialModalTitle">Add New Testimonial</h3>
+            <form id="testimonialForm" onsubmit="saveTestimonial(event)">
+                <div class="form-row">
+                    <label for="testimonialName">Customer Name *</label>
+                    <input id="testimonialName" type="text" placeholder="e.g., Sarah Johnson" required />
+                </div>
+                <div class="form-row">
+                    <label for="testimonialService">Service *</label>
+                    <input id="testimonialService" type="text" placeholder="e.g., Gel Polish Client" required />
+                </div>
+                <div class="form-row">
+                    <label for="testimonialRating">Rating *</label>
+                    <select id="testimonialRating" required>
+                        <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+                        <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+                        <option value="3">⭐⭐⭐ (3 stars)</option>
+                        <option value="2">⭐⭐ (2 stars)</option>
+                        <option value="1">⭐ (1 star)</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="testimonialText">Testimonial Text *</label>
+                    <textarea id="testimonialText" rows="4" placeholder="What did the customer say about your service?" required></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="testimonialStatus">Status</label>
+                    <select id="testimonialStatus">
+                        <option value="active">Active (Show on website)</option>
+                        <option value="inactive">Inactive (Hidden)</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button type="button" onclick="closeTestimonialModal()" class="btn btn-cancel">Cancel</button>
+                    <button type="submit" class="btn">Save Testimonial</button>
+                </div>
+            </form>
         </div>
     </div>
 

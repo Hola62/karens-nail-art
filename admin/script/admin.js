@@ -1201,3 +1201,148 @@ async function deleteGalleryImage(uploader, imageName) {
         alert('Error deleting image. Please try again.');
     }
 }
+
+// ========== TESTIMONIALS MANAGEMENT ==========
+
+// Open add testimonial modal
+function openAddTestimonialModal() {
+    document.getElementById('testimonialForm').reset();
+    document.getElementById('testimonialModalTitle').textContent = 'Add New Testimonial';
+    document.getElementById('testimonialRating').value = '5';
+    document.getElementById('testimonialStatus').value = 'active';
+    delete document.getElementById('testimonialModal').dataset.editingId;
+    document.getElementById('testimonialModal').style.display = 'flex';
+}
+
+// Save testimonial (add or edit)
+function saveTestimonial(event) {
+    event.preventDefault();
+    
+    const modal = document.getElementById('testimonialModal');
+    const editingId = modal.dataset.editingId;
+    
+    const testimonialData = {
+        id: editingId || Date.now().toString(),
+        name: document.getElementById('testimonialName').value.trim(),
+        service: document.getElementById('testimonialService').value.trim(),
+        rating: parseInt(document.getElementById('testimonialRating').value),
+        text: document.getElementById('testimonialText').value.trim(),
+        status: document.getElementById('testimonialStatus').value,
+        createdAt: editingId ? undefined : new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+    };
+    
+    // Get existing testimonials
+    const testimonials = JSON.parse(localStorage.getItem('nailArtTestimonials') || '[]');
+    
+    if (editingId) {
+        // Update existing testimonial
+        const index = testimonials.findIndex(t => t.id === editingId);
+        if (index !== -1) {
+            testimonials[index] = { ...testimonials[index], ...testimonialData };
+            alert('Testimonial updated successfully!');
+        }
+    } else {
+        // Add new testimonial
+        testimonials.push(testimonialData);
+        alert('Testimonial added successfully!');
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('nailArtTestimonials', JSON.stringify(testimonials));
+    
+    // Close modal and reload list
+    closeTestimonialModal();
+    loadTestimonialsList();
+}
+
+// Edit testimonial
+function editTestimonial(testimonialId) {
+    const testimonials = JSON.parse(localStorage.getItem('nailArtTestimonials') || '[]');
+    const testimonial = testimonials.find(t => t.id === testimonialId);
+    
+    if (!testimonial) {
+        alert('Testimonial not found');
+        return;
+    }
+    
+    // Populate modal with testimonial data
+    document.getElementById('testimonialModalTitle').textContent = 'Edit Testimonial';
+    document.getElementById('testimonialName').value = testimonial.name;
+    document.getElementById('testimonialService').value = testimonial.service;
+    document.getElementById('testimonialRating').value = testimonial.rating;
+    document.getElementById('testimonialText').value = testimonial.text;
+    document.getElementById('testimonialStatus').value = testimonial.status || 'active';
+    
+    // Store editing ID
+    document.getElementById('testimonialModal').dataset.editingId = testimonialId;
+    
+    // Show modal
+    document.getElementById('testimonialModal').style.display = 'flex';
+}
+
+// Delete testimonial
+function deleteTestimonial(testimonialId) {
+    if (!confirm('Delete this testimonial? This cannot be undone.')) return;
+    
+    const testimonials = JSON.parse(localStorage.getItem('nailArtTestimonials') || '[]');
+    const filtered = testimonials.filter(t => t.id !== testimonialId);
+    localStorage.setItem('nailArtTestimonials', JSON.stringify(filtered));
+    
+    alert('Testimonial deleted successfully!');
+    loadTestimonialsList();
+}
+
+// Close testimonial modal
+function closeTestimonialModal() {
+    document.getElementById('testimonialModal').style.display = 'none';
+    delete document.getElementById('testimonialModal').dataset.editingId;
+}
+
+// Load testimonials list in admin
+function loadTestimonialsList() {
+    const container = document.getElementById('testimonialsList');
+    if (!container) return;
+    
+    const testimonials = JSON.parse(localStorage.getItem('nailArtTestimonials') || '[]');
+    
+    if (testimonials.length === 0) {
+        container.innerHTML = '<p class="empty-state">No testimonials yet. Click "Add New Testimonial" to create one.</p>';
+        return;
+    }
+    
+    // Sort by date (newest first)
+    testimonials.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    
+    // Display testimonials
+    container.innerHTML = testimonials.map(testimonial => {
+        const stars = '⭐'.repeat(testimonial.rating);
+        return `
+            <div class="service-item">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h3>${testimonial.name}</h3>
+                        <p style="margin: 5px 0;">
+                            ${stars} | ${testimonial.service}
+                        </p>
+                        <p style="margin: 10px 0; font-style: italic; color: #666;">
+                            "${testimonial.text}"
+                        </p>
+                        <p style="margin-top: 10px;">
+                            Status: <span class="status-badge ${testimonial.status}">${testimonial.status || 'active'}</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="service-actions" style="margin-top: 15px;">
+                    <button class="btn-edit" onclick="editTestimonial('${testimonial.id}')">Edit</button>
+                    <button class="btn-delete" onclick="deleteTestimonial('${testimonial.id}')">Delete</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Initialize testimonials list on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadTestimonialsList();
+});

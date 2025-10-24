@@ -148,7 +148,45 @@
             </a>
         </div>
         <div style="text-align: center; margin-top: 30px;">
-            <a href="services.html" class="btn" style="display: inline-block; padding: 12px 30px; background: #f0b27a; color: #3e1f0e; text-decoration: none; border-radius: 5px; font-weight: 600;">View All Services</a>
+            <a href="services.html" class="btn"
+                style="display: inline-block; padding: 12px 30px; background: #f0b27a; color: #3e1f0e; text-decoration: none; border-radius: 5px; font-weight: 600;">View
+                All Services</a>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <h2>What Our Clients Say</h2>
+        <p class="subtitle">Real experiences from our amazing customers</p>
+        
+        <div class="testimonials-container" id="testimonialsContainer">
+            <!-- Testimonials will be loaded here dynamically from admin -->
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Karen's Nail Art is absolutely amazing! The gel polish lasted for 3 weeks without chipping. Highly recommend!"</p>
+                <div class="testimonial-author">
+                    <strong>Sarah Johnson</strong>
+                    <span>Gel Polish Client</span>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Best acrylic nails I've ever gotten! The attention to detail is incredible. I always get compliments."</p>
+                <div class="testimonial-author">
+                    <strong>Emily Chen</strong>
+                    <span>Acrylic Nails Client</span>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"The nail art designs are so creative and unique! Karen really listens to what you want."</p>
+                <div class="testimonial-author">
+                    <strong>Priya Sharma</strong>
+                    <span>Nail Art Client</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -209,6 +247,44 @@
 
         // Load gallery images when page loads
         document.addEventListener('DOMContentLoaded', loadHomeGallery);
+
+        // Load testimonials dynamically
+        function loadTestimonials() {
+            const testimonialsContainer = document.getElementById('testimonialsContainer');
+            if (!testimonialsContainer) return;
+
+            const testimonials = JSON.parse(localStorage.getItem('nailArtTestimonials') || '[]');
+            
+            // Filter for active testimonials only
+            const activeTestimonials = testimonials.filter(t => t.status === 'active');
+            
+            if (activeTestimonials.length === 0) return; // Keep default testimonials if none added
+
+            // Clear existing and add new testimonials
+            testimonialsContainer.innerHTML = '';
+            
+            // Sort by date and show up to 6 testimonials
+            activeTestimonials
+                .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+                .slice(0, 6)
+                .forEach(testimonial => {
+                    const stars = '⭐'.repeat(testimonial.rating);
+                    const card = document.createElement('div');
+                    card.className = 'testimonial-card';
+                    card.innerHTML = `
+                        <div class="testimonial-stars">${stars}</div>
+                        <p class="testimonial-text">"${testimonial.text}"</p>
+                        <div class="testimonial-author">
+                            <strong>${testimonial.name}</strong>
+                            <span>${testimonial.service}</span>
+                        </div>
+                    `;
+                    testimonialsContainer.appendChild(card);
+                });
+        }
+
+        // Load testimonials when page loads
+        document.addEventListener('DOMContentLoaded', loadTestimonials);
 
         const btn = document.getElementById('servicesBtn');
         const list = document.getElementById('servicesList');

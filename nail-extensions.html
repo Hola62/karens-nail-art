@@ -81,20 +81,20 @@
             allUsers.forEach(username => {
                 const uploadsKey = `userUploads_${username}`;
                 const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
-                
+
                 // Filter for nail-extensions images
                 const extensionImages = userUploads.filter(upload => {
                     const loc = upload.displayLocation || upload.gallery || '';
                     return loc === 'nail-extensions';
                 });
-                
+
                 serviceImages.push(...extensionImages);
             });
 
             // Add admin-uploaded images to the gallery
             if (serviceImages.length > 0) {
                 serviceImages.sort((a, b) => new Date(b.uploaded_at) - new Date(a.uploaded_at));
-                
+
                 serviceImages.forEach(upload => {
                     const wrapper = document.createElement('div');
                     wrapper.className = 'gallery-image-wrapper';
