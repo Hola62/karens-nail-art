@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://hola62.github.io/karens-nail-art/sitemap.xml
