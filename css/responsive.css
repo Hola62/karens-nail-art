@@ -76,15 +76,19 @@
         padding: 0 20px;
     }
 
-    /* Service cards - show immediately on mobile, no animation delay */
+    /* Service cards - force visible immediately on mobile */
     .service-card {
         opacity: 1 !important;
         transform: translateY(0) !important;
+        animation: none !important;
+        visibility: visible !important;
+        display: block !important;
     }
 
     /* Services section */
     .services {
         padding: 40px 20px;
+        min-height: 0;
     }
 
     /* Gallery Grid */
