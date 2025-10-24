@@ -733,7 +733,6 @@ function editService(serviceSlug) {
     document.getElementById('serviceSlug').value = service.slug;
     document.getElementById('serviceDescription').value = service.description || '';
     document.getElementById('serviceQuote').value = service.quote || '';
-    document.getElementById('serviceBenefits').value = (service.benefits || []).join('\n');
     document.getElementById('serviceStatus').value = service.status || 'active';
 
     // Store editing slug
@@ -862,7 +861,6 @@ function saveService(event) {
         slug: document.getElementById('serviceSlug').value.trim().toLowerCase().replace(/\s+/g, '-'),
         description: document.getElementById('serviceDescription').value.trim(),
         quote: document.getElementById('serviceQuote').value.trim(),
-        benefits: document.getElementById('serviceBenefits').value.split('\n').filter(b => b.trim()),
         status: document.getElementById('serviceStatus').value,
         createdAt: editingSlug ? undefined : new Date().toISOString(),
         updatedAt: new Date().toISOString()
