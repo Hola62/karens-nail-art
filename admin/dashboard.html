@@ -161,13 +161,20 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <label for="gallerySelect">Select Gallery:</label>
-                    <select id="gallerySelect">
-                        <option value="gel-polish">Gel Polish</option>
-                        <option value="acrylic-nails">Acrylic Nails</option>
-                        <option value="nail-art">Nail Art</option>
-                        <option value="home">Home Gallery</option>
+                    <label for="displayLocation">Where should these images appear?</label>
+                    <select id="displayLocation">
+                        <option value="gallery-home">Gallery & Home Page (Default)</option>
+                        <option value="gel-polish">Gel Polish Service Only</option>
+                        <option value="acrylic-nails">Acrylic Nails Service Only</option>
+                        <option value="nail-art">Nail Art Service Only</option>
+                        <option value="pedicure">Pedicure Service Only</option>
+                        <option value="manicure">Manicure Service Only</option>
+                        <option value="nail-extensions">Nail Extensions Service Only</option>
                     </select>
+                    <small style="display: block; margin-top: 8px; color: #666;">
+                        💡 By default, images appear in Gallery & Home page. Select a service to add images to that
+                        specific service page instead.
+                    </small>
                 </div>
                 <button class="btn-primary" onclick="uploadImages()">Upload Images</button>
             </div>
@@ -340,7 +347,7 @@
 
     <!-- EmailJS SDK for sending emails from the browser -->
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    
+
     <!-- Embedded email configuration (fallback if external file doesn't load) -->
     <script>
         // Email configuration - embedded for reliability
@@ -354,7 +361,7 @@
             };
         }
     </script>
-    
+
     <!-- Try to load external config (will be overridden by embedded if it loads later) -->
     <script src="../js/email-config.js"></script>
     <script src="../js/api-handler.js"></script>

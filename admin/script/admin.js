@@ -218,7 +218,7 @@ function changeProfilePic() {
 // Upload images
 async function uploadImages() {
     const fileInput = document.getElementById('imageUpload');
-    const gallery = document.getElementById('gallerySelect').value;
+    const displayLocation = document.getElementById('displayLocation').value;
     const files = fileInput.files;
 
     if (files.length === 0) {
@@ -259,7 +259,12 @@ async function uploadImages() {
             }
             readPromises.push(new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = () => resolve({ name: file.name, data: reader.result, uploaded_at: new Date().toISOString(), gallery });
+                reader.onload = () => resolve({
+                    name: file.name,
+                    data: reader.result,
+                    uploaded_at: new Date().toISOString(),
+                    displayLocation: displayLocation
+                });
                 reader.onerror = reject;
                 reader.readAsDataURL(file);
             }));
@@ -269,7 +274,9 @@ async function uploadImages() {
             const results = await Promise.all(readPromises);
             const combined = existing.concat(results);
             localStorage.setItem(uploadsKey, JSON.stringify(combined));
-            alert('Images uploaded to local storage successfully!');
+
+            const locationName = displayLocation === 'gallery-home' ? 'Gallery & Home Page' : displayLocation.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            alert(`Images uploaded successfully to ${locationName}!`);
             fileInput.value = '';
             // Reload the image grid (if implemented to read per-user uploads)
             if (typeof loadImageGrid === 'function') loadImageGrid();
@@ -281,7 +288,7 @@ async function uploadImages() {
     }
 
     // Upload using API handler for backend mode
-    const result = await API.uploadImages(files, gallery);
+    const result = await API.uploadImages(files, displayLocation);
 
     if (result.success) {
         alert(result.message);
@@ -657,13 +664,13 @@ async function sendReplyEmail() {
 
     } catch (error) {
         console.error('Email send error:', error);
-        
+
         let errorMessage = '❌ Failed to send email.\n\n';
-        
+
         if (error.text) {
             errorMessage += 'Error: ' + error.text + '\n\n';
         }
-        
+
         if (error.text && error.text.includes('recipients')) {
             errorMessage += '⚠️ SOLUTION: Go to EmailJS Dashboard:\n';
             errorMessage += '1. Open your template: template_d3ydngy\n';
@@ -675,7 +682,7 @@ async function sendReplyEmail() {
             errorMessage += '• Service ID and Template ID are correct\n';
             errorMessage += '• You have EmailJS credits available';
         }
-        
+
         alert(errorMessage);
     } finally {
         if (sendBtn) {

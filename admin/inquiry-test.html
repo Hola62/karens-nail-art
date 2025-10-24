@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Inquiry System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background: #3e1f0e;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #5a2f1e;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        pre {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            max-height: 400px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧪 Inquiry System Test</h1>
+
+    <div class="box">
+        <h2>1. Submit Test Inquiry</h2>
+        <input type="text" id="testName" placeholder="Your name" value="Test User">
+        <input type="email" id="testEmail" placeholder="Your email" value="test@example.com">
+        <input type="tel" id="testPhone" placeholder="Your phone" value="+234123456789">
+        <textarea id="testMessage" placeholder="Your message"
+            rows="3">This is a test inquiry message to verify the system is working.</textarea>
+        <button onclick="submitTestInquiry()">Submit Test Inquiry</button>
+        <div id="submitResult"></div>
+    </div>
+
+    <div class="box">
+        <h2>2. View All Inquiries</h2>
+        <button onclick="viewInquiries()">Refresh Inquiries List</button>
+        <button onclick="clearAll()">Clear All Inquiries</button>
+        <div id="inquiriesList"></div>
+    </div>
+
+    <div class="box">
+        <h2>3. Raw localStorage Data</h2>
+        <button onclick="viewRawData()">View Raw Data</button>
+        <pre id="rawData"></pre>
+    </div>
+
+    <script src="../js/api-handler.js"></script>
+    <script src="../js/analytics.js"></script>
+
+    <script>
+        async function submitTestInquiry() {
+            const name = document.getElementById('testName').value;
+            const email = document.getElementById('testEmail').value;
+            const phone = document.getElementById('testPhone').value;
+            const message = document.getElementById('testMessage').value;
+
+            const resultDiv = document.getElementById('submitResult');
+            resultDiv.innerHTML = '<p>Submitting...</p>';
+
+            try {
+                const result = await trackInquiry({
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    message: message
+                });
+
+                if (result.success) {
+                    resultDiv.innerHTML = '<p class="success">✅ Inquiry submitted successfully!</p>';
+                    viewInquiries(); // Refresh the list
+                } else {
+                    resultDiv.innerHTML = '<p class="error">❌ Failed: ' + result.message + '</p>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = '<p class="error">❌ Error: ' + error.message + '</p>';
+            }
+        }
+
+        function viewInquiries() {
+            const data = localStorage.getItem('karensNailArtAnalytics');
+            const listDiv = document.getElementById('inquiriesList');
+
+            if (!data) {
+                listDiv.innerHTML = '<p class="error">❌ No analytics data found in localStorage</p>';
+                return;
+            }
+
+            try {
+                const analytics = JSON.parse(data);
+                const inquiries = analytics.inquiries || [];
+
+                if (inquiries.length === 0) {
+                    listDiv.innerHTML = '<p>No inquiries yet.</p>';
+                } else {
+                    let html = '<h3>Total Inquiries: ' + inquiries.length + '</h3>';
+                    inquiries.forEach((inq, index) => {
+                        html += '<div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 4px;">';
+                        html += '<strong>#' + (index + 1) + '</strong><br>';
+                        html += '<strong>Name:</strong> ' + inq.name + '<br>';
+                        html += '<strong>Email:</strong> ' + inq.email + '<br>';
+                        html += '<strong>Phone:</strong> ' + (inq.phone || 'N/A') + '<br>';
+                        html += '<strong>Message:</strong> ' + inq.message + '<br>';
+                        html += '<strong>Time:</strong> ' + new Date(inq.timestamp).toLocaleString() + '<br>';
+                        html += '<strong>ID:</strong> ' + inq.id;
+                        html += '</div>';
+                    });
+                    listDiv.innerHTML = html;
+                }
+            } catch (error) {
+                listDiv.innerHTML = '<p class="error">❌ Error parsing data: ' + error.message + '</p>';
+            }
+        }
+
+        function viewRawData() {
+            const data = localStorage.getItem('karensNailArtAnalytics');
+            const rawDiv = document.getElementById('rawData');
+
+            if (!data) {
+                rawDiv.textContent = 'No data found';
+            } else {
+                try {
+                    const parsed = JSON.parse(data);
+                    rawDiv.textContent = JSON.stringify(parsed, null, 2);
+                } catch (error) {
+                    rawDiv.textContent = 'Error parsing data: ' + error.message + '\n\nRaw: ' + data;
+                }
+            }
+        }
+
+        function clearAll() {
+            if (confirm('Clear all inquiries from localStorage?')) {
+                localStorage.removeItem('karensNailArtAnalytics');
+                alert('Cleared!');
+                viewInquiries();
+                viewRawData();
+            }
+        }
+
+        // Auto-load on page load
+        viewInquiries();
+        viewRawData();
+    </script>
+</body>
+
+</html>

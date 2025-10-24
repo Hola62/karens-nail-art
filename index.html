@@ -133,6 +133,60 @@
     <script src="js/analytics.js"></script>
     <script src="js/main.js"></script>
     <script>
+        // Load admin-uploaded images for home page gallery
+        function loadHomeGallery() {
+            const galleryContainer = document.querySelector('.gallery-container');
+            if (!galleryContainer) return;
+
+            const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+            const allUsers = ['karen', ...teamMembers.map(m => m.username)];
+
+            const homeImages = [];
+
+            // Collect all uploads for gallery-home
+            allUsers.forEach(username => {
+                const uploadsKey = `userUploads_${username}`;
+                const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
+
+                // Filter for gallery-home images
+                const galleryHomeUploads = userUploads.filter(upload => {
+                    const loc = upload.displayLocation || upload.gallery || 'gallery-home';
+                    return loc === 'gallery-home' || loc === 'home' || loc === 'gallery' || !upload.displayLocation;
+                });
+
+                homeImages.push(...galleryHomeUploads);
+            });
+
+            // Add admin-uploaded images to the gallery
+            if (homeImages.length > 0) {
+                homeImages.sort((a, b) => new Date(b.uploaded_at) - new Date(a.uploaded_at));
+
+                // Only show first 6 images on home page
+                homeImages.slice(0, 6).forEach(upload => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.innerHTML = `
+                        <div class="gallery-image-wrapper">
+                            <img src="${upload.data}" alt="${upload.name}">
+                            <div class="image-actions">
+                                <button class="love-btn" onclick="toggleLove(this)">
+                                    <span class="heart">♡</span>
+                                </button>
+                                <button class="share-btn" onclick="shareImage(this)">
+                                    <span>⤴</span>
+                                </button>
+                            </div>
+                        </div>
+                        <p>${upload.name}</p>
+                    `;
+                    galleryContainer.appendChild(item);
+                });
+            }
+        }
+
+        // Load gallery images when page loads
+        document.addEventListener('DOMContentLoaded', loadHomeGallery);
+
         const btn = document.getElementById('servicesBtn');
         const list = document.getElementById('servicesList');
 

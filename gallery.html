@@ -125,11 +125,19 @@
                 // Sort by upload date (newest first)
                 allUploads.sort((a, b) => new Date(b.uploaded_at) - new Date(a.uploaded_at));
 
+                // Filter to only show gallery-home images (not service-specific images)
+                const galleryHomeImages = allUploads.filter(upload => {
+                    // Show images with displayLocation = 'gallery-home' or old 'home' or 'gallery' values
+                    // Also show images without displayLocation (legacy uploads)
+                    const loc = upload.displayLocation || upload.gallery || 'gallery-home';
+                    return loc === 'gallery-home' || loc === 'home' || loc === 'gallery' || !upload.displayLocation;
+                });
+
                 // Add admin uploads to the gallery
-                allUploads.forEach(upload => {
+                galleryHomeImages.forEach(upload => {
                     const galleryItem = document.createElement('div');
                     galleryItem.className = 'gallery-item';
-                    galleryItem.setAttribute('data-category', upload.gallery || 'home');
+                    galleryItem.setAttribute('data-category', 'admin-upload');
 
                     galleryItem.innerHTML = `
                         <div class="gallery-image-wrapper">

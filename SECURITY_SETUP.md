@@ -17,6 +17,7 @@ Some configuration files contain sensitive credentials and are **NOT** included 
    ```
 
 2. Open `js/email-config.js` and replace the placeholder values:
+
    - `serviceId`: Your EmailJS service ID
    - `templateId`: Your EmailJS template ID
    - `publicKey`: Your EmailJS public key

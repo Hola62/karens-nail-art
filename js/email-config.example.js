@@ -9,7 +9,7 @@ window.EMAIL_SETTINGS = {
     serviceId: 'YOUR_SERVICE_ID_HERE',        // e.g., 'service_abc123'
     templateId: 'YOUR_TEMPLATE_ID_HERE',      // e.g., 'template_xyz789'
     publicKey: 'YOUR_PUBLIC_KEY_HERE',        // e.g., 'a1b2C3D4E5F6G7H8I'
-    
+
     // Your business email settings
     fromEmail: 'your-email@example.com',      // Email address for replies
     fromName: "Karen's Nail Art"              // Your business name
