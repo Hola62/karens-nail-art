@@ -340,7 +340,22 @@
 
     <!-- EmailJS SDK for sending emails from the browser -->
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <!-- Site email configuration (fill in your EmailJS IDs) -->
+    
+    <!-- Embedded email configuration (fallback if external file doesn't load) -->
+    <script>
+        // Email configuration - embedded for reliability
+        if (typeof window.EMAIL_SETTINGS === 'undefined') {
+            window.EMAIL_SETTINGS = {
+                serviceId: 'service_1k6kdmg',
+                templateId: 'template_d3ydngy',
+                publicKey: 'GiDmg3fRq3ZWzWGAu',
+                fromEmail: 'holuwahola3@gmail.com',
+                fromName: "Karen's Nail Art"
+            };
+        }
+    </script>
+    
+    <!-- Try to load external config (will be overridden by embedded if it loads later) -->
     <script src="../js/email-config.js"></script>
     <script src="../js/api-handler.js"></script>
     <script src="../js/analytics.js"></script>
@@ -350,18 +365,18 @@
             console.log('EmailJS Init Check:');
             console.log('- EMAIL_SETTINGS exists:', !!window.EMAIL_SETTINGS);
             console.log('- emailjs exists:', !!window.emailjs);
-            
+
             if (window.EMAIL_SETTINGS) {
                 console.log('- Service ID:', window.EMAIL_SETTINGS.serviceId);
                 console.log('- Template ID:', window.EMAIL_SETTINGS.templateId);
                 console.log('- Public Key:', window.EMAIL_SETTINGS.publicKey ? 'Set' : 'Missing');
             }
-            
+
             if (window.EMAIL_SETTINGS && window.EMAIL_SETTINGS.publicKey && window.emailjs) {
-                try { 
+                try {
                     emailjs.init(window.EMAIL_SETTINGS.publicKey);
                     console.log('✅ EmailJS initialized successfully');
-                } catch (e) { 
+                } catch (e) {
                     console.error('❌ EmailJS init failed:', e);
                 }
             } else {
