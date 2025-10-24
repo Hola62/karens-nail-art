@@ -826,10 +826,54 @@
 }
 
 @media (max-width: 768px) {
+    .admin-body {
+        flex-direction: column;
+    }
+
     .admin-sidebar {
         width: 100%;
         height: auto;
         position: relative;
+        overflow-y: visible;
+    }
+
+    .admin-logo {
+        padding: 15px;
+    }
+
+    .admin-logo h2 {
+        font-size: 18px;
+    }
+
+    .admin-profile {
+        padding: 15px;
+    }
+
+    .profile-pic-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    /* Make navigation horizontal on mobile */
+    .admin-nav {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .admin-nav .nav-item {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 140px;
+        padding: 12px 10px;
+        font-size: 14px;
+        text-align: center;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .admin-nav .nav-item.active {
+        background: rgba(240, 178, 122, 0.2);
     }
 
     .admin-content {
@@ -840,6 +884,7 @@
 
     .stats-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
 
     .dashboard-grid {
@@ -854,6 +899,45 @@
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
+    }
+
+    .admin-header h1 {
+        font-size: 1.5rem;
+    }
+
+    /* Make tables scroll horizontally on mobile */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    /* Make forms more mobile-friendly */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    /* Gallery grid on mobile */
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* Service cards on mobile */
+    .services-list .service-item {
+        padding: 15px;
+    }
+
+    /* Modal adjustments for mobile */
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+        padding: 20px 15px;
     }
 }
 
