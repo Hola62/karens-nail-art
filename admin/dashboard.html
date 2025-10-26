@@ -46,6 +46,9 @@
             <a href="#testimonials" class="nav-item" onclick="showSection('testimonials')">
                 Testimonials
             </a>
+            <a href="#products" class="nav-item" onclick="showSection('products')">
+                Products
+            </a>
             <a href="#team" class="nav-item" onclick="showSection('team')">
                 Team Management
             </a>
@@ -174,7 +177,7 @@
                         <option value="manicure">Manicure Service Only</option>
                         <option value="nail-extensions">Nail Extensions Service Only</option>
                     </select>
-                    <small style="display: block; margin-top: 8px; color: #666;">
+                    <small class="form-hint">
                         💡 By default, images appear in Gallery & Home page. Select a service to add images to that
                         specific service page instead.
                     </small>
@@ -221,12 +224,24 @@
             <h2>Manage Testimonials</h2>
             <p class="subtitle">Add and manage customer testimonials displayed on your website</p>
 
-            <button class="btn-primary" onclick="openAddTestimonialModal()" style="margin-bottom: 20px;">+ Add New
+            <button class="btn-primary mb-20" onclick="openAddTestimonialModal()">+ Add New
                 Testimonial</button>
 
             <div class="testimonials-list" id="testimonialsList">
                 <!-- Testimonials will be loaded here -->
             </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="section-products" class="admin-section">
+            <h2>Manage Products</h2>
+            <p class="subtitle">Add items you sell (name, price, description, image)</p>
+
+            <div id="productsList">
+                <!-- Products will be loaded dynamically -->
+            </div>
+
+            <button class="btn-primary add-new-service-btn" onclick="openAddProductModal()">+ Add New Product</button>
         </section>
 
         <!-- Team Management Section -->
@@ -449,15 +464,15 @@
 
     <!-- Manage Service Images Modal -->
     <div id="serviceImagesModal" class="modal">
-        <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-content modal-wide">
             <h3 id="serviceImagesTitle">Manage Images</h3>
-            <p id="serviceImagesSubtitle" style="margin-bottom: 20px; color: #666;"></p>
+            <p id="serviceImagesSubtitle" class="modal-subtitle"></p>
 
             <div class="service-images-grid" id="serviceImagesGrid">
                 <!-- Images will be loaded here -->
             </div>
 
-            <div class="actions" style="margin-top: 20px;">
+            <div class="actions mt-20">
                 <button onclick="closeServiceImagesModal()" class="btn btn-cancel">Close</button>
                 <button onclick="openUploadForService()" class="btn">Upload New Images</button>
             </div>
@@ -502,6 +517,48 @@
                 <div class="actions">
                     <button type="button" onclick="closeTestimonialModal()" class="btn btn-cancel">Cancel</button>
                     <button type="submit" class="btn">Save Testimonial</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <h3 id="productModalTitle">Add New Product</h3>
+            <form id="productForm" onsubmit="saveProduct(event)">
+                <div class="form-row">
+                    <label for="productName">Product Name *</label>
+                    <input id="productName" type="text" placeholder="e.g., Press-On Nails Set" required />
+                </div>
+                <div class="form-row">
+                    <label for="productPrice">Price (₦) *</label>
+                    <input id="productPrice" type="number" min="0" step="1" placeholder="e.g., 5000" required />
+                </div>
+                <div class="form-row">
+                    <label for="productBadge">Badge/Label (optional)</label>
+                    <input id="productBadge" type="text" placeholder="e.g., New, Best Seller, Sale" />
+                    <small class="form-hint">Displayed as a small badge on the product (optional)</small>
+                </div>
+                <div class="form-row">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" rows="3" placeholder="Short description"></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="productImage">Image</label>
+                    <input id="productImage" type="file" accept="image/*" />
+                    <small class="form-hint">Optional, JPG/PNG up to 2MB</small>
+                </div>
+                <div class="form-row">
+                    <label for="productStatus">Status</label>
+                    <select id="productStatus">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button type="button" onclick="closeProductModal()" class="btn btn-cancel">Cancel</button>
+                    <button type="submit" class="btn">Save Product</button>
                 </div>
             </form>
         </div>

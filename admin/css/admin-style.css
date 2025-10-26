@@ -205,6 +205,11 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
 }
 
+/* Wider modal variant */
+.modal-content.modal-wide {
+    max-width: 800px;
+}
+
 .modal-content h3 {
     margin-bottom: 10px;
 }
@@ -232,6 +237,11 @@
     display: flex;
     gap: 10px;
     justify-content: flex-end;
+}
+
+.modal-subtitle {
+    margin-bottom: 20px;
+    color: #666;
 }
 
 .btn-cancel {
@@ -788,6 +798,37 @@
 
 .add-new-service-btn {
     margin-top: 20px;
+}
+
+/* Spacing utilities */
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+/* Products List */
+#productsList .service-item img.product-thumb {
+    width: 100%;
+    max-width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 15px;
+}
+
+#productsList .item-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#productsList .item-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 6px;
 }
 
 /* Responsive Design */

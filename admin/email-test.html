@@ -54,6 +54,16 @@
             border-radius: 4px;
             overflow-x: auto;
         }
+
+        /* Utilities for test page */
+        .input-medium {
+            padding: 8px;
+            width: 300px;
+        }
+
+        .mt-10 {
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -73,9 +83,9 @@
     <div class="test-box">
         <h2>Step 3: Send Test Email</h2>
         <p>Enter your email to receive a test message:</p>
-        <input type="email" id="testEmail" placeholder="your-email@example.com" style="padding: 8px; width: 300px;">
+        <input type="email" id="testEmail" class="input-medium" placeholder="your-email@example.com">
         <button onclick="sendTestEmail()">Send Test Email</button>
-        <div id="sendResult" style="margin-top: 10px;"></div>
+        <div id="sendResult" class="mt-10"></div>
     </div>
 
     <div class="test-box">

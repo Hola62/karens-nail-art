@@ -52,6 +52,7 @@
             <ul class="nav-menu">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="services.html">Services</a></li>
+                <li><a href="products.html">Products</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
@@ -168,10 +169,17 @@
                 <p>Quick and reusable salon nails</p>
             </a>
         </div>
-        <div style="text-align: center; margin-top: 30px;">
-            <a href="services.html" class="btn"
-                style="display: inline-block; padding: 12px 30px; background: #f0b27a; color: #3e1f0e; text-decoration: none; border-radius: 5px; font-weight: 600;">View
-                All Services</a>
+        <div class="text-center mt-30">
+            <a href="services.html" class="btn">View All Services</a>
+        </div>
+    </section>
+
+    <!-- Featured Product (only the latest active product shows here) -->
+    <section class="featured-product-section">
+        <h2>Featured Product</h2>
+        <p class="subtitle">New in store — tap to see all products</p>
+        <div id="featuredProduct" class="featured-product-container">
+            <!-- Populated by products.js (latest active product only) -->
         </div>
     </section>
 
@@ -202,6 +210,8 @@
     <!--  Script for toggle -->
     <script src="js/analytics.js"></script>
     <script src="js/main.js"></script>
+    <!-- Load products renderer to populate featured product -->
+    <script src="js/products.js"></script>
     <script>
         // Load admin-uploaded images for home page gallery
         function loadHomeGallery() {

@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', function () {
     loadProfilePicture();
     loadTeamList();
     loadAdminGallery();
+    loadProductsList();
 });
 
 // Check if user is authenticated
@@ -1343,3 +1344,157 @@ function loadTestimonialsList() {
 document.addEventListener('DOMContentLoaded', function () {
     loadTestimonialsList();
 });
+
+// ========== PRODUCTS MANAGEMENT ==========
+
+function openAddProductModal() {
+    const form = document.getElementById('productForm');
+    if (!form) return;
+    form.reset();
+    document.getElementById('productModalTitle').textContent = 'Add New Product';
+    delete document.getElementById('productModal').dataset.editingId;
+    document.getElementById('productModal').style.display = 'flex';
+}
+
+function closeProductModal() {
+    const modal = document.getElementById('productModal');
+    if (modal) {
+        modal.style.display = 'none';
+        delete modal.dataset.editingId;
+    }
+}
+
+function formatCurrency(n) {
+    const num = Number(n);
+    if (isNaN(num)) return String(n || '');
+    return '₦' + num.toLocaleString();
+}
+
+function loadProductsList() {
+    const container = document.getElementById('productsList');
+    if (!container) return;
+
+    const products = JSON.parse(localStorage.getItem('nailArtProducts') || '[]');
+
+    if (products.length === 0) {
+        container.innerHTML = '<p class="empty-state">No products yet. Click "Add New Product" to create one.</p>';
+        return;
+    }
+
+    // Newest first
+    products.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+    container.innerHTML = products.map(p => `
+        <div class="service-item">
+            <div class="item-row">
+                ${p.imageData ? `<img class="product-thumb" src="${p.imageData}" alt="${p.name}">` : ''}
+                <div>
+                    <h3>${p.name} ${p.badge ? `<span class=\"status-badge active\">${p.badge}</span>` : ''}</h3>
+                    <div class="item-meta">${formatCurrency(p.price)} · <span class="status-badge ${p.status}">${p.status || 'active'}</span></div>
+                    ${p.description ? `<p style="margin-top:8px;color:#666;">${p.description}</p>` : ''}
+                </div>
+            </div>
+            <div class="service-actions" style="margin-top: 12px;">
+                <button class="btn-edit" onclick="editProduct('${p.id}')">Edit</button>
+                <button class="btn-delete" onclick="deleteProduct('${p.id}')">Delete</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function editProduct(productId) {
+    const products = JSON.parse(localStorage.getItem('nailArtProducts') || '[]');
+    const product = products.find(p => p.id == productId);
+    if (!product) return alert('Product not found');
+
+    document.getElementById('productModalTitle').textContent = 'Edit Product';
+    document.getElementById('productName').value = product.name || '';
+    document.getElementById('productPrice').value = product.price || '';
+    document.getElementById('productDescription').value = product.description || '';
+    document.getElementById('productBadge').value = product.badge || '';
+    document.getElementById('productStatus').value = product.status || 'active';
+
+    const modal = document.getElementById('productModal');
+    modal.dataset.editingId = product.id;
+    modal.style.display = 'flex';
+}
+
+function saveProduct(event) {
+    event.preventDefault();
+
+    const modal = document.getElementById('productModal');
+    const editingId = modal.dataset.editingId;
+
+    const name = document.getElementById('productName').value.trim();
+    const price = document.getElementById('productPrice').value.trim();
+    const description = document.getElementById('productDescription').value.trim();
+    const badge = document.getElementById('productBadge').value.trim();
+    const status = document.getElementById('productStatus').value;
+    const fileInput = document.getElementById('productImage');
+    const file = fileInput.files[0];
+
+    if (!name || !price) {
+        alert('Please provide product name and price');
+        return;
+    }
+
+    const products = JSON.parse(localStorage.getItem('nailArtProducts') || '[]');
+
+    const persist = (imageDataOptional) => {
+        if (editingId) {
+            const idx = products.findIndex(p => p.id == editingId);
+            if (idx !== -1) {
+                products[idx] = {
+                    ...products[idx],
+                    name,
+                    price,
+                    description,
+                    badge,
+                    status,
+                    updatedAt: new Date().toISOString(),
+                    ...(imageDataOptional ? { imageData: imageDataOptional } : {})
+                };
+            }
+        } else {
+            products.push({
+                id: Date.now().toString(),
+                name,
+                price,
+                description,
+                badge,
+                status,
+                imageData: imageDataOptional || '',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            });
+        }
+
+        localStorage.setItem('nailArtProducts', JSON.stringify(products));
+        alert('Product saved successfully!');
+        closeProductModal();
+        loadProductsList();
+        fileInput.value = '';
+    };
+
+    if (file) {
+        if (file.size > 2 * 1024 * 1024) {
+            alert('Image is too large. Max 2MB.');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => persist(reader.result);
+        reader.onerror = () => alert('Failed to read image file');
+        reader.readAsDataURL(file);
+    } else {
+        persist(undefined);
+    }
+}
+
+function deleteProduct(productId) {
+    if (!confirm('Delete this product?')) return;
+    const products = JSON.parse(localStorage.getItem('nailArtProducts') || '[]');
+    const filtered = products.filter(p => p.id != productId);
+    localStorage.setItem('nailArtProducts', JSON.stringify(filtered));
+    alert('Product deleted.');
+    loadProductsList();
+}

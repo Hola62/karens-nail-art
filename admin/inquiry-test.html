@@ -22,6 +22,14 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        .inquiry-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background: #fff;
+        }
+
         button {
             background: #3e1f0e;
             color: white;
@@ -141,7 +149,7 @@
                 } else {
                     let html = '<h3>Total Inquiries: ' + inquiries.length + '</h3>';
                     inquiries.forEach((inq, index) => {
-                        html += '<div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 4px;">';
+                        html += '<div class="inquiry-card">';
                         html += '<strong>#' + (index + 1) + '</strong><br>';
                         html += '<strong>Name:</strong> ' + inq.name + '<br>';
                         html += '<strong>Email:</strong> ' + inq.email + '<br>';
