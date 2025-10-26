@@ -2,13 +2,14 @@
 // Automatically detects which system is available
 
 const API = {
-    baseUrl: '/admin/api/',
+    // You can override this at runtime by defining window.API_BASE_URL in any HTML before loading this file
+    baseUrl: (typeof window !== 'undefined' && window.API_BASE_URL) ? window.API_BASE_URL : '/admin/api/',
     useBackend: false,
 
     // Check if backend is available
     async init() {
         try {
-            const response = await fetch(this.baseUrl + 'check.php');
+            const response = await fetch(this.baseUrl + 'check.php', { credentials: 'include' });
             this.useBackend = response.ok;
             console.log('Backend status:', this.useBackend ? 'Connected' : 'Using localStorage');
         } catch (error) {
@@ -258,7 +259,8 @@ const API = {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+                credentials: 'include'
             });
             return await response.json();
         } catch (error) {
@@ -272,7 +274,8 @@ const API = {
         try {
             const response = await fetch(this.baseUrl + endpoint, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                credentials: 'include'
             });
             return await response.json();
         } catch (error) {
@@ -284,7 +287,7 @@ const API = {
     // Helper: GET request
     async get(endpoint) {
         try {
-            const response = await fetch(this.baseUrl + endpoint);
+            const response = await fetch(this.baseUrl + endpoint, { credentials: 'include' });
             return await response.json();
         } catch (error) {
             console.error('API Error:', error);
