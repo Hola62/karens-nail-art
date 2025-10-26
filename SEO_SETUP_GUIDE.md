@@ -3,6 +3,7 @@
 ## ✅ SEO Improvements Added
 
 ### 1. Meta Tags Enhanced
+
 - Added comprehensive meta descriptions
 - Enhanced keywords for "Karen's Nail Art", "Abuja nails", etc.
 - Added Open Graph tags for Facebook/social media sharing
@@ -11,6 +12,7 @@
 - Added robots meta tag
 
 ### 2. Files Created
+
 - **sitemap.xml** - Tells Google all your website pages
 - **robots.txt** - Tells Google which pages to index
 - **Schema.org markup** - Helps Google understand your business
@@ -20,6 +22,7 @@
 ## 🚀 Next Steps to Get on Google
 
 ### Step 1: Submit to Google Search Console
+
 1. Go to **https://search.google.com/search-console**
 2. Sign in with a Google account
 3. Click "Add Property"
@@ -31,12 +34,14 @@
    - **Google Analytics**: If you have it
 
 ### Step 2: Submit Sitemap
+
 1. After verification, go to "Sitemaps" in the left menu
 2. Add new sitemap: `https://hola62.github.io/karens-nail-art/sitemap.xml`
 3. Click Submit
 4. Google will start crawling your site
 
 ### Step 3: Google Business Profile (Important for Local SEO!)
+
 1. Go to **https://business.google.com**
 2. Click "Manage now"
 3. Enter business name: "Karen's Nail Art"
@@ -48,6 +53,7 @@
 9. Add photos of your nail work!
 
 ### Step 4: Build Backlinks
+
 - Share your website link on:
   - Instagram bio (@karen_wealth)
   - TikTok bio (@eniola)
@@ -56,6 +62,7 @@
   - Local business directories in Nigeria
 
 ### Step 5: Create Content
+
 - Add a blog section with nail care tips
 - Update gallery regularly with new work
 - Add customer testimonials (already done!)
@@ -75,6 +82,7 @@
 ## 🎯 Best Keywords to Target
 
 Your site is now optimized for:
+
 - ✅ Karen's Nail Art
 - ✅ Nail salon Abuja
 - ✅ Acrylic nails Abuja
@@ -101,6 +109,7 @@ Your site is now optimized for:
 ## 📱 Social Media Integration
 
 Already set up:
+
 - ✅ TikTok: @eniola
 - ✅ Instagram: @karen_wealth
 - ✅ WhatsApp: +234 703 364 8510

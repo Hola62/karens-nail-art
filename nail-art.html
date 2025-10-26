@@ -139,10 +139,7 @@
                 const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
 
                 // Filter for nail-art images
-                const nailArtImages = userUploads.filter(upload => {
-                    const loc = upload.displayLocation || upload.gallery || '';
-                    return loc === 'nail-art';
-                });
+                const nailArtImages = userUploads.filter(upload => upload.displayLocation === 'nail-art');
 
                 serviceImages.push(...nailArtImages);
             });

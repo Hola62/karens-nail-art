@@ -125,10 +125,7 @@
                 const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
 
                 // Filter for gel-polish images
-                const gelPolishImages = userUploads.filter(upload => {
-                    const loc = upload.displayLocation || upload.gallery || '';
-                    return loc === 'gel-polish';
-                });
+                const gelPolishImages = userUploads.filter(upload => upload.displayLocation === 'gel-polish');
 
                 serviceImages.push(...gelPolishImages);
             });

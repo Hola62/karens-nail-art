@@ -138,10 +138,7 @@
                 const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
 
                 // Filter for acrylic-nails images
-                const acrylicImages = userUploads.filter(upload => {
-                    const loc = upload.displayLocation || upload.gallery || '';
-                    return loc === 'acrylic-nails';
-                });
+                const acrylicImages = userUploads.filter(upload => upload.displayLocation === 'acrylic-nails');
 
                 serviceImages.push(...acrylicImages);
             });

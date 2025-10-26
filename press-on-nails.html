@@ -84,10 +84,7 @@
                 const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
 
                 // Filter for press-on-nails images
-                const pressOnImages = userUploads.filter(upload => {
-                    const loc = upload.displayLocation || upload.gallery || '';
-                    return loc === 'press-on-nails';
-                });
+                const pressOnImages = userUploads.filter(upload => upload.displayLocation === 'press-on-nails');
 
                 serviceImages.push(...pressOnImages);
             });

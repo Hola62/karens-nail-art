@@ -780,10 +780,7 @@ function loadServiceImagesForManagement(serviceSlug) {
         const uploadsKey = `userUploads_${username}`;
         const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
 
-        const filtered = userUploads.filter(upload => {
-            const loc = upload.displayLocation || upload.gallery || '';
-            return loc === serviceSlug;
-        });
+        const filtered = userUploads.filter(upload => upload.displayLocation === serviceSlug);
 
         serviceImages.push(...filtered.map(img => ({ ...img, uploadedBy: username })));
     });
@@ -996,8 +993,10 @@ function loadServicesList() {
         const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
 
         userUploads.forEach(upload => {
-            const loc = upload.displayLocation || upload.gallery || '';
-            imageCounts[loc] = (imageCounts[loc] || 0) + 1;
+            const loc = upload.displayLocation || '';
+            if (loc) {
+                imageCounts[loc] = (imageCounts[loc] || 0) + 1;
+            }
         });
     });
 

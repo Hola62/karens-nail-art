@@ -83,10 +83,7 @@
                 const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
 
                 // Filter for nail-extensions images
-                const extensionImages = userUploads.filter(upload => {
-                    const loc = upload.displayLocation || upload.gallery || '';
-                    return loc === 'nail-extensions';
-                });
+                const extensionImages = userUploads.filter(upload => upload.displayLocation === 'nail-extensions');
 
                 serviceImages.push(...extensionImages);
             });

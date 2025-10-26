@@ -83,10 +83,7 @@
                 const userUploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
 
                 // Filter for manicure images
-                const manicureImages = userUploads.filter(upload => {
-                    const loc = upload.displayLocation || upload.gallery || '';
-                    return loc === 'manicure';
-                });
+                const manicureImages = userUploads.filter(upload => upload.displayLocation === 'manicure');
 
                 serviceImages.push(...manicureImages);
             });
