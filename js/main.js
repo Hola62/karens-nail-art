@@ -1,3 +1,52 @@
+// Simple toast + confirm modal utilities for public site
+(function () {
+    function ensureToastContainer() {
+        let c = document.getElementById('toastContainer');
+        if (!c) {
+            c = document.createElement('div');
+            c.id = 'toastContainer';
+            c.className = 'toast-container';
+            document.body.appendChild(c);
+        }
+        return c;
+    }
+    window.showToast = function (arg1, arg2, arg3) {
+        const container = ensureToastContainer();
+        let title = '', message = '', type = 'info';
+        if (typeof arg3 === 'string') { title = arg1 || ''; message = arg2 || ''; type = arg3; }
+        else { message = arg1 || ''; type = arg2 || 'info'; }
+        const toast = document.createElement('div');
+        toast.className = 'toast ' + type;
+        const content = document.createElement('div'); content.style.flex = '1';
+        if (title) { const t = document.createElement('div'); t.className = 'toast-title'; t.textContent = title; content.appendChild(t); }
+        const m = document.createElement('div'); m.className = 'toast-message'; m.innerHTML = (message || '').replace(/\n/g, '<br>'); content.appendChild(m);
+        toast.appendChild(content); container.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 200ms'; setTimeout(() => toast.remove(), 220); }, 3500);
+    };
+
+    // Lightweight confirm modal returning a Promise<boolean>
+    window.showConfirm = function ({ title = 'Please confirm', message = '', confirmText = 'Yes', cancelText = 'Cancel' } = {}) {
+        return new Promise(resolve => {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20010;display:flex;align-items:center;justify-content:center;padding:16px;';
+            const box = document.createElement('div');
+            box.style.cssText = 'background:#fff;color:#3e1f0e;max-width:420px;width:100%;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.2);overflow:hidden;';
+            const hdr = document.createElement('div'); hdr.style.cssText = 'padding:14px 16px;border-bottom:1px solid #f0e6de;font-weight:700;'; hdr.textContent = title; box.appendChild(hdr);
+            const body = document.createElement('div'); body.style.cssText = 'padding:14px 16px;line-height:1.5;'; body.textContent = message; box.appendChild(body);
+            const actions = document.createElement('div'); actions.style.cssText = 'padding:12px 16px;display:flex;justify-content:flex-end;gap:10px;background:#f9f5f1;';
+            const btnCancel = document.createElement('button'); btnCancel.textContent = cancelText; btnCancel.style.cssText = 'padding:8px 14px;border-radius:8px;border:1px solid #e0d5cc;background:#fff;color:#3e1f0e;cursor:pointer;';
+            const btnOk = document.createElement('button'); btnOk.textContent = confirmText; btnOk.style.cssText = 'padding:8px 14px;border-radius:8px;border:none;background:#f0b27a;color:#3e1f0e;font-weight:700;cursor:pointer;';
+            actions.appendChild(btnCancel); actions.appendChild(btnOk); box.appendChild(actions);
+            overlay.appendChild(box); document.body.appendChild(overlay);
+            function cleanup() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }
+            btnCancel.onclick = () => { cleanup(); resolve(false); };
+            btnOk.onclick = () => { cleanup(); resolve(true); };
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) { cleanup(); resolve(false); } });
+            document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { document.removeEventListener('keydown', esc); cleanup(); resolve(false); } });
+        });
+    };
+})();
+
 // Show service cards immediately on mobile, use scroll animation on desktop
 const isMobile = window.innerWidth <= 768;
 
@@ -82,7 +131,7 @@ async function shareImage(button) {
 function copyToClipboard(text) {
     if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
-            alert('Link copied to clipboard!');
+            showToast('Link copied to clipboard!', 'success');
         });
     } else {
         const textarea = document.createElement('textarea');
@@ -91,7 +140,7 @@ function copyToClipboard(text) {
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        alert('Link copied to clipboard!');
+        showToast('Link copied to clipboard!', 'success');
     }
 }
 

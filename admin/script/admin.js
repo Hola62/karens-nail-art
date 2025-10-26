@@ -8,6 +8,63 @@ window.addEventListener('DOMContentLoaded', function () {
     loadProductsList();
 });
 
+// Lightweight toast notifications (replaces intrusive alert())
+function showToast(arg1, arg2, arg3) {
+    const container = document.getElementById('toastContainer');
+    if (!container) {
+        // Fallback if container isn't present
+        const msg = typeof arg3 === 'string' ? `${arg1}: ${arg2}` : (arg1 || '');
+        alert(msg);
+        return;
+    }
+
+    let title = '';
+    let message = '';
+    let type = 'info';
+
+    if (typeof arg3 === 'string') {
+        title = arg1 || '';
+        message = arg2 || '';
+        type = arg3 || 'info';
+    } else {
+        title = '';
+        message = arg1 || '';
+        type = arg2 || 'info';
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+
+    const content = document.createElement('div');
+    content.style.flex = '1';
+
+    if (title) {
+        const t = document.createElement('div');
+        t.className = 'toast-title';
+        t.textContent = title;
+        content.appendChild(t);
+    }
+
+    const m = document.createElement('div');
+    m.className = 'toast-message';
+    // Support basic line breaks in messages
+    m.innerHTML = (message || '').replace(/\n/g, '<br>');
+    content.appendChild(m);
+
+    toast.appendChild(content);
+
+    container.appendChild(toast);
+
+    // Auto-dismiss after 3.5s
+    setTimeout(() => {
+        if (toast && toast.parentNode) {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 200ms ease-in';
+            setTimeout(() => toast.parentNode && toast.parentNode.removeChild(toast), 220);
+        }
+    }, 3500);
+}
+
 // Check if user is authenticated
 function checkAuth() {
     const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
@@ -192,7 +249,7 @@ function changeProfilePic() {
         if (file) {
             // Check file size (max 2MB)
             if (file.size > 2 * 1024 * 1024) {
-                alert('Profile picture must be less than 2MB');
+                showToast('Profile picture must be less than 2MB', 'error');
                 return;
             }
 
@@ -207,7 +264,7 @@ function changeProfilePic() {
                 const key = `adminProfilePic_${adminUsername}`;
                 localStorage.setItem(key, imageData);
 
-                alert('Profile picture updated successfully!');
+                showToast('Profile picture updated successfully!', 'success');
             };
             reader.readAsDataURL(file);
         }
@@ -223,7 +280,7 @@ async function uploadImages() {
     const files = fileInput.files;
 
     if (files.length === 0) {
-        alert('Please select at least one image to upload.');
+        showToast('Please select at least one image to upload.', 'error');
         return;
     }
 
@@ -233,13 +290,13 @@ async function uploadImages() {
 
         // Check file size (5MB max)
         if (file.size > 5 * 1024 * 1024) {
-            alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+            showToast(`File ${file.name} is too large. Maximum size is 5MB.`, 'error');
             return;
         }
 
         // Check file type
         if (!file.type.match('image.*')) {
-            alert(`File ${file.name} is not an image.`);
+            showToast(`File ${file.name} is not an image.`, 'error');
             return;
         }
     }
@@ -255,7 +312,7 @@ async function uploadImages() {
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             if (file.size > 2 * 1024 * 1024) {
-                alert(`File ${file.name} is too large. Max 2MB.`);
+                showToast(`File ${file.name} is too large. Max 2MB.`, 'error');
                 return;
             }
             readPromises.push(new Promise((resolve, reject) => {
@@ -277,13 +334,13 @@ async function uploadImages() {
             localStorage.setItem(uploadsKey, JSON.stringify(combined));
 
             const locationName = displayLocation === 'gallery-home' ? 'Gallery & Home Page' : displayLocation.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            alert(`Images uploaded successfully to ${locationName}!`);
+            showToast(`Images uploaded successfully to ${locationName}!`, 'success');
             fileInput.value = '';
             // Reload the image grid (if implemented to read per-user uploads)
             if (typeof loadImageGrid === 'function') loadImageGrid();
         } catch (err) {
             console.error('Error reading files:', err);
-            alert('Error uploading images.');
+            showToast('Error uploading images.', 'error');
         }
         return;
     }
@@ -292,13 +349,13 @@ async function uploadImages() {
     const result = await API.uploadImages(files, displayLocation);
 
     if (result.success) {
-        alert(result.message);
+        showToast(result.message, 'success');
         // Clear the input
         fileInput.value = '';
         // Reload the image grid
         loadImageGrid();
     } else {
-        alert('Error: ' + result.message);
+        showToast('Error: ' + result.message, 'error');
     }
 }
 
@@ -313,11 +370,11 @@ function deleteImage(imageName) {
             const uploads = JSON.parse(localStorage.getItem(uploadsKey) || '[]');
             const filtered = uploads.filter(u => u.name !== imageName);
             localStorage.setItem(uploadsKey, JSON.stringify(filtered));
-            alert(`Image ${imageName} deleted successfully!`);
+            showToast(`Image ${imageName} deleted successfully!`, 'success');
             loadImageGrid();
             return;
         }
-        alert(`Image ${imageName} deleted successfully!`);
+        showToast(`Image ${imageName} deleted successfully!`, 'success');
         loadImageGrid();
     }
 }
@@ -365,21 +422,21 @@ async function addTeamMember() {
 
     // Validate inputs
     if (!name || !username || !email) {
-        alert('Please fill in all fields.');
+        showToast('Please fill in all fields.', 'error');
         return;
     }
 
     // Validate username (no spaces, alphanumeric + underscore only)
     const usernameRegex = /^[a-zA-Z0-9_]+$/;
     if (!usernameRegex.test(username)) {
-        alert('Username can only contain letters, numbers, and underscores (no spaces).');
+        showToast('Username can only contain letters, numbers, and underscores (no spaces).', 'error');
         return;
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address.');
+        showToast('Please enter a valid email address.', 'error');
         return;
     }
 
@@ -396,7 +453,7 @@ async function addTeamMember() {
     });
 
     if (result.success) {
-        alert(`Team member ${name} added successfully!\n\nLogin credentials:\nUsername: ${username}\nPassword: admin123`);
+        showToast('Team member added', `Team member ${name} added successfully!\n\nLogin credentials:\nUsername: ${username}\nPassword: admin123`, 'success');
 
         // Clear form
         document.getElementById('teamName').value = '';
@@ -407,7 +464,7 @@ async function addTeamMember() {
         // Reload team list
         loadTeamList();
     } else {
-        alert('Error: ' + result.message);
+        showToast('Error: ' + result.message, 'error');
     }
 }
 
@@ -475,7 +532,7 @@ async function deleteTeamMember(memberId, memberName) {
     // Double check if user is Super Admin
     const adminRole = sessionStorage.getItem('adminRole');
     if (adminRole !== 'Super Admin') {
-        alert('Only Super Admin (Karen) can delete team members.');
+        showToast('Only Super Admin (Karen) can delete team members.', 'error');
         return;
     }
 
@@ -488,16 +545,16 @@ async function deleteTeamMember(memberId, memberName) {
         const result = await API.deleteTeamMember(memberId);
 
         if (result.success) {
-            alert(`${memberName} has been removed from the team.`);
+            showToast(`${memberName} has been removed from the team.`, 'success');
             // Reload the team list
             loadTeamList();
         } else {
-            alert('Error: ' + result.message);
+            showToast('Error: ' + result.message, 'error');
         }
 
     } catch (error) {
         console.error('Error deleting team member:', error);
-        alert('Error deleting team member. Please try again.');
+        showToast('Error deleting team member. Please try again.', 'error');
     }
 }
 
@@ -519,30 +576,30 @@ function saveSettings() {
     // Validate password change if fields are filled
     if (currentPassword || newPassword || confirmPassword) {
         if (!currentPassword || !newPassword || !confirmPassword) {
-            alert('Please fill in all password fields to change your password.');
+            showToast('Please fill in all password fields to change your password.', 'error');
             return;
         }
 
         if (newPassword !== confirmPassword) {
-            alert('New password and confirm password do not match.');
+            showToast('New password and confirm password do not match.', 'error');
             return;
         }
 
         if (newPassword.length < 6) {
-            alert('New password must be at least 6 characters long.');
+            showToast('New password must be at least 6 characters long.', 'error');
             return;
         }
 
         // In a real application, you would verify the current password with the server
         // For now, we'll just check if it matches the default
         if (currentPassword !== 'admin123') {
-            alert('Current password is incorrect.');
+            showToast('Current password is incorrect.', 'error');
             return;
         }
     }
 
     // In a real application, you would save these settings to the server
-    alert('Settings saved successfully!');
+    showToast('Settings saved successfully!', 'success');
 
     // Clear password fields
     document.getElementById('currentPassword').value = '';
@@ -572,13 +629,13 @@ document.addEventListener('DOMContentLoaded', function () {
 function replyToInquiry(inquiryId) {
     try {
         const data = localStorage.getItem('karensNailArtAnalytics');
-        if (!data) return alert('No inquiries data found');
+        if (!data) return showToast('No inquiries data found', 'error');
         const analytics = JSON.parse(data);
         const inquiry = (analytics.inquiries || []).find(i => i.id == inquiryId);
-        if (!inquiry) return alert('Inquiry not found');
+        if (!inquiry) return showToast('Inquiry not found', 'error');
 
         const modal = document.getElementById('replyModal');
-        if (!modal) return alert('Reply modal not available');
+        if (!modal) return showToast('Reply modal not available', 'error');
         document.getElementById('replyToEmail').value = inquiry.email || '';
         document.getElementById('replySubject').value = `Re: Your inquiry to Karen's Nail Art`;
         const greeting = inquiry.name ? `Hi ${inquiry.name},\n\n` : 'Hi there,\n\n';
@@ -590,7 +647,7 @@ function replyToInquiry(inquiryId) {
         modal.setAttribute('data-inquiry-id', inquiryId);
     } catch (e) {
         console.error(e);
-        alert('Unable to open reply dialog.');
+        showToast('Unable to open reply dialog.', 'error');
     }
 }
 
@@ -609,27 +666,27 @@ async function sendReplyEmail() {
 
     // Validation
     if (!toEmail) {
-        alert('Please enter recipient email address');
+        showToast('Please enter recipient email address', 'error');
         return;
     }
     if (!subject) {
-        alert('Please enter email subject');
+        showToast('Please enter email subject', 'error');
         return;
     }
     if (!message) {
-        alert('Please enter your message');
+        showToast('Please enter your message', 'error');
         return;
     }
 
     // Check EmailJS is loaded
     if (typeof emailjs === 'undefined') {
-        alert('EmailJS is not loaded. Please refresh the page and try again.');
+        showToast('EmailJS is not loaded. Please refresh the page and try again.', 'error');
         return;
     }
 
     // Check config exists
     if (!window.EMAIL_SETTINGS || !window.EMAIL_SETTINGS.serviceId || !window.EMAIL_SETTINGS.templateId) {
-        alert('Email configuration is missing. Please check email-config.js file.');
+        showToast('Email configuration is missing. Please check email-config.js file.', 'error');
         return;
     }
 
@@ -657,7 +714,7 @@ async function sendReplyEmail() {
         );
 
         if (response.status === 200) {
-            alert('✅ Reply sent successfully!');
+            showToast('✅ Reply sent successfully!', 'success');
             closeReplyModal();
         } else {
             throw new Error('Unexpected response status: ' + response.status);
@@ -684,7 +741,7 @@ async function sendReplyEmail() {
             errorMessage += '• You have EmailJS credits available';
         }
 
-        alert(errorMessage);
+        showToast(errorMessage, 'error');
     } finally {
         if (sendBtn) {
             sendBtn.disabled = false;
@@ -713,7 +770,7 @@ function deleteInquiry(inquiryId) {
             // Reload the dashboard
             loadDashboardData();
 
-            alert('Inquiry deleted successfully!');
+            showToast('Inquiry deleted successfully!', 'success');
         }
     }
 }
@@ -724,7 +781,7 @@ function editService(serviceSlug) {
     const service = services.find(s => s.slug === serviceSlug);
 
     if (!service) {
-        alert('Service not found');
+        showToast('Service not found', 'error');
         return;
     }
 
@@ -749,7 +806,7 @@ function manageServiceImages(serviceSlug) {
     const service = services.find(s => s.slug === serviceSlug);
 
     if (!service) {
-        alert('Service not found');
+        showToast('Service not found', 'error');
         return;
     }
 
@@ -818,7 +875,7 @@ function deleteServiceImage(username, imageName, serviceSlug) {
     const filtered = uploads.filter(u => u.name !== imageName);
     localStorage.setItem(uploadsKey, JSON.stringify(filtered));
 
-    alert('Image deleted successfully!');
+    showToast('Image deleted successfully!', 'success');
     loadServiceImagesForManagement(serviceSlug);
 }
 
@@ -872,18 +929,18 @@ function saveService(event) {
         const index = services.findIndex(s => s.slug === editingSlug);
         if (index !== -1) {
             services[index] = { ...services[index], ...serviceData };
-            alert('Service updated successfully!');
+            showToast('Service updated successfully!', 'success');
         }
     } else {
         // Check if slug already exists
         if (services.some(s => s.slug === serviceData.slug)) {
-            alert('A service with this URL slug already exists. Please use a different slug.');
+            showToast('A service with this URL slug already exists. Please use a different slug.', 'error');
             return;
         }
 
         // Add new service
         services.push(serviceData);
-        alert('Service added successfully!');
+        showToast('Service added successfully!', 'success');
     }
 
     // Save to localStorage
@@ -917,7 +974,7 @@ function deleteService(serviceSlug) {
     const filtered = services.filter(s => s.slug !== serviceSlug);
     localStorage.setItem('nailArtServices', JSON.stringify(filtered));
 
-    alert('Service deleted successfully!');
+    showToast('Service deleted successfully!', 'success');
     loadServicesList();
 }
 
@@ -1238,12 +1295,12 @@ function saveTestimonial(event) {
         const index = testimonials.findIndex(t => t.id === editingId);
         if (index !== -1) {
             testimonials[index] = { ...testimonials[index], ...testimonialData };
-            alert('Testimonial updated successfully!');
+            showToast('Testimonial updated successfully!', 'success');
         }
     } else {
         // Add new testimonial
         testimonials.push(testimonialData);
-        alert('Testimonial added successfully!');
+        showToast('Testimonial added successfully!', 'success');
     }
 
     // Save to localStorage
@@ -1260,7 +1317,7 @@ function editTestimonial(testimonialId) {
     const testimonial = testimonials.find(t => t.id === testimonialId);
 
     if (!testimonial) {
-        alert('Testimonial not found');
+        showToast('Testimonial not found', 'error');
         return;
     }
 
@@ -1287,7 +1344,7 @@ function deleteTestimonial(testimonialId) {
     const filtered = testimonials.filter(t => t.id !== testimonialId);
     localStorage.setItem('nailArtTestimonials', JSON.stringify(filtered));
 
-    alert('Testimonial deleted successfully!');
+    showToast('Testimonial deleted successfully!', 'success');
     loadTestimonialsList();
 }
 
@@ -1405,7 +1462,7 @@ function loadProductsList() {
 function editProduct(productId) {
     const products = JSON.parse(localStorage.getItem('nailArtProducts') || '[]');
     const product = products.find(p => p.id == productId);
-    if (!product) return alert('Product not found');
+    if (!product) return showToast('Product not found', 'error');
 
     document.getElementById('productModalTitle').textContent = 'Edit Product';
     document.getElementById('productName').value = product.name || '';
@@ -1434,7 +1491,7 @@ function saveProduct(event) {
     const file = fileInput.files[0];
 
     if (!name || !price) {
-        alert('Please provide product name and price');
+        showToast('Please provide product name and price', 'error');
         return;
     }
 
@@ -1470,7 +1527,7 @@ function saveProduct(event) {
         }
 
         localStorage.setItem('nailArtProducts', JSON.stringify(products));
-        alert('Product saved successfully!');
+        showToast('Product saved successfully!', 'success');
         closeProductModal();
         loadProductsList();
         fileInput.value = '';
@@ -1478,12 +1535,12 @@ function saveProduct(event) {
 
     if (file) {
         if (file.size > 2 * 1024 * 1024) {
-            alert('Image is too large. Max 2MB.');
+            showToast('Image is too large. Max 2MB.', 'error');
             return;
         }
         const reader = new FileReader();
         reader.onload = () => persist(reader.result);
-        reader.onerror = () => alert('Failed to read image file');
+        reader.onerror = () => showToast('Failed to read image file', 'error');
         reader.readAsDataURL(file);
     } else {
         persist(undefined);
@@ -1495,6 +1552,6 @@ function deleteProduct(productId) {
     const products = JSON.parse(localStorage.getItem('nailArtProducts') || '[]');
     const filtered = products.filter(p => p.id != productId);
     localStorage.setItem('nailArtProducts', JSON.stringify(filtered));
-    alert('Product deleted.');
+    showToast('Product deleted.', 'success');
     loadProductsList();
 }

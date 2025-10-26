@@ -831,6 +831,65 @@
     margin-top: 6px;
 }
 
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 20000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background: #ffffff;
+    color: #3e1f0e;
+    border-left: 4px solid #f0b27a;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 12px 14px;
+    min-width: 260px;
+    max-width: 360px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: toast-in 200ms ease-out;
+}
+
+.toast .toast-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.toast .toast-message {
+    font-size: 0.95rem;
+}
+
+.toast.success {
+    border-left-color: #28a745;
+}
+
+.toast.error {
+    border-left-color: #dc3545;
+}
+
+.toast.info {
+    border-left-color: #17a2b8;
+}
+
+@keyframes toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .admin-sidebar {

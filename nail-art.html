@@ -196,9 +196,9 @@
             } else {
                 // Fallback: copy link to clipboard
                 navigator.clipboard.writeText(window.location.href).then(() => {
-                    alert('Link copied to clipboard!');
+                    showToast('Link copied to clipboard!', 'success');
                 }).catch(() => {
-                    alert('Unable to share. Please copy the link manually.');
+                    showToast('Unable to share. Please copy the link manually.', 'error');
                 });
             }
         }

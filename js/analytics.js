@@ -60,10 +60,17 @@ function exportAnalytics() {
 }
 
 // Reset analytics (admin only - requires confirmation)
-function resetAnalytics() {
-    if (confirm('Are you sure you want to reset all analytics? This cannot be undone.')) {
+async function resetAnalytics() {
+    const ok = await (window.showConfirm ? showConfirm({
+        title: 'Reset analytics?',
+        message: 'Are you sure you want to reset all analytics? This cannot be undone.',
+        confirmText: 'Yes, reset',
+        cancelText: 'Cancel'
+    }) : Promise.resolve(confirm('Are you sure you want to reset all analytics? This cannot be undone.')));
+
+    if (ok) {
         localStorage.removeItem('karensNailArtAnalytics');
-        alert('Analytics have been reset.');
+        if (window.showToast) showToast('Analytics have been reset.', 'success');
         window.location.reload();
     }
 }
