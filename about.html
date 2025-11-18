@@ -15,15 +15,18 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">Karen's Nail Art</div>
-            <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="products.html">Products</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="about.html" class="active">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="admin/login.html" class="admin-link">Admin</a></li>
-            </ul>
+            <div class="menu-wrapper">
+                <button id="menuButton" class="menu-btn" onclick="toggleMenu()">Menu ▾</button>
+                <div id="menuDropdown" class="menu-dropdown" aria-hidden="true">
+                    <a href="index.html">Home</a>
+                    <a href="services.html">Services</a>
+                    <a href="products.html">Products</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="admin/login.html" class="admin-link admin-menu-link">Admin</a>
+                </div>
+            </div>
         </div>
     </nav>
 
