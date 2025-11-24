@@ -21,8 +21,8 @@
         if (isSmall) menuDropdown.classList.add('drawer');
         else menuDropdown.classList.remove('drawer');
 
-        // Show overlay when menu opens
-        if (menuOverlay) {
+        // Show overlay when menu opens (only in drawer / small-screen mode)
+        if (isSmall && menuOverlay) {
             menuOverlay.classList.add('show');
             menuOverlay.setAttribute('aria-hidden', 'false');
         }
