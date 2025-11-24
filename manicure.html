@@ -16,17 +16,19 @@
         <div class="nav-container">
             <div class="nav-logo">Karen's Nail Art</div>
             <div class="menu-wrapper">
-                <button id="menuButton" class="menu-btn" onclick="toggleMenu()">Menu ▾</button>
-                <div id="menuDropdown" class="menu-dropdown" aria-hidden="true">
-                    <a href="index.html">Home</a>
-                    <a href="services.html">Services</a>
-                    <a href="products.html">Products</a>
-                    <a href="gallery.html">Gallery</a>
-                    <a href="about.html">About</a>
-                    <a href="contact.html">Contact</a>
-                    <a href="admin/login.html" class="admin-link admin-menu-link">Admin</a>
+                <button id="menuButton" class="menu-btn" aria-haspopup="true" aria-expanded="false">Menu ▾</button>
+                <div id="menuDropdown" class="menu-dropdown" aria-hidden="true" role="menu">
+                    <button id="menuClose" class="menu-close" aria-label="Close menu">✕</button>
+                    <a href="index.html" role="menuitem">Home</a>
+                    <a href="services.html" role="menuitem">Services</a>
+                    <a href="products.html" role="menuitem">Products</a>
+                    <a href="gallery.html" role="menuitem">Gallery</a>
+                    <a href="about.html" role="menuitem">About</a>
+                    <a href="contact.html" role="menuitem">Contact</a>
+                    <a href="admin/login.html" class="admin-link admin-menu-link" role="menuitem">Admin</a>
                 </div>
             </div>
+            <div id="menuOverlay" class="menu-overlay" tabindex="-1" aria-hidden="true"></div>
         </div>
     </nav>
 
@@ -180,13 +182,13 @@
                 <h3>Follow Us</h3>
                 <div class="social-links">
                     <a href="https://tiktok.com/@eniola" target="_blank" rel="noopener" class="social-icon">
-                        <img src="assets/icons/tiktok.png" alt="TikTok">
+                        <img loading="lazy" src="assets/icons/tiktok.png" alt="TikTok">
                     </a>
                     <a href="https://instagram.com/karen_wealth" target="_blank" rel="noopener" class="social-icon">
-                        <img src="assets/icons/instagram.png" alt="Instagram">
+                        <img loading="lazy" src="assets/icons/instagram.png" alt="Instagram">
                     </a>
                     <a href="https://wa.me/2347033648510" target="_blank" rel="noopener" class="social-icon">
-                        <img src="assets/icons/whatsapp.png" alt="WhatsApp">
+                        <img loading="lazy" src="assets/icons/whatsapp.png" alt="WhatsApp">
                     </a>
                 </div>
             </div>
@@ -199,6 +201,7 @@
 
     <script type="module" src="js/firebase-init.js"></script>
     <script src="js/analytics.js"></script>
+    <script src="js/menu.js"></script>
     <script src="js/main.js"></script>
 </body>
 

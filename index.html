@@ -50,19 +50,20 @@
         <div class="nav-container">
             <div class="nav-logo">Karen's Nail Art</div>
             <!-- Compact top-right menu button -->
-            <div style="position:relative;">
-                <button id="menuButton" class="menu-btn" onclick="toggleMenu()">Menu ▾</button>
-                <div id="menuDropdown" class="menu-dropdown" aria-hidden="true">
-                    <a href="index.html">Home</a>
-                    <a href="services.html">Services</a>
-                    <a href="products.html">Products</a>
-                    <a href="gallery.html">Gallery</a>
-                    <a href="about.html">About</a>
-                    <a href="contact.html">Contact</a>
-                    <a href="admin/login.html" class="admin-link"
-                        style="display:block;margin:8px 12px;padding:8px;border-radius:6px;background:#f0b27a;color:#3e1f0e;text-align:center;">Admin</a>
+            <div class="menu-wrapper">
+                <button id="menuButton" class="menu-btn" aria-haspopup="true" aria-expanded="false">Menu ▾</button>
+                <div id="menuDropdown" class="menu-dropdown" aria-hidden="true" role="menu">
+                    <button id="menuClose" class="menu-close" aria-label="Close menu">✕</button>
+                    <a href="index.html" role="menuitem">Home</a>
+                    <a href="services.html" role="menuitem">Services</a>
+                    <a href="products.html" role="menuitem">Products</a>
+                    <a href="gallery.html" role="menuitem">Gallery</a>
+                    <a href="about.html" role="menuitem">About</a>
+                    <a href="contact.html" role="menuitem">Contact</a>
+                    <a href="admin/login.html" class="admin-link" role="menuitem">Admin</a>
                 </div>
             </div>
+            <div id="menuOverlay" class="menu-overlay" tabindex="-1" aria-hidden="true"></div>
         </div>
     </nav>
 
@@ -101,7 +102,7 @@
         <div class="gallery-container">
             <div class="gallery-item">
                 <div class="gallery-image-wrapper">
-                    <img src="assets/images/Nail1.jpg.jpg" alt="Nail Art">
+                    <img loading="lazy" src="assets/images/Nail1.jpg.jpg" alt="Nail Art">
                     <div class="image-actions">
                         <button class="love-btn" onclick="toggleLove(this)">
                             <span class="heart">♡</span>
@@ -115,7 +116,7 @@
             </div>
             <div class="gallery-item">
                 <div class="gallery-image-wrapper">
-                    <img src="assets/images/Nails2.jpg.jpg" alt="Nail Art">
+                    <img loading="lazy" src="assets/images/Nails2.jpg.jpg" alt="Nail Art">
                     <div class="image-actions">
                         <button class="love-btn" onclick="toggleLove(this)">
                             <span class="heart">♡</span>
@@ -139,37 +140,37 @@
         <p class="subtitle">Click to explore our nail services</p>
         <div class="services-preview-container">
             <a href="gel-polish.html" class="preview-card">
-                <img src="assets/images/gel1.jpg" alt="Gel Polish">
+                <img loading="lazy" src="assets/images/gel1.jpg" alt="Gel Polish">
                 <h3>Gel Polish</h3>
                 <p>Long-lasting shine and vibrant finish</p>
             </a>
             <a href="acrylic-nails.html" class="preview-card">
-                <img src="assets/images/acrylic1.jpg" alt="Acrylic Nails">
+                <img loading="lazy" src="assets/images/acrylic1.jpg" alt="Acrylic Nails">
                 <h3>Acrylic Nails</h3>
                 <p>Perfectly sculpted extensions</p>
             </a>
             <a href="nail-art.html" class="preview-card">
-                <img src="assets/images/nailart1.jpg" alt="Nail Art">
+                <img loading="lazy" src="assets/images/nailart1.jpg" alt="Nail Art">
                 <h3>Nail Art</h3>
                 <p>Creative designs that express you</p>
             </a>
             <a href="pedicure.html" class="preview-card">
-                <img src="assets/images/gel2.jpg" alt="Pedicure">
+                <img loading="lazy" src="assets/images/gel2.jpg" alt="Pedicure">
                 <h3>Pedicure</h3>
                 <p>Relax and rejuvenate your feet</p>
             </a>
             <a href="manicure.html" class="preview-card">
-                <img src="assets/images/gel3.jpg" alt="Manicure">
+                <img loading="lazy" src="assets/images/gel3.jpg" alt="Manicure">
                 <h3>Manicure</h3>
                 <p>Professional hand and nail care</p>
             </a>
             <a href="nail-extensions.html" class="preview-card">
-                <img src="assets/images/acrylic2.jpg" alt="Nail Extensions">
+                <img loading="lazy" src="assets/images/acrylic2.jpg" alt="Nail Extensions">
                 <h3>Nail Extensions</h3>
                 <p>Beautiful length and style</p>
             </a>
             <a href="press-on-nails.html" class="preview-card">
-                <img src="assets/images/gel4.jpg" alt="Press-On Nails">
+                <img loading="lazy" src="assets/images/gel4.jpg" alt="Press-On Nails">
                 <h3>Press-On Nails</h3>
                 <p>Quick and reusable salon nails</p>
             </a>
@@ -402,13 +403,13 @@
                 <h3>Follow Us</h3>
                 <div class="social-links">
                     <a href="https://tiktok.com/@eniola" target="_blank" rel="noopener" class="social-icon">
-                        <img src="assets/icons/tiktok.png" alt="TikTok">
+                        <img loading="lazy" src="assets/icons/tiktok.png" alt="TikTok">
                     </a>
                     <a href="https://instagram.com/karen_wealth" target="_blank" rel="noopener" class="social-icon">
-                        <img src="assets/icons/instagram.png" alt="Instagram">
+                        <img loading="lazy" src="assets/icons/instagram.png" alt="Instagram">
                     </a>
                     <a href="https://wa.me/2347033648510" target="_blank" rel="noopener" class="social-icon">
-                        <img src="assets/icons/whatsapp.png" alt="WhatsApp">
+                        <img loading="lazy" src="assets/icons/whatsapp.png" alt="WhatsApp">
                     </a>
                 </div>
             </div>
