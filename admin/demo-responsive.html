@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Responsive Demo</title>
+    <style>
+        :root {
+            --accent: #f0b27a;
+            --dark: #3e1f0e;
+            --muted: #666
+        }
+
+        body {
+            font-family: Inter, 'Poppins', system-ui, Arial;
+            margin: 0;
+            background: #f5f5f5
+        }
+
+        .page {
+            display: flex;
+            min-height: 100vh
+        }
+
+        /* Desktop sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--dark);
+            color: #fff;
+            padding: 20px;
+            box-sizing: border-box
+        }
+
+        .sidebar h2 {
+            color: var(--accent);
+            margin: 0 0 6px
+        }
+
+        .sidebar .nav {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .sidebar .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px
+        }
+
+        .sidebar .nav a:hover {
+            background: rgba(255, 255, 255, 0.06)
+        }
+
+        /* Content */
+        .main {
+            flex: 1;
+            padding: 24px
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px
+        }
+
+        .hamburger {
+            display: none;
+            background: transparent;
+            border: 0;
+            font-size: 22px;
+            cursor: pointer
+        }
+
+        .title {
+            font-size: 20px;
+            color: var(--dark);
+            margin: 0
+        }
+
+        .sub {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        /* Table demo */
+        .table-wrap {
+            background: #fff;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        thead th {
+            text-align: left;
+            padding: 10px 8px;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        tbody td {
+            padding: 12px 8px;
+            border-top: 1px solid #eee
+        }
+
+        .actions button {
+            margin-right: 6px
+        }
+
+        /* Cards (for mobile) */
+        .card-list {
+            display: none;
+            gap: 12px
+        }
+
+        .card {
+            background: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06)
+        }
+
+        .card h4 {
+            margin: 0 0 6px
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        /* Toggle to show/hide elements for demo only */
+        .controls {
+            margin: 12px 0;
+            display: flex;
+            gap: 8px
+        }
+
+        .btn {
+            background: var(--accent);
+            border: 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #31180d;
+            cursor: pointer
+        }
+
+        /* MOBILE */
+        @media (max-width:900px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 56px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                padding: 0 12px
+            }
+
+            .sidebar .nav,
+            .sidebar .profile {
+                display: none
+            }
+
+            .page {
+                padding-top: 56px
+            }
+
+            .hamburger {
+                display: inline-flex
+            }
+
+            .main {
+                padding: 14px
+            }
+
+            /* drawer */
+            .drawer {
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 56px;
+                bottom: 0;
+                background: #fff;
+                transform: translateY(-110%);
+                transition: transform .28s ease;
+                z-index: 1200;
+                padding: 12px;
+                overflow: auto
+            }
+
+            .drawer.open {
+                transform: translateY(0)
+            }
+
+            .drawer .nav {
+                display: flex;
+                flex-direction: column
+            }
+
+            .drawer .nav a {
+                background: #f7f7f7;
+                color: #333;
+                margin-bottom: 8px;
+                padding: 12px;
+                border-radius: 8px
+            }
+
+            /* switch to card list */
+            .table-wrap {
+                display: none
+            }
+
+            .card-list {
+                display: flex;
+                flex-direction: column
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <aside class="sidebar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button id="demoHamburger" class="hamburger" aria-label="Open menu">☰</button>
+                <div>
+                    <h2>Karen's Admin</h2>
+                    <div class="sub">Manage site</div>
+                </div>
+            </div>
+
+            <div class="profile" style="margin-top:18px">
+                <img src="../assets/images/gel1.jpg" alt="profile"
+                    style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--accent)">
+            </div>
+
+            <nav class="nav" aria-label="Primary">
+                <a href="#">Dashboard</a>
+                <a href="#">Gallery</a>
+                <a href="#">Upload Images</a>
+                <a href="#">Services</a>
+                <a href="#">Inquiries</a>
+                <a href="#">Products</a>
+                <a href="#">Team</a>
+                <a href="#">Settings</a>
+            </nav>
+        </aside>
+
+        <div class="main">
+            <header class="header">
+                <button id="hambTop" class="hamburger" aria-label="Open menu">☰</button>
+                <h1 class="title">Dashboard Overview</h1>
+            </header>
+
+            <div class="controls">
+                <button id="showTable" class="btn">Show Table</button>
+                <button id="showCards" class="btn">Show Cards</button>
+            </div>
+
+            <section class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jane Doe</td>
+                            <td>Gel Polish</td>
+                            <td>2025-11-23</td>
+                            <td><strong>New</strong></td>
+                            <td class="actions"><button class="btn">Reply</button><button class="btn">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mary Smith</td>
+                            <td>Acrylic</td>
+                            <td>2025-11-22</td>
+                            <td><strong>Resolved</strong></td>
+                            <td class="actions"><button class="btn">Reply</button><button class="btn">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="card-list">
+                <article class="card">
+                    <h4>Jane Doe <span style="float:right;font-weight:600">New</span></h4>
+                    <p>Service: Gel Polish</p>
+                    <p>Date: 2025-11-23</p>
+                    <div style="margin-top:8px"><button class="btn">Reply</button> <button class="btn">Delete</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h4>Mary Smith <span style="float:right;font-weight:600">Resolved</span></h4>
+                    <p>Service: Acrylic</p>
+                    <p>Date: 2025-11-22</p>
+                    <div style="margin-top:8px"><button class="btn">Reply</button> <button class="btn">Delete</button>
+                    </div>
+                </article>
+            </section>
+
+        </div>
+
+        <!-- mobile drawer -->
+        <div id="demoDrawer" class="drawer" aria-hidden="true">
+            <nav class="nav">
+                <a href="#">Dashboard</a>
+                <a href="#">Gallery</a>
+                <a href="#">Upload Images</a>
+                <a href="#">Services</a>
+                <a href="#">Inquiries</a>
+                <a href="#">Products</a>
+                <a href="#">Team</a>
+                <a href="#">Settings</a>
+                <a href="#"
+                    style="margin-top:8px;background:#ffecec;color:#9a1b14;padding:12px;border-radius:8px;display:inline-block">Logout</a>
+            </nav>
+        </div>
+
+    </div>
+
+    <script>
+        const drawer = document.getElementById('demoDrawer');
+        const hamburger = document.getElementById('demoHamburger');
+        const topHamb = document.getElementById('hambTop');
+        const showTable = document.getElementById('showTable');
+        const showCards = document.getElementById('showCards');
+
+        function toggleDrawer(open) {
+            if (open === true) drawer.classList.add('open');
+            else if (open === false) drawer.classList.remove('open');
+            else drawer.classList.toggle('open');
+            drawer.setAttribute('aria-hidden', String(!drawer.classList.contains('open')));
+        }
+
+        hamburger && hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleDrawer(); });
+        topHamb && topHamb.addEventListener('click', (e) => { e.stopPropagation(); toggleDrawer(); });
+
+        // close on outside click
+        document.addEventListener('click', (e) => {
+            if (!drawer.classList.contains('open')) return;
+            if (!drawer.contains(e.target) && e.target !== hamburger && e.target !== topHamb) toggleDrawer(false);
+        });
+        // ESC
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && drawer.classList.contains('open')) toggleDrawer(false); });
+
+        // Toggle views
+        showCards.addEventListener('click', () => { document.querySelector('.table-wrap').style.display = 'none'; document.querySelector('.card-list').style.display = 'flex'; });
+        showTable.addEventListener('click', () => { document.querySelector('.table-wrap').style.display = 'block'; document.querySelector('.card-list').style.display = 'none'; });
+
+        // initial layout: if mobile, show cards
+        function updateInitial() { if (window.matchMedia('(max-width:900px)').matches) { document.querySelector('.table-wrap').style.display = 'none'; document.querySelector('.card-list').style.display = 'flex'; } }
+        updateInitial();
+        window.addEventListener('resize', updateInitial);
+    </script>
+</body>
+
+</html>

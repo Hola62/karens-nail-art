@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', function () {
     loadTeamList();
     loadAdminGallery();
     loadProductsList();
+    initAdminResponsive();
 });
 
 // Lightweight toast notifications (replaces intrusive alert())
@@ -63,6 +64,41 @@ function showToast(arg1, arg2, arg3) {
             setTimeout(() => toast.parentNode && toast.parentNode.removeChild(toast), 220);
         }
     }, 3500);
+}
+
+// Responsive admin drawer toggle
+function initAdminResponsive() {
+    const hamburger = document.getElementById('adminHamburger');
+    const drawer = document.getElementById('adminDrawer');
+
+    if (!hamburger || !drawer) return;
+
+    function toggle(open) {
+        const isOpen = drawer.classList.contains('open');
+        if (typeof open === 'boolean') {
+            if (open && !isOpen) drawer.classList.add('open');
+            if (!open && isOpen) drawer.classList.remove('open');
+        } else {
+            drawer.classList.toggle('open');
+        }
+        drawer.setAttribute('aria-hidden', String(!drawer.classList.contains('open')));
+    }
+
+    hamburger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggle();
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+        if (!drawer.classList.contains('open')) return;
+        if (!drawer.contains(e.target) && e.target !== hamburger) toggle(false);
+    });
+
+    // Close on ESC
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && drawer.classList.contains('open')) toggle(false);
+    });
 }
 
 // Check if user is authenticated

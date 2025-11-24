@@ -64,10 +64,36 @@
     <!-- Main Content Area -->
     <div class="admin-content">
         <div class="admin-header">
+            <button id="adminHamburger" class="admin-hamburger" aria-label="Open menu">☰</button>
             <h1>Welcome Back, <span id="welcomeName">Karen</span>!</h1>
             <div class="header-actions">
                 <button class="btn-primary" onclick="window.open('../index.html', '_blank')">View Website</button>
             </div>
+        </div>
+
+        <!-- Mobile drawer (will be shown on small screens) -->
+        <div id="adminDrawer" class="admin-drawer" aria-hidden="true">
+            <nav class="admin-drawer-nav">
+                <a href="#dashboard" class="drawer-item"
+                    onclick="showSection('dashboard'); toggleAdminDrawer(false)">Dashboard</a>
+                <a href="#gallery" class="drawer-item"
+                    onclick="showSection('gallery'); toggleAdminDrawer(false)">Gallery</a>
+                <a href="#images" class="drawer-item" onclick="showSection('images'); toggleAdminDrawer(false)">Upload
+                    Images</a>
+                <a href="#services" class="drawer-item"
+                    onclick="showSection('services'); toggleAdminDrawer(false)">Manage Services</a>
+                <a href="#inquiries" class="drawer-item"
+                    onclick="showSection('inquiries'); toggleAdminDrawer(false)">Customer Inquiries</a>
+                <a href="#testimonials" class="drawer-item"
+                    onclick="showSection('testimonials'); toggleAdminDrawer(false)">Testimonials</a>
+                <a href="#products" class="drawer-item"
+                    onclick="showSection('products'); toggleAdminDrawer(false)">Products</a>
+                <a href="#team" class="drawer-item" onclick="showSection('team'); toggleAdminDrawer(false)">Team
+                    Management</a>
+                <a href="#settings" class="drawer-item"
+                    onclick="showSection('settings'); toggleAdminDrawer(false)">Settings</a>
+                <a href="#" class="drawer-item logout" onclick="logout(); toggleAdminDrawer(false)">Logout</a>
+            </nav>
         </div>
 
         <!-- Dashboard Section -->
