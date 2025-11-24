@@ -1,36 +1,20 @@
-// Firebase initialization (module)
-// Uses CDN v12.5.0 with modular SDK. Loads Analytics only if supported.
+/*
+ Firebase init stub (keys removed)
 
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js';
-import { getAnalytics, isSupported } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js';
+ The real Firebase client configuration has been removed from the repository for security.
+ To enable Firebase locally or in your deployment, copy `js/firebase-init.example.js`
+ to `js/firebase-init.js` and fill in the placeholder values with your project's
+ credentials. Then deploy using environment-specific secret management.
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-    apiKey: 'AIzaSyDWmK17u7MxM0bfpU-_3xxogOS0PMr5tmg',
-    authDomain: 'karens-nails-art.firebaseapp.com',
-    projectId: 'karens-nails-art',
-    storageBucket: 'karens-nails-art.firebasestorage.app',
-    messagingSenderId: '1051146588379',
-    appId: '1:1051146588379:web:bb364b92666b88ee3ffcfe',
-    measurementId: 'G-C4P18KLRPD'
-};
+ This stub intentionally does not initialize Firebase and only warns at runtime.
+ It keeps the `<script type="module" src="js/firebase-init.js"></script>` include
+ safe to load without exposing secrets.
+*/
 
-try {
-    const app = initializeApp(firebaseConfig);
-    // Analytics is only available in certain environments (e.g., secure origins)
-    isSupported()
-        .then((supported) => {
-            if (supported) {
-                const analytics = getAnalytics(app);
-                // flag for debugging
-                window.__firebaseAnalytics = analytics;
-            } else {
-                console.warn('[Firebase] Analytics not supported in this environment.');
-            }
-        })
-        .catch((err) => {
-            console.warn('[Firebase] Analytics support check failed:', err);
-        });
-} catch (err) {
-    console.warn('[Firebase] Initialization failed:', err);
+// eslint-disable-next-line no-console
+console.warn('[Firebase] Client config not found. Copy js/firebase-init.example.js to js/firebase-init.js and add your credentials.');
+
+export function initFirebase() {
+    // No-op stub to avoid runtime errors in pages that expect Firebase to be present.
+    return null;
 }
